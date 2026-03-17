@@ -1,0 +1,1700 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IMMt SHOP — Ultra Liquid Glass</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root{
+      --green:#086C4A;
+      --yellow:#FFFB18;
+      --purple:#70269F;
+      --mint:#6FE3AE;
+      --paper:#F7F6ED;
+      --ink:#0B1110;
+      --white:rgba(255,255,255,.96);
+      --muted:rgba(255,255,255,.66);
+      --line:rgba(255,255,255,.16);
+      --glassTop:rgba(255,255,255,.16);
+      --glassBottom:rgba(255,255,255,.05);
+      --shadow:0 22px 70px rgba(0,0,0,.34);
+      --soft-glow-green:0 0 0 1px rgba(255,255,255,.12), 0 16px 42px rgba(0,0,0,.28), 0 0 50px rgba(8,108,74,.18);
+      --soft-glow-yellow:0 0 0 1px rgba(255,255,255,.10), 0 16px 42px rgba(0,0,0,.24), 0 0 42px rgba(255,251,24,.16);
+      --soft-glow-purple:0 0 0 1px rgba(255,255,255,.10), 0 16px 42px rgba(0,0,0,.24), 0 0 44px rgba(112,38,159,.18);
+    }
+    *{
+      box-sizing:border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    html{scroll-behavior:smooth;}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, sans-serif;
+      color:var(--white);
+      min-height:100vh;
+      background:
+        radial-gradient(44rem 24rem at 8% 46%, rgba(8,108,74,.24), transparent 46%),
+        radial-gradient(28rem 18rem at 60% 12%, rgba(112,38,159,.18), transparent 42%),
+        radial-gradient(26rem 18rem at 78% 22%, rgba(255,251,24,.10), transparent 38%),
+        linear-gradient(180deg, #020505 0%, #05110D 42%, #081712 100%);
+      overflow-x:hidden;
+    }
+    .shell{
+      width:min(100%, 1480px);
+      margin:0 auto;
+      padding:0 16px 120px;
+      position:relative;
+      z-index:2;
+    }
+    .page{display:none;}
+    .page.active{
+      display:block;
+      animation:pageIn .45s cubic-bezier(.2,.8,.2,1);
+    }
+    @keyframes pageIn{
+      from{opacity:0; transform:translateY(16px) scale(.992);}
+      to{opacity:1; transform:translateY(0) scale(1);}
+    }
+
+    .liquid{
+      position:relative;
+      overflow:hidden;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.05)),
+        linear-gradient(180deg, rgba(120,122,108,.10), rgba(80,83,74,.08));
+      border:1px solid rgba(255,255,255,.16);
+      box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.18), 0 0 0 1px rgba(255,255,255,.02);
+      backdrop-filter: blur(28px) saturate(135%);
+      -webkit-backdrop-filter: blur(28px) saturate(135%);
+      border-radius:34px;
+      isolation:isolate;
+    }
+    .liquid::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(75% 32% at 0% 16%, rgba(255,255,255,.22), transparent 58%),
+        radial-gradient(55% 24% at 100% 72%, rgba(255,255,255,.10), transparent 62%),
+        linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,0) 18%, rgba(255,255,255,.03) 75%, rgba(255,255,255,.06));
+      pointer-events:none;
+      mix-blend-mode:screen;
+      z-index:0;
+    }
+    .liquid::after{
+      content:"";
+      position:absolute;
+      left:0; right:0; bottom:18%;
+      height:18%;
+      background:linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.04), rgba(255,255,255,0));
+      filter:blur(14px);
+      pointer-events:none;
+      z-index:0;
+    }
+    .liquid > *{position:relative; z-index:1;}
+
+    .liquid-inner{
+      position:relative;
+      overflow:hidden;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.03)),
+        linear-gradient(135deg, rgba(120,122,108,.12), rgba(85,87,78,.09));
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:26px;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.15);
+      backdrop-filter: blur(18px) saturate(125%);
+      -webkit-backdrop-filter: blur(18px) saturate(125%);
+    }
+    .liquid-inner::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,0) 34%),
+        radial-gradient(50% 32% at 8% 36%, rgba(255,255,255,.10), transparent 65%);
+      pointer-events:none;
+    }
+    .liquid-pill{
+      position:relative;
+      overflow:hidden;
+      border-radius:999px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.08)),
+        linear-gradient(180deg, rgba(96,99,88,.10), rgba(78,80,72,.08));
+      border:1px solid rgba(255,255,255,.15);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.17), 0 10px 24px rgba(0,0,0,.18);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+    }
+    .liquid-icon{
+      position:relative;
+      overflow:hidden;
+      border-radius:20px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.08)),
+        radial-gradient(70% 70% at 30% 20%, rgba(255,255,255,.16), transparent 65%);
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.16), 0 12px 28px rgba(0,0,0,.20);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .cta-primary{
+      color:#0F1110;
+      background:linear-gradient(135deg, rgba(255,251,24,.92), rgba(111,227,174,.92));
+      box-shadow:0 20px 44px rgba(255,251,24,.10), 0 0 44px rgba(111,227,174,.14), inset 0 1px 0 rgba(255,255,255,.38);
+    }
+    .cta-secondary{
+      color:white;
+      background:linear-gradient(180deg, rgba(255,255,255,.15), rgba(255,255,255,.07));
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 12px 30px rgba(0,0,0,.18);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .soft-glow-green{ box-shadow:var(--soft-glow-green), inset 0 1px 0 rgba(255,255,255,.18); }
+    .soft-glow-yellow{ box-shadow:var(--soft-glow-yellow), inset 0 1px 0 rgba(255,255,255,.18); }
+    .soft-glow-purple{ box-shadow:var(--soft-glow-purple), inset 0 1px 0 rgba(255,255,255,.18); }
+
+    .title-gradient{
+      background:linear-gradient(90deg, var(--white) 0%, rgba(255,255,255,.96) 32%, #E2F6AA 52%, #FFF56E 78%, #FFD56A 100%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+    .accent-gradient{
+      background:linear-gradient(90deg, var(--green), var(--mint), var(--yellow), var(--purple));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+    .muted{color:var(--muted);}
+    .section-title{
+      font-size:1.32rem;
+      line-height:1.15;
+      font-weight:900;
+      letter-spacing:-0.02em;
+    }
+
+    .header-shell, .dock-shell{
+      transition:transform .35s ease, backdrop-filter .35s ease, box-shadow .35s ease, background .35s ease;
+    }
+    body.scrolled .header-shell{
+      transform:translateY(-2px);
+      backdrop-filter: blur(32px) saturate(150%);
+      -webkit-backdrop-filter: blur(32px) saturate(150%);
+      box-shadow:0 26px 60px rgba(0,0,0,.36), inset 0 1px 0 rgba(255,255,255,.20);
+    }
+    body.scrolled .dock-shell{
+      backdrop-filter: blur(30px) saturate(145%);
+      -webkit-backdrop-filter: blur(30px) saturate(145%);
+      box-shadow:0 24px 64px rgba(0,0,0,.40), inset 0 1px 0 rgba(255,255,255,.18);
+    }
+
+    .hero{
+      min-height: 540px;
+    }
+    .hero-media{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      opacity:.38;
+      transform:translateY(calc(var(--hero-shift, 0px) * 0.20)) scale(1.03);
+      transition:transform .35s ease, opacity .35s ease;
+      filter:saturate(120%) contrast(1.04);
+    }
+    .hero-overlay{
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg, rgba(2,6,5,.22), rgba(2,6,5,.56)),
+        radial-gradient(46% 32% at 32% 28%, rgba(255,255,255,.09), transparent 62%),
+        linear-gradient(0deg, rgba(3,6,6,.76), rgba(3,6,6,.22));
+    }
+    .hero-light{
+      position:absolute;
+      inset:auto auto 12% 8%;
+      width:300px;
+      height:180px;
+      border-radius:999px;
+      background:radial-gradient(circle, rgba(255,251,24,.20), rgba(111,227,174,.12), transparent 70%);
+      filter:blur(28px);
+      opacity:.6;
+      pointer-events:none;
+    }
+
+    .ambient-orb{
+      position:fixed;
+      border-radius:999px;
+      pointer-events:none;
+      filter:blur(34px);
+      opacity:.46;
+      animation:floatOrb 10s ease-in-out infinite;
+      z-index:0;
+    }
+    .orb-a{ width:300px; height:300px; left:-60px; top:12%; background:radial-gradient(circle, rgba(8,108,74,.44), transparent 68%); }
+    .orb-b{ width:360px; height:360px; right:-90px; top:8%; background:radial-gradient(circle, rgba(112,38,159,.28), transparent 68%); animation-delay:2s; }
+    .orb-c{ width:300px; height:300px; left:18%; bottom:10%; background:radial-gradient(circle, rgba(255,251,24,.18), transparent 68%); animation-delay:4s; }
+    @keyframes floatOrb{
+      0%,100%{transform:translate3d(0,0,0) scale(1);}
+      50%{transform:translate3d(0,-10px,0) scale(1.04);}
+    }
+
+    .glass-noise{
+      position:absolute;
+      inset:0;
+      opacity:.07;
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,.9) 0 1px, transparent 1px),
+        radial-gradient(circle at 80% 80%, rgba(255,255,255,.9) 0 1px, transparent 1px);
+      background-size:14px 14px, 18px 18px;
+      mix-blend-mode:overlay;
+      pointer-events:none;
+    }
+
+    .dock-item{
+      color:rgba(255,255,255,.72);
+      transition:transform .24s ease, color .24s ease, filter .24s ease;
+    }
+    .dock-item:hover{ transform:translateY(-2px); }
+
+    .nav-link{
+      color:rgba(255,255,255,.96);
+      text-decoration:none;
+      font-weight:700;
+      transition:transform .22s ease, color .22s ease, opacity .22s ease;
+    }
+    .nav-link:hover{ transform:translateY(-1px); color:#E8F6B1; }
+
+    .image-frame{
+      position:relative;
+      overflow:hidden;
+      border-radius:28px;
+      border:1px solid rgba(255,255,255,.12);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03)),
+        linear-gradient(135deg, rgba(105,109,97,.16), rgba(72,74,68,.10));
+      min-height:180px;
+      isolation:isolate;
+    }
+    .image-frame::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,0) 32%),
+        radial-gradient(48% 24% at 14% 30%, rgba(255,255,255,.14), transparent 64%);
+      pointer-events:none;
+      z-index:2;
+    }
+    .image-frame img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      transform:scale(1.01);
+    }
+    .upload-bar{
+      position:absolute;
+      left:10px;
+      right:10px;
+      bottom:10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+      z-index:3;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      background:linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.08));
+      border:1px solid rgba(255,255,255,.15);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.18);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .best-badge{
+      color:#121212;
+      background:linear-gradient(135deg, rgba(255,251,24,.95), rgba(111,227,174,.90));
+      box-shadow:0 18px 40px rgba(255,251,24,.12), 0 0 34px rgba(111,227,174,.14), inset 0 1px 0 rgba(255,255,255,.38);
+      border-color:rgba(255,255,255,.24);
+    }
+
+    .magnetic{
+      transform-style:preserve-3d;
+      transition:transform .22s ease, box-shadow .22s ease;
+      will-change:transform;
+    }
+    .magnetic:hover{
+      box-shadow:0 26px 70px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.18), 0 0 34px rgba(255,255,255,.04);
+    }
+
+    .grid-catalog{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:20px; }
+    .grid-bundles{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; }
+    .grid-wishlist{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; }
+    .grid-hero{ display:grid; grid-template-columns:1.15fr .85fr; gap:22px; align-items:end; }
+    .grid-about{ display:grid; grid-template-columns:1.08fr .92fr; gap:22px; }
+    .grid-detail{ display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+    .grid-cart{ display:grid; grid-template-columns:1.1fr .9fr; gap:22px; }
+    .grid-stats{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+
+    .modal-wrap{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      z-index:90;
+      background:rgba(2,6,6,.52);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .modal-wrap.open{ display:flex; }
+    .modal-panel{
+      width:min(1160px,100%);
+      max-height:min(92vh,1000px);
+      overflow:auto;
+      border-radius:36px;
+    }
+
+    .checkout-card{
+      background:#F3F3F3;
+      color:#1A2740;
+      border:1px solid rgba(0,0,0,.06);
+      border-radius:22px;
+      overflow:hidden;
+      box-shadow:0 18px 48px rgba(0,0,0,.18);
+    }
+    .checkout-field{
+      width:100%;
+      border:1px solid #c7ced9;
+      background:white;
+      border-radius:8px;
+      font-size:15px;
+      padding:12px 14px;
+      outline:none;
+    }
+    .checkout-field:focus{
+      border-color:#1AA06E;
+      box-shadow:0 0 0 3px rgba(26,160,110,.14);
+    }
+    .checkout-card input[type="radio"]{ accent-color:#B452E7; }
+    .checkout-btn{
+      background:#10A06F;
+      color:white;
+      font-weight:800;
+      border:0;
+      width:100%;
+      border-radius:8px;
+      padding:14px 16px;
+      font-size:15px;
+      box-shadow:0 10px 24px rgba(16,160,111,.18);
+    }
+
+    .search-input::placeholder{ color:rgba(255,255,255,.54); }
+
+    .hidden-file{ display:none; }
+
+    .scrollbar-none::-webkit-scrollbar{ display:none; }
+    .scrollbar-none{ scrollbar-width:none; -ms-overflow-style:none; }
+
+    .hero-title{ font-size:clamp(2.7rem, 6vw, 5.6rem); line-height:.95; letter-spacing:-.05em; font-weight:1000; }
+    .hero-sub{ font-size:clamp(1.04rem, 2.2vw, 1.95rem); }
+    .header-grid{
+      display:grid;
+      grid-template-columns:auto minmax(0,1fr) auto auto;
+      gap:16px;
+      align-items:center;
+    }
+
+    @media (max-width: 1180px){
+      .grid-catalog{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+      .grid-wishlist{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .desktop-nav{ display:none; }
+      .mobile-nav-links{ display:flex; }
+      .header-grid{ grid-template-columns:auto minmax(0,1fr) auto; }
+    }
+    @media (max-width: 920px){
+      .grid-hero, .grid-about, .grid-detail, .grid-cart, .grid-bundles{ grid-template-columns:1fr; }
+      .grid-catalog{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+    }
+    @media (max-width: 640px){
+      .shell{ padding:0 12px 118px; }
+      .header-grid{ grid-template-columns:auto auto; gap:12px; }
+      .header-search{ grid-column:1 / -1; }
+      .mobile-nav-links{ grid-column:1 / -1; justify-content:flex-start; flex-wrap:wrap; }
+      .grid-catalog{ gap:16px; }
+      .grid-wishlist{ grid-template-columns:1fr; }
+      .grid-stats{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+      .hero{ min-height: 500px; }
+      .bundle-mobile-scroll{
+        display:flex;
+        overflow:auto;
+        gap:14px;
+        padding-bottom:4px;
+      }
+      .bundle-mobile-scroll > *{
+        min-width:88%;
+      }
+      .grid-bundles{
+        display:block;
+      }
+      .modal-panel{ border-radius:28px; }
+    }
+  </style>
+</head>
+<body>
+  <input id="uploader" class="hidden-file" type="file" accept="image/*" />
+
+  <div class="ambient-orb orb-a"></div>
+  <div class="ambient-orb orb-b"></div>
+  <div class="ambient-orb orb-c"></div>
+
+  <div class="shell">
+    <header class="sticky top-4 z-50">
+      <div class="liquid header-shell p-3 md:p-4">
+        <div class="glass-noise"></div>
+        <div class="header-grid">
+          <div class="flex items-center gap-3 min-w-0">
+            <button onclick="triggerImageUpload('siteLogo')" class="liquid-icon h-14 w-14 rounded-full shrink-0 overflow-hidden flex items-center justify-center soft-glow-green">
+              <img data-image-id="siteLogo" alt="Logo IMMt SHOP" class="h-full w-full object-cover" />
+            </button>
+            <div class="min-w-0">
+              <p class="text-[11px] uppercase tracking-[0.28em] text-white/46">IMMt SHOP</p>
+              <h1 class="text-[1.65rem] font-black leading-none truncate">IMMt SHOP</h1>
+            </div>
+          </div>
+
+          <div class="header-search liquid-inner rounded-[24px] px-4 py-3 flex items-center gap-3 min-w-0">
+            <svg class="h-7 w-7 shrink-0 text-white/88" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m20 20-3.5-3.5"></path>
+            </svg>
+            <input id="globalSearch" class="search-input bg-transparent outline-none border-0 w-full text-lg text-white" placeholder="Cari produk di IMMt SHOP..." />
+          </div>
+
+          <nav class="desktop-nav hidden xl:flex items-center gap-10 text-[1.15rem]">
+            <a class="nav-link" href="javascript:void(0)" onclick="goHome()">Beranda</a>
+            <a class="nav-link" href="javascript:void(0)" onclick="showPage('catalogPage')">Produk</a>
+            <a class="nav-link" href="javascript:void(0)" onclick="scrollToAbout()">Tentang Kami</a>
+          </nav>
+
+          <button onclick="showPage('cartPage')" class="liquid-icon h-14 w-14 rounded-2xl flex items-center justify-center relative soft-glow-yellow">
+            <span class="text-2xl">🛒</span>
+            <span id="headerCartCount" class="absolute -right-1 -top-1 h-7 min-w-[28px] rounded-full bg-red-500 text-white text-xs font-black px-1.5 flex items-center justify-center">0</span>
+          </button>
+
+          <div class="mobile-nav-links hidden gap-2">
+            <button onclick="goHome()" class="liquid-pill px-4 py-2 text-sm font-semibold">Beranda</button>
+            <button onclick="showPage('catalogPage')" class="liquid-pill px-4 py-2 text-sm font-semibold">Produk</button>
+            <button onclick="scrollToAbout()" class="liquid-pill px-4 py-2 text-sm font-semibold">Tentang Kami</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="homePage" class="page active pt-4 space-y-6">
+      <section class="liquid hero overflow-hidden">
+        <div class="glass-noise"></div>
+        <img data-image-id="heroBanner" class="hero-media" alt="Hero banner" />
+        <div class="hero-overlay"></div>
+        <div class="hero-light"></div>
+
+        <div class="relative z-10 p-5 md:p-8 lg:p-10 h-full flex flex-col justify-between">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <span class="badge soft-glow-green">
+              <span class="inline-block h-2.5 w-2.5 rounded-full bg-[var(--mint)] shadow-[0_0_18px_rgba(111,227,174,.8)]"></span>
+              Colour ratio: 70% green · 20% yellow · 10% purple
+            </span>
+            <button onclick="triggerImageUpload('heroBanner')" class="liquid-pill px-4 py-2 text-sm font-semibold">Ganti banner</button>
+          </div>
+
+          <div class="grid-hero mt-6">
+            <div class="max-w-4xl">
+              <p class="text-sm md:text-base tracking-[0.25em] uppercase text-white/56 mb-3">Selamat datang di IMMt SHOP</p>
+              <h2 class="hero-title">
+                Selamat Datang di <span class="title-gradient">IMMt SHOP!</span>
+              </h2>
+              <p class="hero-sub mt-4 text-white/90 max-w-[900px]">
+                Situs resmi IMMt SHOP by Keuangan IMMt FTUI 2025 dengan glow effect halus, ultra liquid glass, dan motion yang dibuat lebih cinematic ala presentasi produk premium.
+              </p>
+              <div class="mt-6 flex flex-wrap gap-3">
+                <button onclick="showPage('catalogPage')" class="cta-primary rounded-[24px] px-6 py-4 text-lg font-black">Lihat katalog</button>
+                <button onclick="openBundleModal()" class="cta-secondary rounded-[24px] px-6 py-4 text-lg font-bold">Buka 3 bundle</button>
+              </div>
+            </div>
+
+            <div class="grid-stats">
+              <div class="liquid-inner p-4 rounded-[24px] soft-glow-green">
+                <p class="text-[11px] uppercase tracking-[0.22em] text-white/40">Primary</p>
+                <p class="mt-2 text-xl font-black">#086C4A</p>
+                <p class="muted mt-1 text-sm">70%</p>
+              </div>
+              <div class="liquid-inner p-4 rounded-[24px] soft-glow-yellow">
+                <p class="text-[11px] uppercase tracking-[0.22em] text-white/40">Highlight</p>
+                <p class="mt-2 text-xl font-black">#FFFB18</p>
+                <p class="muted mt-1 text-sm">20%</p>
+              </div>
+              <div class="liquid-inner p-4 rounded-[24px] soft-glow-purple">
+                <p class="text-[11px] uppercase tracking-[0.22em] text-white/40">Accent</p>
+                <p class="mt-2 text-xl font-black">#70269F</p>
+                <p class="muted mt-1 text-sm">10%</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid-about">
+        <div class="liquid p-4 md:p-5">
+          <div class="glass-noise"></div>
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <h3 class="section-title">3 bundle utama</h3>
+              <p class="muted mt-2 text-sm">Klik bundle untuk pop up, pilih ukuran, lalu masukkan ke keranjang.</p>
+            </div>
+            <button onclick="openBundleModal()" class="liquid-pill px-4 py-2 text-sm font-semibold">Open pop up</button>
+          </div>
+          <div id="bundlePreviewGrid" class="grid-bundles mt-5"></div>
+        </div>
+
+        <div id="aboutSection" class="liquid p-4 md:p-5">
+          <div class="glass-noise"></div>
+          <div class="flex items-center justify-between gap-3">
+            <h3 class="section-title">Tentang Kami</h3>
+            <span class="badge soft-glow-yellow">Glow glass</span>
+          </div>
+          <p class="muted mt-4 leading-7">
+            Palet warna kini mengikuti guideline baru: hijau gelap sebagai warna utama, kuning lembut untuk sorotan, dan ungu untuk aksen minor. Efek yang dipakai adalah soft glow, bukan neon, sehingga tampilan terasa lebih premium, tenang, dan modern.
+          </p>
+          <div class="grid-stats mt-4">
+            <div class="liquid-inner p-4 rounded-[22px]">
+              <p class="text-[11px] uppercase tracking-[0.22em] text-white/40">Motion</p>
+              <p class="mt-2 font-black text-xl accent-gradient">WWDC feel</p>
+            </div>
+            <div class="liquid-inner p-4 rounded-[22px]">
+              <p class="text-[11px] uppercase tracking-[0.22em] text-white/40">Frame foto</p>
+              <p class="mt-2 font-black text-xl">Editable</p>
+            </div>
+            <div class="liquid-inner p-4 rounded-[22px]">
+              <p class="text-[11px] uppercase tracking-[0.22em] text-white/40">Checkout</p>
+              <p class="mt-2 font-black text-xl">Step before payment</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="liquid p-4 md:p-5">
+        <div class="glass-noise"></div>
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div>
+            <h3 class="section-title">12 katalog produk</h3>
+            <p class="muted mt-2 text-sm">Semua katalog punya frame foto yang bisa diganti. Tidak ada sold percentage, tidak ada ulasan, dan produk apparel wajib pilih ukuran dulu.</p>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="showPage('catalogPage')" class="liquid-pill px-4 py-2 text-sm font-semibold">Lihat semua</button>
+            <button onclick="showPage('wishlistPage')" class="liquid-pill px-4 py-2 text-sm font-semibold">Wishlist</button>
+          </div>
+        </div>
+        <div id="homeCatalogGrid" class="grid-catalog mt-5"></div>
+      </section>
+    </main>
+
+    <section id="catalogPage" class="page pt-4 space-y-5">
+      <div class="liquid p-4 md:p-5">
+        <div class="glass-noise"></div>
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <p class="text-[11px] uppercase tracking-[0.28em] text-white/42">Produk</p>
+            <h2 class="text-3xl md:text-4xl font-black mt-1">Katalog IMMt SHOP</h2>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button class="liquid-pill px-4 py-2 text-sm font-semibold" onclick="setFilter('all')">All</button>
+            <button class="liquid-pill px-4 py-2 text-sm font-semibold" onclick="setFilter('Apparel')">Apparel</button>
+            <button class="liquid-pill px-4 py-2 text-sm font-semibold" onclick="setFilter('Bundle')">Bundle</button>
+            <button class="liquid-pill px-4 py-2 text-sm font-semibold" onclick="setFilter('Merch')">Merch</button>
+            <button class="liquid-pill px-4 py-2 text-sm font-semibold" onclick="setFilter('Accessories')">Accessories</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="liquid p-4 md:p-5">
+        <div class="glass-noise"></div>
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <p class="muted text-sm">Best seller dipasang untuk bundle paling mahal dan Workshirt. Add to cart akan membuka pilihan ukuran terlebih dahulu.</p>
+          <div class="flex gap-2">
+            <button class="liquid-pill px-4 py-2 text-sm font-semibold" onclick="setSort('priceDesc')">Harga tertinggi</button>
+            <button class="liquid-pill px-4 py-2 text-sm font-semibold" onclick="setSort('nameAsc')">A-Z</button>
+          </div>
+        </div>
+        <div id="catalogGrid" class="grid-catalog mt-5"></div>
+      </div>
+    </section>
+
+    <section id="detailPage" class="page pt-4">
+      <div class="liquid p-4 md:p-6">
+        <div class="glass-noise"></div>
+        <div class="flex items-center justify-between gap-3 mb-4">
+          <div>
+            <p class="text-[11px] uppercase tracking-[0.28em] text-white/42">Detail Produk</p>
+            <h2 id="detailHeading" class="text-3xl md:text-4xl font-black mt-1">Detail</h2>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="toggleWishlist(currentDetailId)" class="liquid-icon h-12 w-12 rounded-2xl flex items-center justify-center text-lg">♡</button>
+            <button onclick="showPage('catalogPage')" class="liquid-icon h-12 w-12 rounded-2xl flex items-center justify-center text-lg">←</button>
+          </div>
+        </div>
+
+        <div class="grid-detail">
+          <div class="liquid-inner p-4">
+            <div class="image-frame h-[420px] md:h-[540px]">
+              <img id="detailImage" alt="Detail produk" />
+              <div class="upload-bar">
+                <span class="badge">Editable frame</span>
+                <button id="detailUploadBtn" class="liquid-pill px-4 py-2 text-sm font-semibold">Ganti foto</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <div class="liquid-inner p-5">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <span id="detailBadge" class="badge">Ready stock</span>
+                  <h3 id="detailTitle" class="text-3xl font-black mt-4">Produk</h3>
+                  <p id="detailCategory" class="muted mt-2 text-base">Kategori</p>
+                </div>
+                <div class="liquid-inner px-4 py-3 rounded-[22px] text-right">
+                  <p id="detailOldPrice" class="text-sm text-white/42 line-through">Rp 0</p>
+                  <p id="detailPrice" class="text-2xl font-black title-gradient">Rp 0</p>
+                </div>
+              </div>
+              <p id="detailDescription" class="muted mt-4 leading-7">
+                Deskripsi.
+              </p>
+            </div>
+
+            <div class="liquid-inner p-5">
+              <div class="flex items-center justify-between gap-3">
+                <h4 class="text-xl font-black">Pilih ukuran sebelum cart</h4>
+                <span class="badge">No reviews</span>
+              </div>
+              <div id="detailSizeOptions" class="grid grid-cols-4 gap-3 mt-4"></div>
+              <div class="grid grid-cols-2 gap-3 mt-4">
+                <div class="liquid-inner rounded-[22px] p-4">
+                  <p class="text-[11px] uppercase tracking-[0.22em] text-white/42">Pengambilan</p>
+                  <p class="mt-2 font-bold">Ambil FTUI / Kirim Alamat</p>
+                </div>
+                <div class="liquid-inner rounded-[22px] p-4">
+                  <p class="text-[11px] uppercase tracking-[0.22em] text-white/42">Status</p>
+                  <p class="mt-2 font-bold">Siap Checkout</p>
+                </div>
+              </div>
+              <div class="mt-5 flex flex-wrap gap-3">
+                <button onclick="addDetailToCart()" class="cta-primary rounded-[22px] px-6 py-4 font-black">Masukkan ke cart</button>
+                <button onclick="toggleWishlist(currentDetailId)" class="cta-secondary rounded-[22px] px-6 py-4 font-bold">Tambah wishlist</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="wishlistPage" class="page pt-4">
+      <div class="liquid p-4 md:p-5">
+        <div class="glass-noise"></div>
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <p class="text-[11px] uppercase tracking-[0.28em] text-white/42">Wishlist</p>
+            <h2 class="text-3xl md:text-4xl font-black mt-1">Produk favorit</h2>
+          </div>
+          <button onclick="showPage('catalogPage')" class="liquid-pill px-4 py-2 text-sm font-semibold">Tambah produk</button>
+        </div>
+        <div id="wishlistGrid" class="grid-wishlist mt-5"></div>
+      </div>
+    </section>
+
+    <section id="cartPage" class="page pt-4">
+      <div class="grid-cart">
+        <div class="liquid p-4 md:p-5">
+          <div class="glass-noise"></div>
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <p class="text-[11px] uppercase tracking-[0.28em] text-white/42">Cart</p>
+              <h2 class="text-3xl md:text-4xl font-black mt-1">Keranjang belanja</h2>
+            </div>
+            <button onclick="showPage('catalogPage')" class="liquid-pill px-4 py-2 text-sm font-semibold">Tambah produk</button>
+          </div>
+          <div id="cartItems" class="space-y-4 mt-5"></div>
+        </div>
+
+        <div class="liquid p-4 md:p-5 h-fit sticky top-28">
+          <div class="glass-noise"></div>
+          <h3 class="section-title">Ringkasan checkout</h3>
+          <div class="mt-4 space-y-3 text-sm">
+            <div class="flex items-center justify-between text-white/72"><span>Subtotal</span><span id="summarySubtotal">Rp 0</span></div>
+            <div class="flex items-center justify-between text-white/72"><span>Shipping</span><span>Rp 20.000</span></div>
+            <div class="flex items-center justify-between text-white/72"><span>Service Fee</span><span>Rp 2.000</span></div>
+            <div class="flex items-center justify-between text-white/72"><span>Voucher</span><span style="color:#EAF2A0;">- Rp 25.000</span></div>
+          </div>
+          <div class="h-px bg-white/10 my-4"></div>
+          <div class="flex items-end justify-between gap-3">
+            <div>
+              <p class="text-sm text-white/45">Total Bayar</p>
+              <p id="summaryTotal" class="text-3xl font-black title-gradient">Rp 0</p>
+            </div>
+            <button onclick="showPage('checkoutPage')" class="cta-primary rounded-[22px] px-5 py-4 font-black">Checkout</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="checkoutPage" class="page pt-4 space-y-5">
+      <div class="liquid p-4 md:p-5">
+        <div class="glass-noise"></div>
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <p class="text-[11px] uppercase tracking-[0.28em] text-white/42">Checkout</p>
+            <h2 class="text-3xl md:text-4xl font-black mt-1">Data diri & pengiriman</h2>
+          </div>
+          <button onclick="showPage('cartPage')" class="liquid-pill px-4 py-2 text-sm font-semibold">Kembali ke cart</button>
+        </div>
+      </div>
+
+      <div class="checkout-card max-w-[780px]">
+        <div class="px-5 py-4 border-b border-slate-300">
+          <h3 class="text-[24px] font-extrabold">Data Diri & Pengiriman</h3>
+        </div>
+        <div class="p-5 space-y-6">
+          <div>
+            <label class="block text-[15px] font-medium mb-2">Nama Lengkap*</label>
+            <input class="checkout-field" type="text" />
+          </div>
+          <div>
+            <label class="block text-[15px] font-medium mb-2">Email*</label>
+            <input class="checkout-field" type="email" />
+          </div>
+          <div>
+            <label class="block text-[15px] font-medium mb-2">ID Line / No. Whatsapp*</label>
+            <input class="checkout-field" type="text" />
+          </div>
+          <div>
+            <p class="text-[15px] font-medium mb-3">Angkatan*</p>
+            <div class="space-y-2 text-[15px]">
+              <label class="flex items-center gap-3"><input type="radio" name="angkatan" /> 2022</label>
+              <label class="flex items-center gap-3"><input type="radio" name="angkatan" /> 2023</label>
+              <label class="flex items-center gap-3"><input type="radio" name="angkatan" checked /> 2024</label>
+              <label class="flex items-center gap-3"><input type="radio" name="angkatan" /> 2025</label>
+              <label class="flex items-center gap-3"><input type="radio" name="angkatan" /> Non Civitas</label>
+            </div>
+          </div>
+          <div>
+            <p class="text-[15px] font-medium mb-3">Opsi Pengambilan Barang*</p>
+            <div class="space-y-2 text-[15px]">
+              <label class="flex items-center gap-3"><input type="radio" name="ship" checked /> Ambil di lingkungan FTUI</label>
+              <label class="flex items-center gap-3"><input type="radio" name="ship" /> Kirim ke Alamat</label>
+            </div>
+          </div>
+          <button class="checkout-btn" onclick="openPayment()">Lanjutkan ke Pembayaran</button>
+        </div>
+      </div>
+
+      <div id="paymentStep" class="hidden space-y-5">
+        <div class="liquid p-4 md:p-5 max-w-[980px]">
+          <div class="glass-noise"></div>
+          <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
+            <div>
+              <h3 class="section-title">Pembayaran</h3>
+              <p class="muted mt-2 text-sm">Step payment muncul setelah form pengiriman, sesuai format yang kamu minta.</p>
+            </div>
+            <span class="badge soft-glow-purple">Step 2</span>
+          </div>
+          <div class="grid md:grid-cols-3 gap-4 mt-5">
+            <button class="liquid-inner rounded-[24px] p-4 text-left magnetic">
+              <p class="text-xl font-black">NeoPay Wallet</p>
+              <p class="muted mt-2 text-sm">Fastest · Cashback 12%</p>
+            </button>
+            <button class="liquid-inner rounded-[24px] p-4 text-left magnetic">
+              <p class="text-xl font-black">Virtual Account</p>
+              <p class="muted mt-2 text-sm">BCA · BRI · Mandiri</p>
+            </button>
+            <button class="liquid-inner rounded-[24px] p-4 text-left magnetic">
+              <p class="text-xl font-black">Credit / Debit Card</p>
+              <p class="muted mt-2 text-sm">Visa · Mastercard</p>
+            </button>
+          </div>
+        </div>
+
+        <div class="liquid p-4 md:p-5 max-w-[980px]">
+          <div class="glass-noise"></div>
+          <div class="flex items-center justify-between gap-3">
+            <h3 class="section-title">Ringkasan pembayaran</h3>
+            <span class="badge soft-glow-yellow">Ready to pay</span>
+          </div>
+          <div id="paymentSummary" class="space-y-3 mt-4 text-sm"></div>
+          <div class="h-px bg-white/10 my-4"></div>
+          <div class="flex items-end justify-between gap-3">
+            <div>
+              <p class="text-sm text-white/45">Total pembayaran</p>
+              <p id="paymentTotal" class="text-3xl font-black title-gradient">Rp 0</p>
+            </div>
+            <button class="cta-primary rounded-[22px] px-5 py-4 font-black">Bayar sekarang</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="bundleModal" class="modal-wrap">
+    <div class="liquid modal-panel p-4 md:p-6">
+      <div class="glass-noise"></div>
+      <div class="flex items-center justify-between gap-3 sticky top-0 z-10 mb-4">
+        <button onclick="closeBundleModal()" class="liquid-icon h-12 w-12 rounded-2xl flex items-center justify-center text-lg">✕</button>
+        <div class="text-right">
+          <p class="text-[11px] uppercase tracking-[0.28em] text-white/42">Bundle Pop Up</p>
+          <h3 class="text-2xl md:text-3xl font-black mt-1">Pilih 3 bundle</h3>
+        </div>
+      </div>
+      <div id="bundleModalGrid" class="grid-bundles"></div>
+    </div>
+  </div>
+
+  <div id="productModal" class="modal-wrap">
+    <div class="liquid modal-panel p-4 md:p-6 max-w-[760px]">
+      <div class="glass-noise"></div>
+      <div class="flex items-center justify-between gap-3 mb-4">
+        <button onclick="closeProductModal()" class="liquid-icon h-12 w-12 rounded-2xl flex items-center justify-center text-lg">✕</button>
+        <div class="text-right">
+          <p class="text-[11px] uppercase tracking-[0.28em] text-white/42">Quick Add</p>
+          <h3 class="text-2xl md:text-3xl font-black mt-1">Pilih ukuran dulu</h3>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-[.92fr_1.08fr] gap-5">
+        <div class="liquid-inner p-4">
+          <div class="image-frame h-[310px]">
+            <img id="modalImage" alt="Product preview" />
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <div class="liquid-inner p-5">
+            <p id="modalCategory" class="text-[11px] uppercase tracking-[0.28em] text-white/42">Kategori</p>
+            <h4 id="modalTitle" class="text-3xl font-black mt-2">Produk</h4>
+            <p id="modalDesc" class="muted mt-3 leading-7">Deskripsi</p>
+            <div class="flex items-end justify-between gap-3 mt-4">
+              <div>
+                <p id="modalOldPrice" class="text-sm text-white/42 line-through">Rp 0</p>
+                <p id="modalPrice" class="text-3xl font-black title-gradient">Rp 0</p>
+              </div>
+              <button id="modalWishlistBtn" class="liquid-icon h-12 w-12 rounded-2xl flex items-center justify-center text-lg">♡</button>
+            </div>
+          </div>
+
+          <div class="liquid-inner p-5">
+            <h5 class="text-xl font-black">Ukuran</h5>
+            <div id="modalSizes" class="grid grid-cols-4 gap-3 mt-4"></div>
+            <div class="grid grid-cols-2 gap-3 mt-4">
+              <div class="liquid-inner rounded-[22px] p-4">
+                <p class="text-[11px] uppercase tracking-[0.22em] text-white/42">Jumlah</p>
+                <div class="mt-3 flex items-center gap-3">
+                  <button onclick="changeModalQty(-1)" class="liquid-pill h-10 w-10 flex items-center justify-center">−</button>
+                  <span id="modalQty" class="text-xl font-black">1</span>
+                  <button onclick="changeModalQty(1)" class="liquid-pill h-10 w-10 flex items-center justify-center">＋</button>
+                </div>
+              </div>
+              <div class="liquid-inner rounded-[22px] p-4">
+                <p class="text-[11px] uppercase tracking-[0.22em] text-white/42">Aksi</p>
+                <div class="mt-3">
+                  <button onclick="viewModalDetail()" class="liquid-pill px-4 py-2 text-sm font-semibold">Lihat detail</button>
+                </div>
+              </div>
+            </div>
+            <button onclick="confirmModalAdd()" class="cta-primary rounded-[22px] w-full py-4 mt-5 font-black">Masukkan ke keranjang</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-20px)] max-w-[760px]">
+    <div class="liquid dock-shell px-3 py-3">
+      <div class="glass-noise"></div>
+      <div class="grid grid-cols-5 gap-2">
+        <button class="dock-item flex flex-col items-center gap-1" data-page="homePage" onclick="goHome()">
+          <span class="liquid-icon h-11 w-11 rounded-2xl flex items-center justify-center text-lg">⌂</span>
+          <span class="text-xs font-bold">Home</span>
+        </button>
+        <button class="dock-item flex flex-col items-center gap-1" data-page="bundleModal" onclick="openBundleModal()">
+          <span class="liquid-icon h-11 w-11 rounded-2xl flex items-center justify-center text-lg">🎁</span>
+          <span class="text-xs font-bold">Bundle</span>
+        </button>
+        <button class="dock-item flex flex-col items-center gap-1" data-page="detailPage" onclick="showPage('detailPage')">
+          <span class="liquid-icon h-11 w-11 rounded-2xl flex items-center justify-center text-lg">✧</span>
+          <span class="text-xs font-bold">Detail</span>
+        </button>
+        <button class="dock-item flex flex-col items-center gap-1" data-page="cartPage" onclick="showPage('cartPage')">
+          <span class="liquid-icon h-11 w-11 rounded-2xl flex items-center justify-center text-lg relative">
+            🛒
+            <span id="dockCartCount" class="absolute -right-1 -top-1 h-5 min-w-[20px] rounded-full bg-red-500 text-white text-[10px] px-1 flex items-center justify-center">0</span>
+          </span>
+          <span class="text-xs font-bold">Cart</span>
+        </button>
+        <button class="dock-item flex flex-col items-center gap-1" data-page="wishlistPage" onclick="showPage('wishlistPage')">
+          <span class="liquid-icon h-11 w-11 rounded-2xl flex items-center justify-center text-lg">♡</span>
+          <span class="text-xs font-bold">Wishlist</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <script>
+    const formatIDR = v => new Intl.NumberFormat('id-ID', {style:'currency', currency:'IDR', maximumFractionDigits:0}).format(v).replace(',00','');
+
+    const defaultUploads = {};
+    const uploads = {};
+    let uploadTarget = null;
+    let currentFilter = 'all';
+    let currentSort = 'default';
+    let searchTerm = '';
+    let currentDetailId = 'workshirt-resonansi';
+    let currentDetailSize = 'M';
+    let currentModalId = null;
+    let currentModalSize = null;
+    let currentModalQty = 1;
+
+    const cart = JSON.parse(localStorage.getItem('immt_ultra_cart') || '[]');
+    const wishlist = JSON.parse(localStorage.getItem('immt_ultra_wishlist') || '[]');
+
+    const bundles = [
+      {
+        id:'final-suit-bundle',
+        name:'The Final Suit',
+        category:'Bundle',
+        price:299000,
+        oldPrice:379000,
+        description:'Bundle apparel premium dengan komposisi clean dan kemasan khusus.',
+        sizes:['M','L','XL'],
+        bestSeller:false
+      },
+      {
+        id:'face-card-edition',
+        name:'Face Card Edition',
+        category:'Bundle',
+        price:429000,
+        oldPrice:519000,
+        description:'Paket bundle spesial dengan bonus merch pilihan.',
+        sizes:['M','L','XL'],
+        bestSeller:false
+      },
+      {
+        id:'ground-entry-bundle',
+        name:'Ground Entry Bundle',
+        category:'Bundle',
+        price:499000,
+        oldPrice:599000,
+        description:'Bundle paling mahal dan diberi badge best seller sesuai request.',
+        sizes:['M','L','XL'],
+        bestSeller:true
+      }
+    ];
+
+    const products = [
+      {
+        id:'workshirt-resonansi',
+        name:'Workshirt Resonansi',
+        category:'Apparel',
+        price:269000,
+        oldPrice:329000,
+        description:'Workshirt utama dengan proporsi clean dan badge best seller.',
+        sizes:['S','M','L','XL'],
+        bestSeller:true
+      },
+      {
+        id:'immt-varsity',
+        name:'IMMt Varsity Jacket',
+        category:'Apparel',
+        price:339000,
+        oldPrice:399000,
+        description:'Varsity jacket dengan visual premium untuk main collection.',
+        sizes:['S','M','L','XL']
+      },
+      {
+        id:'final-suit-top',
+        name:'The Final Suit',
+        category:'Apparel',
+        price:299000,
+        oldPrice:379000,
+        description:'Apparel utama dengan finishing rapi dan look formal kasual.',
+        sizes:['M','L','XL']
+      },
+      {
+        id:'face-card-mini',
+        name:'Face Card Edition',
+        category:'Bundle',
+        price:429000,
+        oldPrice:519000,
+        description:'Bundle edisi spesial untuk penggemar koleksi IMMt.',
+        sizes:['M','L','XL']
+      },
+      {
+        id:'supporter-scarf',
+        name:'Supporter Scarf',
+        category:'Merch',
+        price:129000,
+        oldPrice:169000,
+        description:'Scarf supporter dengan material lembut dan warna tegas.',
+        sizes:['All Size']
+      },
+      {
+        id:'matchday-cap',
+        name:'Matchday Cap',
+        category:'Accessories',
+        price:149000,
+        oldPrice:189000,
+        description:'Cap harian untuk melengkapi outfit merchandise.',
+        sizes:['All Size']
+      },
+      {
+        id:'fan-pass-card',
+        name:'Fan Pass Card',
+        category:'Collectible',
+        price:89000,
+        oldPrice:119000,
+        description:'Pass card collectible dengan desain eksklusif.',
+        sizes:['All Size']
+      },
+      {
+        id:'hydro-tumbler',
+        name:'Hydro Tumbler',
+        category:'Lifestyle',
+        price:159000,
+        oldPrice:219000,
+        description:'Tumbler harian untuk aktivitas kampus atau event.',
+        sizes:['All Size']
+      },
+      {
+        id:'urban-carry-bag',
+        name:'Urban Carry Bag',
+        category:'Bag',
+        price:249000,
+        oldPrice:319000,
+        description:'Tas praktis untuk kebutuhan event dan daily use.',
+        sizes:['All Size']
+      },
+      {
+        id:'keychain-pack',
+        name:'Keychain Pack',
+        category:'Merch',
+        price:69000,
+        oldPrice:99000,
+        description:'Pack gantungan kunci untuk koleksi kecil.',
+        sizes:['All Size']
+      },
+      {
+        id:'yearbook-zine',
+        name:'Yearbook Zine',
+        category:'Print',
+        price:99000,
+        oldPrice:139000,
+        description:'Zine collectible dengan layout editorial.',
+        sizes:['All Size']
+      },
+      {
+        id:'poster-set',
+        name:'Poster Set',
+        category:'Collectible',
+        price:119000,
+        oldPrice:159000,
+        description:'Poster set eksklusif untuk dekorasi ruang.',
+        sizes:['All Size']
+      }
+    ];
+    const allItems = [...bundles, ...products];
+
+    function placeholderSVG(label, a='#086C4A', b='#70269F', c='#FFFB18'){
+      const safe = String(label).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      const svg = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900">
+        <defs>
+          <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#030707"/>
+            <stop offset="60%" stop-color="#07120E"/>
+            <stop offset="100%" stop-color="#101514"/>
+          </linearGradient>
+          <radialGradient id="orb1" cx="20%" cy="72%" r="44%">
+            <stop offset="0%" stop-color="${a}" stop-opacity=".92"/>
+            <stop offset="46%" stop-color="${a}" stop-opacity=".38"/>
+            <stop offset="100%" stop-color="${a}" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="orb2" cx="74%" cy="24%" r="42%">
+            <stop offset="0%" stop-color="${b}" stop-opacity=".80"/>
+            <stop offset="42%" stop-color="${b}" stop-opacity=".28"/>
+            <stop offset="100%" stop-color="${b}" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="orb3" cx="52%" cy="50%" r="36%">
+            <stop offset="0%" stop-color="${c}" stop-opacity=".30"/>
+            <stop offset="44%" stop-color="${c}" stop-opacity=".10"/>
+            <stop offset="100%" stop-color="${c}" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="1200" height="900" fill="url(#bg)"/>
+        <rect width="1200" height="900" fill="url(#orb1)"/>
+        <rect width="1200" height="900" fill="url(#orb2)"/>
+        <rect width="1200" height="900" fill="url(#orb3)"/>
+        <rect x="86" y="82" width="1028" height="736" rx="60" fill="rgba(255,255,255,.08)" stroke="rgba(255,255,255,.18)"/>
+        <rect x="150" y="146" width="900" height="608" rx="40" fill="rgba(255,255,255,.05)"/>
+        <text x="50%" y="46%" font-family="Inter, Arial, sans-serif" font-size="82" font-weight="800" fill="white" text-anchor="middle">${safe}</text>
+        <text x="50%" y="56%" font-family="Inter, Arial, sans-serif" font-size="28" fill="rgba(255,255,255,.74)" text-anchor="middle">Editable image frame</text>
+      </svg>`;
+      return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+    }
+
+    function getDefaultImage(id, label){
+      if(id === 'siteLogo') return placeholderSVG('IMMt', '#086C4A', '#FFFB18', '#70269F');
+      if(id === 'heroBanner') return placeholderSVG('Upload Banner', '#086C4A', '#70269F', '#FFFB18');
+      return placeholderSVG(label);
+    }
+    function getImageSrc(id, label){
+      return uploads[id] || getDefaultImage(id, label);
+    }
+
+    function persist(){
+      localStorage.setItem('immt_ultra_cart', JSON.stringify(cart));
+      localStorage.setItem('immt_ultra_wishlist', JSON.stringify(wishlist));
+    }
+
+    function triggerImageUpload(id){
+      uploadTarget = id;
+      document.getElementById('uploader').click();
+    }
+
+    document.getElementById('uploader').addEventListener('change', e => {
+      const file = e.target.files?.[0];
+      if(!file || !uploadTarget) return;
+      uploads[uploadTarget] = URL.createObjectURL(file);
+      refreshImages(uploadTarget);
+      e.target.value = '';
+      uploadTarget = null;
+    });
+
+    function refreshImages(id){
+      document.querySelectorAll(`[data-image-id="${id}"]`).forEach(img => {
+        const label = img.dataset.label || id;
+        img.src = getImageSrc(id, label);
+      });
+      if(id === currentDetailId) updateDetail();
+    }
+
+    function setBaseImages(){
+      document.querySelectorAll('[data-image-id]').forEach(img => {
+        const id = img.dataset.imageId;
+        const label = img.dataset.label || id;
+        img.src = getImageSrc(id, label);
+      });
+    }
+
+    function itemById(id){
+      return allItems.find(item => item.id === id);
+    }
+
+    function isWishlisted(id){
+      return wishlist.includes(id);
+    }
+
+    function toggleWishlist(id){
+      const i = wishlist.indexOf(id);
+      if(i > -1) wishlist.splice(i, 1);
+      else wishlist.push(id);
+      persist();
+      renderCatalogs();
+      renderWishlist();
+    }
+
+    function updateCartBadges(){
+      const count = cart.reduce((sum, item) => sum + item.qty, 0);
+      document.getElementById('headerCartCount').textContent = count;
+      document.getElementById('dockCartCount').textContent = count;
+    }
+
+    function addToCart(id, size='All Size', qty=1){
+      const product = itemById(id);
+      if(!product) return;
+      const existing = cart.find(item => item.id === id && item.size === size);
+      if(existing) existing.qty += qty;
+      else cart.push({ id, size, qty, price: product.price, name: product.name });
+      persist();
+      renderCart();
+      updateCartBadges();
+      showPage('cartPage');
+    }
+
+    function removeCart(index){
+      cart.splice(index, 1);
+      persist();
+      renderCart();
+      updateCartBadges();
+    }
+
+    function changeCartQty(index, delta){
+      if(!cart[index]) return;
+      cart[index].qty += delta;
+      if(cart[index].qty <= 0) cart.splice(index, 1);
+      persist();
+      renderCart();
+      updateCartBadges();
+    }
+
+    function subtotal(){
+      return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+    }
+
+    function checkoutTotal(){
+      const base = subtotal();
+      if(base <= 0) return 0;
+      return Math.max(base + 22000 - 25000, 0);
+    }
+
+    function productCard(item){
+      const heart = isWishlisted(item.id) ? '♥' : '♡';
+      return `
+        <article class="liquid p-3 magnetic" data-tilt>
+          <div class="glass-noise"></div>
+          <div class="image-frame h-[220px]">
+            ${item.bestSeller ? '<span class="badge best-badge absolute top-3 left-3 z-10">Best Seller</span>' : ''}
+            <img data-image-id="${item.id}" data-label="${item.name}" alt="${item.name}" />
+            <div class="upload-bar">
+              <span class="badge">Frame foto</span>
+              <button onclick="triggerImageUpload('${item.id}')" class="liquid-pill px-3 py-2 text-xs font-bold">Ganti foto</button>
+            </div>
+          </div>
+          <div class="mt-4 flex items-start justify-between gap-3">
+            <div>
+              <p class="text-[11px] uppercase tracking-[0.24em] text-white/40">${item.category}</p>
+              <h4 class="text-[1.35rem] font-black mt-2 leading-tight">${item.name}</h4>
+            </div>
+            <button onclick="toggleWishlist('${item.id}')" class="liquid-icon h-10 w-10 rounded-2xl flex items-center justify-center text-lg">${heart}</button>
+          </div>
+          <p class="muted mt-3 text-sm leading-6">${item.description}</p>
+          <div class="mt-4 flex items-end justify-between gap-3">
+            <div>
+              <p class="text-sm text-white/40 line-through">${formatIDR(item.oldPrice)}</p>
+              <p class="text-2xl font-black title-gradient">${formatIDR(item.price)}</p>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="openDetail('${item.id}')" class="cta-secondary rounded-[18px] px-4 py-2.5 text-sm font-bold">Detail</button>
+              <button onclick="openProductModal('${item.id}')" class="cta-primary rounded-[18px] px-4 py-2.5 text-sm font-black">Cart</button>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function bundleCard(item){
+      return `
+        <article class="liquid p-3 magnetic" data-tilt>
+          <div class="glass-noise"></div>
+          <div class="image-frame h-[250px]">
+            ${item.bestSeller ? '<span class="badge best-badge absolute top-3 left-3 z-10">Best Seller</span>' : ''}
+            <img data-image-id="${item.id}" data-label="${item.name}" alt="${item.name}" />
+            <div class="upload-bar">
+              <span class="badge">Bundle</span>
+              <button onclick="triggerImageUpload('${item.id}')" class="liquid-pill px-3 py-2 text-xs font-bold">Ganti foto</button>
+            </div>
+          </div>
+          <div class="mt-4">
+            <p class="text-[11px] uppercase tracking-[0.24em] text-white/40">${item.category}</p>
+            <h4 class="text-[1.45rem] font-black mt-2">${item.name}</h4>
+            <p class="muted mt-3 text-sm leading-6">${item.description}</p>
+          </div>
+          <div class="mt-4 flex items-end justify-between gap-3">
+            <div>
+              <p class="text-sm text-white/40 line-through">${formatIDR(item.oldPrice)}</p>
+              <p class="text-2xl font-black title-gradient">${formatIDR(item.price)}</p>
+            </div>
+            <button onclick="openProductModal('${item.id}')" class="cta-primary rounded-[18px] px-4 py-3 text-sm font-black">Pilih ukuran</button>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderCatalogs(){
+      let list = [...products];
+      if(currentFilter !== 'all') list = list.filter(item => item.category === currentFilter);
+      if(searchTerm) {
+        list = list.filter(item =>
+          item.name.toLowerCase().includes(searchTerm) ||
+          item.category.toLowerCase().includes(searchTerm)
+        );
+      }
+      if(currentSort === 'priceDesc') list.sort((a,b) => b.price - a.price);
+      else if(currentSort === 'nameAsc') list.sort((a,b) => a.name.localeCompare(b.name));
+
+      document.getElementById('homeCatalogGrid').innerHTML = products.map(productCard).join('');
+      document.getElementById('catalogGrid').innerHTML = list.map(productCard).join('');
+      document.getElementById('bundlePreviewGrid').innerHTML = bundles.map(bundleCard).join('');
+      document.getElementById('bundleModalGrid').innerHTML = bundles.map(item => `
+        <article class="liquid p-4 magnetic" data-tilt>
+          <div class="glass-noise"></div>
+          <div class="image-frame h-[260px]">
+            ${item.bestSeller ? '<span class="badge best-badge absolute top-3 left-3 z-10">Best Seller</span>' : ''}
+            <img data-image-id="${item.id}" data-label="${item.name}" alt="${item.name}" />
+            <div class="upload-bar">
+              <span class="badge">Editable frame</span>
+              <button onclick="triggerImageUpload('${item.id}')" class="liquid-pill px-3 py-2 text-xs font-bold">Ganti foto</button>
+            </div>
+          </div>
+          <div class="mt-4">
+            <p class="text-[11px] uppercase tracking-[0.24em] text-white/40">${item.category}</p>
+            <h4 class="text-[1.5rem] font-black mt-2">${item.name}</h4>
+            <p class="muted mt-3 text-sm leading-6">${item.description}</p>
+          </div>
+          <div class="mt-4">
+            <p class="text-sm text-white/48 mb-3">Pilih ukuran:</p>
+            <div class="flex flex-wrap gap-2">
+              ${item.sizes.map(size => `
+                <button onclick="quickAddBundle('${item.id}','${size}')" class="liquid-pill px-4 py-2 text-sm font-bold">
+                  ${size}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+          <div class="mt-5 flex items-end justify-between gap-3">
+            <div>
+              <p class="text-sm text-white/40 line-through">${formatIDR(item.oldPrice)}</p>
+              <p class="text-3xl font-black title-gradient">${formatIDR(item.price)}</p>
+            </div>
+            <button onclick="openProductModal('${item.id}')" class="cta-primary rounded-[18px] px-4 py-3 text-sm font-black">Atur detail</button>
+          </div>
+        </article>
+      `).join('');
+      setBaseImages();
+      activateTilt();
+    }
+
+    function renderWishlist(){
+      const items = allItems.filter(item => wishlist.includes(item.id));
+      document.getElementById('wishlistGrid').innerHTML = items.length ? items.map(item => `
+        <article class="liquid p-3 magnetic" data-tilt>
+          <div class="glass-noise"></div>
+          <div class="image-frame h-[240px]">
+            <img data-image-id="${item.id}" data-label="${item.name}" alt="${item.name}" />
+            <div class="upload-bar">
+              <span class="badge">Wishlist</span>
+              <button onclick="triggerImageUpload('${item.id}')" class="liquid-pill px-3 py-2 text-xs font-bold">Ganti foto</button>
+            </div>
+          </div>
+          <div class="mt-4">
+            <p class="text-[11px] uppercase tracking-[0.24em] text-white/40">${item.category}</p>
+            <h4 class="text-[1.4rem] font-black mt-2">${item.name}</h4>
+            <p class="text-2xl font-black title-gradient mt-3">${formatIDR(item.price)}</p>
+          </div>
+          <div class="mt-4 flex gap-2">
+            <button onclick="openProductModal('${item.id}')" class="cta-primary rounded-[18px] px-4 py-3 text-sm font-black flex-1">Beli</button>
+            <button onclick="toggleWishlist('${item.id}')" class="cta-secondary rounded-[18px] px-4 py-3 text-sm font-bold">Hapus</button>
+          </div>
+        </article>
+      `).join('') : `
+        <div class="liquid-inner rounded-[24px] p-6 col-span-full">
+          <h4 class="text-2xl font-black">Wishlist masih kosong</h4>
+          <p class="muted mt-2">Tekan ikon hati di katalog untuk menyimpan produk favorit.</p>
+        </div>
+      `;
+      setBaseImages();
+      activateTilt();
+    }
+
+    function renderCart(){
+      const node = document.getElementById('cartItems');
+      if(!cart.length){
+        node.innerHTML = `
+          <div class="liquid-inner rounded-[24px] p-6">
+            <h4 class="text-2xl font-black">Cart masih kosong</h4>
+            <p class="muted mt-2">Tambah produk dulu dari katalog atau pop up bundle.</p>
+          </div>
+        `;
+      } else {
+        node.innerHTML = cart.map((item, i) => {
+          const product = itemById(item.id);
+          return `
+            <article class="liquid p-3 magnetic" data-tilt>
+              <div class="glass-noise"></div>
+              <div class="grid grid-cols-[120px_1fr] gap-4 items-center">
+                <div class="image-frame h-[120px]">
+                  <img data-image-id="${item.id}" data-label="${product.name}" alt="${product.name}" />
+                </div>
+                <div>
+                  <div class="flex items-start justify-between gap-3">
+                    <div>
+                      <p class="text-[11px] uppercase tracking-[0.24em] text-white/40">${product.category}</p>
+                      <h4 class="text-[1.45rem] font-black mt-2">${product.name}</h4>
+                      <p class="muted mt-2 text-sm">Ukuran: ${item.size}</p>
+                    </div>
+                    <button onclick="removeCart(${i})" class="liquid-icon h-10 w-10 rounded-2xl flex items-center justify-center text-lg">✕</button>
+                  </div>
+                  <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center gap-2">
+                      <button onclick="changeCartQty(${i},-1)" class="liquid-pill h-10 w-10 flex items-center justify-center">−</button>
+                      <span class="liquid-pill px-4 py-2 font-black">${item.qty}</span>
+                      <button onclick="changeCartQty(${i},1)" class="liquid-pill h-10 w-10 flex items-center justify-center">＋</button>
+                    </div>
+                    <p class="text-2xl font-black title-gradient">${formatIDR(item.price * item.qty)}</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+          `;
+        }).join('');
+      }
+      document.getElementById('summarySubtotal').textContent = formatIDR(subtotal());
+      document.getElementById('summaryTotal').textContent = formatIDR(checkoutTotal());
+      document.getElementById('paymentTotal').textContent = formatIDR(checkoutTotal());
+      document.getElementById('paymentSummary').innerHTML = cart.length ? cart.map(item =>
+        `<div class="flex items-center justify-between text-white/76"><span>${item.name} · ${item.size} · ${item.qty}x</span><span>${formatIDR(item.price * item.qty)}</span></div>`
+      ).join('') + `
+        <div class="flex items-center justify-between text-white/76"><span>Shipping + Service</span><span>${formatIDR(22000)}</span></div>
+        <div class="flex items-center justify-between text-white/76"><span>Voucher</span><span style="color:#EAF2A0;">- ${formatIDR(25000)}</span></div>
+      ` : '<div class="text-white/66">Belum ada item untuk dibayar.</div>';
+      setBaseImages();
+      activateTilt();
+    }
+
+    function updateDetail(){
+      const item = itemById(currentDetailId);
+      if(!item) return;
+      if(!item.sizes.includes(currentDetailSize)) currentDetailSize = item.sizes[0];
+      document.getElementById('detailHeading').textContent = item.name;
+      document.getElementById('detailTitle').textContent = item.name;
+      document.getElementById('detailCategory').textContent = item.category;
+      document.getElementById('detailOldPrice').textContent = formatIDR(item.oldPrice);
+      document.getElementById('detailPrice').textContent = formatIDR(item.price);
+      document.getElementById('detailDescription').textContent = item.description + ' Semua frame gambar di website ini bisa diganti sendiri dari browser.';
+      const badge = document.getElementById('detailBadge');
+      badge.className = item.bestSeller ? 'badge best-badge' : 'badge';
+      badge.textContent = item.bestSeller ? 'Best Seller' : 'Ready stock';
+
+      const detailImage = document.getElementById('detailImage');
+      detailImage.dataset.imageId = item.id;
+      detailImage.dataset.label = item.name;
+      detailImage.src = getImageSrc(item.id, item.name);
+      document.getElementById('detailUploadBtn').onclick = () => triggerImageUpload(item.id);
+
+      document.getElementById('detailSizeOptions').innerHTML = item.sizes.map(size => `
+        <button onclick="setDetailSize('${size}')" class="${currentDetailSize === size ? 'cta-primary text-black' : 'cta-secondary text-white'} rounded-[18px] px-4 py-4 font-black">
+          ${size}
+        </button>
+      `).join('');
+    }
+
+    function openDetail(id){
+      currentDetailId = id;
+      currentDetailSize = itemById(id).sizes[0];
+      updateDetail();
+      showPage('detailPage');
+    }
+
+    function setDetailSize(size){
+      currentDetailSize = size;
+      updateDetail();
+    }
+
+    function addDetailToCart(){
+      addToCart(currentDetailId, currentDetailSize, 1);
+    }
+
+    function openProductModal(id){
+      const item = itemById(id);
+      if(!item) return;
+      currentModalId = id;
+      currentModalSize = item.sizes[0];
+      currentModalQty = 1;
+      document.getElementById('modalCategory').textContent = item.category;
+      document.getElementById('modalTitle').textContent = item.name;
+      document.getElementById('modalDesc').textContent = item.description;
+      document.getElementById('modalOldPrice').textContent = formatIDR(item.oldPrice);
+      document.getElementById('modalPrice').textContent = formatIDR(item.price);
+      const img = document.getElementById('modalImage');
+      img.dataset.imageId = item.id;
+      img.dataset.label = item.name;
+      img.src = getImageSrc(item.id, item.name);
+      document.getElementById('modalQty').textContent = currentModalQty;
+      document.getElementById('modalWishlistBtn').onclick = () => toggleWishlist(item.id);
+      renderModalSizes();
+      document.getElementById('productModal').classList.add('open');
+    }
+
+    function renderModalSizes(){
+      const item = itemById(currentModalId);
+      if(!item) return;
+      document.getElementById('modalSizes').innerHTML = item.sizes.map(size => `
+        <button onclick="setModalSize('${size}')" class="${currentModalSize === size ? 'cta-primary text-black' : 'cta-secondary text-white'} rounded-[18px] px-3 py-3 font-black">
+          ${size}
+        </button>
+      `).join('');
+    }
+
+    function setModalSize(size){
+      currentModalSize = size;
+      renderModalSizes();
+    }
+
+    function changeModalQty(delta){
+      currentModalQty = Math.max(1, currentModalQty + delta);
+      document.getElementById('modalQty').textContent = currentModalQty;
+    }
+
+    function confirmModalAdd(){
+      if(!currentModalId) return;
+      addToCart(currentModalId, currentModalSize, currentModalQty);
+      closeProductModal();
+    }
+
+    function viewModalDetail(){
+      if(!currentModalId) return;
+      currentDetailId = currentModalId;
+      currentDetailSize = currentModalSize || itemById(currentModalId).sizes[0];
+      updateDetail();
+      closeProductModal();
+      showPage('detailPage');
+    }
+
+    function closeProductModal(){
+      document.getElementById('productModal').classList.remove('open');
+    }
+
+    function openBundleModal(){
+      document.getElementById('bundleModal').classList.add('open');
+      setDockActive('bundleModal');
+    }
+
+    function closeBundleModal(){
+      document.getElementById('bundleModal').classList.remove('open');
+      setDockActive(document.querySelector('.page.active')?.id || 'homePage');
+    }
+
+    function quickAddBundle(id, size){
+      addToCart(id, size, 1);
+      closeBundleModal();
+    }
+
+    function showPage(id){
+      document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.getElementById('bundleModal').classList.remove('open');
+      document.getElementById('productModal').classList.remove('open');
+      if(id === 'detailPage') updateDetail();
+      if(id === 'wishlistPage') renderWishlist();
+      if(id === 'cartPage' || id === 'checkoutPage') renderCart();
+      setDockActive(id);
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    function goHome(){
+      showPage('homePage');
+    }
+
+    function scrollToAbout(){
+      showPage('homePage');
+      setTimeout(() => {
+        document.getElementById('aboutSection').scrollIntoView({behavior:'smooth', block:'start'});
+      }, 120);
+    }
+
+    function setFilter(filter){
+      currentFilter = filter;
+      renderCatalogs();
+    }
+
+    function setSort(sort){
+      currentSort = sort;
+      renderCatalogs();
+    }
+
+    function openPayment(){
+      document.getElementById('paymentStep').classList.remove('hidden');
+      document.getElementById('paymentStep').scrollIntoView({behavior:'smooth', block:'start'});
+      renderCart();
+    }
+
+    function setDockActive(id){
+      document.querySelectorAll('.dock-item').forEach(btn => {
+        const active = btn.dataset.page === id;
+        btn.style.color = active ? '#F6F4A5' : 'rgba(255,255,255,.72)';
+        btn.style.filter = active ? 'drop-shadow(0 0 18px rgba(255,251,24,.18))' : 'none';
+      });
+    }
+
+    document.getElementById('globalSearch').addEventListener('input', e => {
+      searchTerm = e.target.value.trim().toLowerCase();
+      renderCatalogs();
+      if(document.getElementById('homePage').classList.contains('active') && searchTerm) {
+        showPage('catalogPage');
+      }
+    });
+
+    document.getElementById('bundleModal').addEventListener('click', e => {
+      if(e.target.id === 'bundleModal') closeBundleModal();
+    });
+    document.getElementById('productModal').addEventListener('click', e => {
+      if(e.target.id === 'productModal') closeProductModal();
+    });
+
+    function activateTilt(){
+      document.querySelectorAll('[data-tilt]').forEach(card => {
+        if(card.dataset.tiltBound) return;
+        card.dataset.tiltBound = '1';
+
+        card.addEventListener('mousemove', e => {
+          if(window.innerWidth < 900) return;
+          const rect = card.getBoundingClientRect();
+          const px = (e.clientX - rect.left) / rect.width;
+          const py = (e.clientY - rect.top) / rect.height;
+          const rx = (0.5 - py) * 8;
+          const ry = (px - 0.5) * 8;
+          card.style.transform = `perspective(1200px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-2px) scale(1.005)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg) translateY(0px) scale(1)';
+        });
+      });
+    }
+
+    window.addEventListener('scroll', () => {
+      document.body.classList.toggle('scrolled', window.scrollY > 20);
+      document.documentElement.style.setProperty('--hero-shift', `${Math.min(window.scrollY, 140)}px`);
+    });
+
+    renderCatalogs();
+    renderWishlist();
+    renderCart();
+    updateCartBadges();
+    setBaseImages();
+    updateDetail();
+    setDockActive('homePage');
+    activateTilt();
+  </script>
+</body>
+</html>
