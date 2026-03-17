@@ -1,0 +1,2072 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IMMt SHOP — Gryffindor Edition</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+    .wizard-grain{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      opacity:.06;
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(174,0,1,.6) 0 1px, transparent 1px),
+        radial-gradient(circle at 70% 30%, rgba(211,166,37,.5) 0 1px, transparent 1px),
+        radial-gradient(circle at 40% 80%, rgba(116,0,1,.5) 0 1px, transparent 1px);
+      background-size:22px 22px, 26px 26px, 30px 30px;
+      mix-blend-mode:screen;
+    }
+    .wizard-border{
+      box-shadow:
+        0 0 0 1px rgba(217,193,138,.12),
+        0 18px 42px rgba(0,0,0,.28),
+        inset 0 1px 0 rgba(255,255,255,.18),
+        inset 0 0 40px rgba(174,0,1,.08);
+    }
+
+  
+    .payment-option{
+      transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+    }
+    .payment-option.active{
+      border-color:rgba(238,186,48,.55);
+      box-shadow:
+        0 0 0 1px rgba(238,186,48,.22),
+        0 16px 36px rgba(0,0,0,.24),
+        0 0 32px rgba(238,186,48,.14),
+        inset 0 1px 0 rgba(255,255,255,.20);
+      transform:translateY(-1px);
+    }
+
+  
+    .modal-thumb{
+      border:1px solid rgba(255,255,255,.14);
+      transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease, opacity .18s ease;
+      opacity:.82;
+    }
+    .modal-thumb.active{
+      border-color:rgba(238,186,48,.58);
+      box-shadow:0 0 0 1px rgba(238,186,48,.24), 0 0 24px rgba(238,186,48,.14);
+      opacity:1;
+      transform:translateY(-1px);
+    }
+
+  
+    body.no-chrome .search-bar-wrap{
+      opacity:0;
+      pointer-events:none;
+      width:0;
+      overflow:hidden;
+      flex:0 0 0;
+      min-width:0;
+      padding:0;
+      transition:opacity .22s ease, width .22s ease;
+    }
+    .search-bar-wrap{
+      transition:opacity .22s ease, width .22s ease, flex .22s ease;
+    }
+    header.topbar{
+      transition:opacity .22s ease, transform .22s ease;
+    }
+    #toast{
+      position:fixed;
+      left:50%;
+      bottom:22px;
+      transform:translateX(-50%) translateY(18px);
+      z-index:300;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .25s ease, transform .25s ease;
+      min-width:min(92vw, 420px);
+    }
+    #toast.show{
+      opacity:1;
+      transform:translateX(-50%) translateY(0);
+    }
+
+  </style>
+  <style>
+    :root{
+      --green:#AE0001;
+      --yellow:#EEBA30;
+      --purple:#740001;
+      --mint:#D3A625;
+      --gold:#EEBA30;
+      --amber:#D3A625;
+      --scarlet:#AE0001;
+      --bg:#FBF6EE;
+      --bg-2:#F5EAD4;
+      --text:#2C1810;
+      --white:rgba(44,24,16,.92);
+      --line:rgba(174,0,1,.14);
+      --line-dark:rgba(174,0,1,.07);
+      --muted:rgba(80,40,20,.62);
+      --shadow:0 18px 48px rgba(116,0,1,.10);
+      --glass-shadow:0 14px 38px rgba(116,0,1,.08), inset 0 1px 0 rgba(255,240,190,.70);
+      --soft-green-glow:0 0 28px rgba(174,0,1,.18);
+      --soft-yellow-glow:0 0 24px rgba(211,166,37,.22);
+      --soft-purple-glow:0 0 24px rgba(116,0,1,.14);
+      --header-h:88px;
+    }
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:'Plus Jakarta Sans', Inter, ui-sans-serif, system-ui, sans-serif;
+      color:var(--text);
+      min-height:100vh;
+      background:
+        radial-gradient(56rem 32rem at 8% 12%, rgba(174,0,1,.07), transparent 58%),
+        radial-gradient(36rem 22rem at 78% 8%, rgba(211,166,37,.09), transparent 48%),
+        radial-gradient(28rem 18rem at 50% 88%, rgba(116,0,1,.05), transparent 52%),
+        linear-gradient(180deg, #FBF6EE 0%, #F5EAD4 45%, #F0E2C4 100%);
+      overflow-x:hidden;
+    }
+    .ambient{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
+      overflow:hidden;
+    }
+    .orb{
+      position:absolute;
+      border-radius:999px;
+      filter:blur(34px);
+      opacity:.40;
+    }
+    .orb.one{width:340px;height:340px;left:-80px;top:14%;background:radial-gradient(circle, rgba(174,0,1,.10), transparent 68%)}
+    .orb.two{width:280px;height:280px;right:-60px;top:8%;background:radial-gradient(circle, rgba(211,166,37,.12), transparent 68%)}
+    .orb.three{width:320px;height:320px;left:20%;bottom:12%;background:radial-gradient(circle, rgba(116,0,1,.07), transparent 68%)}
+
+    .shell{
+      position:relative;
+      z-index:1;
+      width:min(100%, 1380px);
+      margin:0 auto;
+      padding:calc(var(--header-h) + 12px) 14px 48px;
+    }
+    .page{display:none}
+    .page.active{display:block;animation:fadeUp .35s ease}
+    @keyframes fadeUp{
+      from{opacity:0;transform:translateY(10px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+
+    .liquid{
+      position:relative;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.80);
+      border-radius:28px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,248,220,.44)),
+        linear-gradient(135deg, rgba(174,0,1,.04), rgba(211,166,37,.06));
+      box-shadow:0 8px 32px rgba(116,0,1,.08), 0 2px 8px rgba(116,0,1,.04), inset 0 1px 0 rgba(255,255,255,.95);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+    }
+    .liquid::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,0) 30%, rgba(255,255,255,.08) 75%, rgba(255,255,255,.28)),
+        radial-gradient(46% 24% at 12% 20%, rgba(255,255,255,.62), transparent 66%);
+      pointer-events:none;
+      mix-blend-mode:screen;
+    }
+    .liquid > *{position:relative;z-index:1}
+    .liquid-inner{
+      position:relative;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.75);
+      display:block;
+      border-radius:22px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.65), rgba(255,248,220,.38)),
+        linear-gradient(135deg, rgba(174,0,1,.03), rgba(211,166,37,.05));
+      box-shadow:0 4px 16px rgba(116,0,1,.06), inset 0 1px 0 rgba(255,255,255,.90);
+      backdrop-filter: blur(14px) saturate(160%);
+      -webkit-backdrop-filter: blur(14px) saturate(160%);
+    }
+    .liquid-pill{
+      border:1px solid rgba(255,255,255,.75);
+      border-radius:999px;
+      background:linear-gradient(180deg, rgba(255,255,255,.68), rgba(255,248,210,.45));
+      box-shadow:0 4px 14px rgba(116,0,1,.07), inset 0 1px 0 rgba(255,255,255,.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .liquid-icon{
+      border:1px solid rgba(255,255,255,.75);
+      border-radius:18px;
+      background:linear-gradient(180deg, rgba(255,255,255,.68), rgba(255,248,210,.45));
+      box-shadow:0 4px 14px rgba(116,0,1,.07), inset 0 1px 0 rgba(255,255,255,.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .cta{
+      color:#1a0900;
+      background:linear-gradient(135deg, rgba(238,186,48,.96), rgba(211,166,37,.90));
+      box-shadow:0 10px 24px rgba(116,0,1,.18), 0 0 20px rgba(238,186,48,.16), inset 0 1px 0 rgba(255,255,255,.5);
+    }
+    .ghost{
+      color:var(--text);
+      background:linear-gradient(180deg, rgba(255,255,255,.70), rgba(255,248,210,.45));
+      border:1px solid rgba(255,255,255,.75);
+      box-shadow:0 8px 20px rgba(10,0,0,.06), inset 0 1px 0 rgba(255,255,255,.62);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .soft-glow-green{box-shadow:0 10px 24px rgba(10,0,0,.10), var(--soft-green-glow), inset 0 1px 0 rgba(255,220,100,.52)}
+    .soft-glow-yellow{box-shadow:0 10px 24px rgba(10,0,0,.10), var(--soft-yellow-glow), inset 0 1px 0 rgba(255,220,100,.52)}
+    .soft-glow-purple{box-shadow:0 10px 24px rgba(10,0,0,.10), var(--soft-purple-glow), inset 0 1px 0 rgba(255,220,100,.52)}
+
+    .hero-highlight{
+      background:linear-gradient(90deg, #086C4A 0%, #086C4A 30%, #FFFB18 62%, #70269F 100%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+    .muted{color:rgba(80,40,20,.62)}
+    .section-title{font-size:1.24rem;font-weight:900;line-height:1.14;color:#2C1810}
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:7px 11px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:.15em;
+      text-transform:uppercase;
+      color:#2C1810;
+      background:linear-gradient(180deg, rgba(255,255,255,.90), rgba(255,248,220,.70));
+      border:1px solid rgba(174,0,1,.18);
+      box-shadow:0 4px 12px rgba(116,0,1,.08), inset 0 1px 0 rgba(255,255,255,.95);
+    }
+    .best-badge{
+      color:#1a0900;
+      background:linear-gradient(135deg, rgba(238,186,48,.96), rgba(174,0,1,.92));
+      box-shadow:0 8px 20px rgba(116,0,1,.18), 0 0 22px rgba(238,186,48,.14), inset 0 1px 0 rgba(255,255,255,.45);
+    }
+
+    header.topbar{
+      position:fixed;
+      left:0; right:0; top:0;
+      z-index:100;
+      padding:12px 14px 10px;
+      background:linear-gradient(180deg, rgba(251,246,238,.96), rgba(245,234,212,.88), rgba(245,234,212,.60));
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      border-bottom:1px solid rgba(174,0,1,.10);
+      box-shadow:0 2px 20px rgba(116,0,1,.06);
+    }
+    .header-card{
+      width:min(100%, 1320px);
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:auto minmax(360px,1fr) auto auto;
+      gap:18px;
+      align-items:center;
+      padding:10px 14px;
+    }
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:28px;
+      padding-right:4px;
+    }
+    .nav-link{
+      font-weight:700;
+      color:#2C1810;
+      text-decoration:none;
+      transition:opacity .2s ease, transform .2s ease;
+    }
+    .nav-link:hover{transform:translateY(-1px);opacity:.86}
+
+    .hero{
+      min-height:420px;
+      padding:22px;
+    }
+    .hero-media{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      opacity:.22;
+      filter:saturate(115%) contrast(1.02);
+    }
+    .hero-overlay{
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg, rgba(10,0,0,.22), rgba(10,0,0,.28)),
+        linear-gradient(0deg, rgba(10,0,0,.48), rgba(255,255,255,.06));
+    }
+
+    .image-frame{
+      position:relative;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.42);
+      display:block;
+      border-radius:22px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04)),
+        linear-gradient(135deg, rgba(116,0,1,.16), rgba(238,186,48,.04));
+      min-height:180px;
+      isolation:isolate;
+    }
+    .image-frame img{
+      display:block;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+    .upload-bar{
+      position:absolute;
+      left:10px; right:10px; bottom:10px;
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      align-items:center;
+      z-index:2;
+    }
+
+    .grid-hero{display:grid;grid-template-columns:1.12fr .88fr;gap:18px;align-items:end}
+    .catalog-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+    .wishlist-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+    .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .cart-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:18px}
+    .stats-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+
+    .bundle-strip{
+      display:flex;
+      gap:16px;
+      overflow-x:auto;
+      padding-bottom:4px;
+      scroll-snap-type:x proximity;
+    }
+    .bundle-strip > article{
+      min-width:330px;
+      scroll-snap-align:start;
+    }
+    .bundle-strip::-webkit-scrollbar{display:none}
+    .bundle-strip{scrollbar-width:none;-ms-overflow-style:none}
+
+    .modal-backdrop{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+      background:rgba(3,7,5,.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index:200;
+    }
+    body.modal-open header.topbar{
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .2s ease;
+    }
+    .modal-backdrop.open{display:flex}
+    .modal-panel{
+      width:min(1180px,100%);
+      max-height:min(92vh,980px);
+      overflow:auto;
+      border-radius:30px;
+    }
+
+    .offer-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:18px;
+    }
+
+    .checkout-card{
+      background:#F5F5F5;
+      color:#1A2740;
+      border:1px solid rgba(0,0,0,.06);
+      border-radius:22px;
+      overflow:hidden;
+      box-shadow:0 14px 36px rgba(10,0,0,.12);
+    }
+    .checkout-field{
+      width:100%;
+      border:1px solid #c6ced8;
+      background:#fff;
+      border-radius:8px;
+      padding:12px 14px;
+      font-size:15px;
+      outline:none;
+    }
+    .checkout-field:focus{
+      border-color:#AE0001;
+      box-shadow:0 0 0 3px rgba(174,0,1,.14);
+    }
+    .checkout-card input[type="radio"]{accent-color:#AE0001}
+    .checkout-btn{
+      background:linear-gradient(135deg, #AE0001, #740001);
+      color:white;
+      border:none;
+      width:100%;
+      border-radius:8px;
+      padding:14px 16px;
+      font-size:15px;
+      font-weight:800;
+    }
+    .search-input::placeholder{color:rgba(44,24,16,.40)}
+
+    @media (max-width: 1180px){
+      .catalog-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .wishlist-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .header-card{grid-template-columns:auto minmax(0,1fr) auto}
+      .nav-links{display:none}
+    }
+    @media (max-width: 860px){
+      .grid-hero,.detail-grid,.cart-grid,.offer-grid{grid-template-columns:1fr}
+      .catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+    @media (max-width: 640px){
+      :root{--header-h:82px}
+      .shell{padding-left:12px;padding-right:12px}
+      .header-card{
+        grid-template-columns:auto minmax(0,1fr) auto;
+        gap:10px;
+      }
+      .brand-title{display:none}
+      .hero{padding:18px;min-height:380px}
+      .catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+      .wishlist-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+      .stats-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .bundle-strip > article{min-width:84%}
+      .modal-panel{border-radius:24px}
+    }
+  
+    .wizard-grain{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      opacity:.06;
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(174,0,1,.6) 0 1px, transparent 1px),
+        radial-gradient(circle at 70% 30%, rgba(211,166,37,.5) 0 1px, transparent 1px),
+        radial-gradient(circle at 40% 80%, rgba(116,0,1,.5) 0 1px, transparent 1px);
+      background-size:22px 22px, 26px 26px, 30px 30px;
+      mix-blend-mode:screen;
+    }
+    .wizard-border{
+      box-shadow:
+        0 0 0 1px rgba(217,193,138,.12),
+        0 18px 42px rgba(0,0,0,.28),
+        inset 0 1px 0 rgba(255,255,255,.18),
+        inset 0 0 40px rgba(174,0,1,.08);
+    }
+
+  
+    .payment-option{
+      transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+    }
+    .payment-option.active{
+      border-color:rgba(238,186,48,.55);
+      box-shadow:
+        0 0 0 1px rgba(238,186,48,.22),
+        0 16px 36px rgba(0,0,0,.24),
+        0 0 32px rgba(238,186,48,.14),
+        inset 0 1px 0 rgba(255,255,255,.20);
+      transform:translateY(-1px);
+    }
+
+  
+    .modal-thumb{
+      border:1px solid rgba(255,255,255,.14);
+      transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease, opacity .18s ease;
+      opacity:.82;
+    }
+    .modal-thumb.active{
+      border-color:rgba(238,186,48,.58);
+      box-shadow:0 0 0 1px rgba(238,186,48,.24), 0 0 24px rgba(238,186,48,.14);
+      opacity:1;
+      transform:translateY(-1px);
+    }
+
+  
+    body.no-chrome .search-bar-wrap{
+      opacity:0;
+      pointer-events:none;
+      width:0;
+      overflow:hidden;
+      flex:0 0 0;
+      min-width:0;
+      padding:0;
+      transition:opacity .22s ease, width .22s ease;
+    }
+    .search-bar-wrap{
+      transition:opacity .22s ease, width .22s ease, flex .22s ease;
+    }
+    header.topbar{
+      transition:opacity .22s ease, transform .22s ease;
+    }
+    #toast{
+      position:fixed;
+      left:50%;
+      bottom:22px;
+      transform:translateX(-50%) translateY(18px);
+      z-index:300;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .25s ease, transform .25s ease;
+      min-width:min(92vw, 420px);
+    }
+    #toast.show{
+      opacity:1;
+      transform:translateX(-50%) translateY(0);
+    }
+
+  </style>
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>emailjs.init("RfwESh63YJGqddNRD");</script>
+</head>
+<body>
+  <input id="uploader" class="hidden-file" type="file" accept="image/*" />
+
+  <div class="ambient">
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+    <div class="orb three"></div>
+  </div>
+
+  <header class="topbar">
+    <div class="liquid header-card">
+      <button onclick="goHome()" class="liquid-icon h-12 w-12 rounded-full overflow-hidden flex items-center justify-center soft-glow-green">
+        <img data-image-id="siteLogo" alt="Logo IMMt SHOP" class="h-full w-full object-cover" />
+      </button>
+
+      <div class="min-w-0 flex items-center gap-3">
+        <div class="brand-title min-w-0">
+          <button onclick="openShopOfferPopup()" class="text-[1.5rem] font-black leading-none truncate text-[#2C1810] hover:opacity-70 transition-opacity cursor-pointer bg-transparent border-0 p-0">IMMt SHOP</button>
+        </div>
+        <div class="search-bar-wrap liquid-inner flex-1 rounded-[20px] px-3 py-2.5 flex items-center gap-3 min-w-0">
+          <svg class="h-5 w-5 shrink-0 text-white/85" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m20 20-3.5-3.5"></path>
+          </svg>
+          <input id="globalSearch" class="search-input bg-transparent outline-none border-0 w-full text-[15px] md:text-[16px] text-[#2C1810]" placeholder="Cari produk di IMMt SHOP..." />
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <a class="nav-link" href="javascript:void(0)" onclick="goHome()">Beranda</a>
+        <a class="nav-link" href="javascript:void(0)" onclick="showPage('catalogPage')">Produk</a>
+        <a class="nav-link" href="javascript:void(0)" onclick="scrollToFooterAbout()">Tentang Kami</a>
+      </nav>
+
+      <button onclick="showPage('cartPage')" class="liquid-icon h-12 w-12 rounded-[18px] flex items-center justify-center relative soft-glow-yellow">
+        <span class="text-xl">🛒</span>
+        <span id="headerCartCount" class="absolute -right-1 -top-1 h-6 min-w-[24px] rounded-full bg-[#AE0001] text-white text-[11px] font-black px-1 flex items-center justify-center">0</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="shell">
+    <main id="homePage" class="page active space-y-5">
+      <section class="liquid hero wizard-border"><div class="wizard-grain"></div>
+        <img data-image-id="heroBanner" class="hero-media" alt="Hero banner" />
+        <div class="hero-overlay"></div>
+
+        <div class="grid-hero h-full">
+          <div class="max-w-4xl">
+            <span class="badge soft-glow-green">
+              <span class="inline-block h-2.5 w-2.5 rounded-full bg-[#EEBA30]"></span>
+              IMMt SHOP · Gryffindor Edition ✦
+            </span>
+            <p class="mt-5 text-[12px] md:text-[13px] tracking-[0.22em] uppercase text-[#2C1810]/55">Selamat datang di IMMt SHOP</p>
+            <h2 class="mt-2 text-[2.5rem] md:text-[4.5rem] font-black leading-[.95] text-[#2C1810]">
+              Selamat Datang di <span class="hero-highlight">IMMt SHOP!</span>
+            </h2>
+            <p class="mt-4 text-[1rem] md:text-[1.25rem] text-[#2C1810]/65 max-w-[780px]">
+              Marketplace resmi IMMt SHOP dengan nuansa dunia sihir: burgundy gelap, coklat koran tua, gold hangat, dan atmosfer wizard school yang dipadukan dengan color guide IMMt.
+            </p>
+            <div class="mt-5 flex flex-wrap gap-3">
+              <button onclick="showPage('catalogPage')" class="cta rounded-[22px] px-5 py-3.5 text-[15px] md:text-[16px] font-black">Lihat katalog</button>
+              <button onclick="openBundleModal()" class="ghost rounded-[22px] px-5 py-3.5 text-[15px] md:text-[16px] font-bold">Lihat 3 bundle</button>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="liquid-inner p-4 soft-glow-green">
+              <p class="text-[11px] uppercase tracking-[0.22em] text-white/40">Crimson</p>
+              <p class="mt-2 text-[1.08rem] font-black text-[#AE0001]">#AE0001</p>
+              <p class="mt-1 text-sm text-white/58">70%</p>
+            </div>
+            <div class="liquid-inner p-4 soft-glow-yellow">
+              <p class="text-[11px] uppercase tracking-[0.22em] text-white/40">Gold</p>
+              <p class="mt-2 text-[1.08rem] font-black text-[#D3A625]">#EEBA30</p>
+              <p class="mt-1 text-sm text-white/58">20%</p>
+            </div>
+            <div class="liquid-inner p-4 soft-glow-purple">
+              <p class="text-[11px] uppercase tracking-[0.22em] text-white/40">Deep Red</p>
+              <p class="mt-2 text-[1.08rem] font-black text-[#740001]">#740001</p>
+              <p class="mt-1 text-sm text-white/58">10%</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="liquid p-4 md:p-5 wizard-border"><div class="wizard-grain"></div>
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <h3 class="section-title">3 bundle utama</h3>
+            <p class="text-[#2C1810]/55 mt-1 text-sm">Slider menyamping untuk bundle teratas.</p>
+          </div>
+          <button onclick="openOfferPopup(true)" class="liquid-pill px-4 py-2 text-sm font-semibold text-[#2C1810]">Lihat penawaran</button>
+        </div>
+        <div id="bundleStrip" class="bundle-strip mt-4"></div>
+      </section>
+
+      <section class="liquid p-4 md:p-5 wizard-border"><div class="wizard-grain"></div>
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <h3 class="section-title">7 katalog produk</h3>
+            <p class="text-[#2C1810]/55 mt-1 text-sm">Disederhanakan supaya lebih ringan, dan 4 produk pertama sekarang punya size option seperti workshirt.</p>
+          </div>
+          <button onclick="showPage('catalogPage')" class="liquid-pill px-4 py-2 text-sm font-semibold text-[#2C1810]">Open katalog</button>
+        </div>
+        <div id="homeCatalogGrid" class="catalog-grid mt-5"></div>
+      </section>
+
+      <section id="footerAbout" class="liquid p-4 md:p-5">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="max-w-3xl">
+            <h3 class="section-title">About Us</h3>
+            <p class="text-[#2C1810]/60 mt-2 leading-7">
+              IMMt SHOP adalah kanal resmi merchandise dan kebutuhan event IMMt. Section ini dipindahkan ke paling bawah sesuai request, dan tombol di bawah langsung mengarah ke Instagram resmi kami.
+            </p>
+          </div>
+          <a class="cta rounded-[22px] px-5 py-3.5 text-[15px] md:text-[16px] font-black text-center" target="_blank" rel="noopener noreferrer"
+             href="https://www.instagram.com/immtshop?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==">
+             About Us → Instagram Kami
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <section id="catalogPage" class="page space-y-5">
+      <div class="liquid p-4 md:p-5 wizard-border"><div class="wizard-grain"></div>
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <p class="text-[11px] uppercase tracking-[0.28em] text-[#2C1810]/45">Produk</p>
+            <h2 class="text-3xl md:text-4xl font-black mt-1 text-[#2C1810]">Katalog IMMt SHOP</h2>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="setFilter('all')" class="liquid-pill px-4 py-2 text-sm font-semibold text-[#2C1810]">All</button>
+            <button onclick="setFilter('Apparel')" class="liquid-pill px-4 py-2 text-sm font-semibold text-[#2C1810]">Apparel</button>
+            <button onclick="setFilter('Bundle')" class="liquid-pill px-4 py-2 text-sm font-semibold text-[#2C1810]">Bundle</button>
+            <button onclick="setFilter('Merch')" class="liquid-pill px-4 py-2 text-sm font-semibold text-[#2C1810]">Merch</button>
+            <button onclick="setFilter('Accessories')" class="liquid-pill px-4 py-2 text-sm font-semibold text-[#2C1810]">Accessories</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="liquid p-4 md:p-5 wizard-border"><div class="wizard-grain"></div>
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <p class="text-[#2C1810]/55 text-sm">Jumlah katalog tetap 7 produk, dan sekarang ada 4 produk apparel dengan pilihan ukuran seperti workshirt.</p>
+          <div class="flex gap-2">
+            <button onclick="setSort('priceDesc')" class="liquid-pill px-4 py-2 text-sm font-semibold text-[#2C1810]">Harga tertinggi</button>
+            <button onclick="setSort('nameAsc')" class="liquid-pill px-4 py-2 text-sm font-semibold text-[#2C1810]">A-Z</button>
+          </div>
+        </div>
+        <div id="catalogGrid" class="catalog-grid mt-5"></div>
+      </div>
+    </section>
+
+    <section id="detailPage" class="page">
+      <div class="liquid p-4 md:p-5 wizard-border"><div class="wizard-grain"></div>
+        <div class="flex items-center justify-between gap-3 mb-4">
+          <div>
+            <p class="text-[11px] uppercase tracking-[0.28em] text-[#2C1810]/45">Detail Produk</p>
+            <h2 id="detailHeading" class="text-3xl md:text-4xl font-black mt-1"></h2>
+          </div>
+          <button onclick="showPage('catalogPage')" class="liquid-icon h-11 w-11 rounded-[18px] flex items-center justify-center">←</button>
+        </div>
+
+        <div class="detail-grid">
+          <div class="liquid-inner p-4">
+            <div class="image-frame h-[360px] md:h-[500px]">
+              <img id="detailImage" alt="Detail produk" />
+              
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <div class="liquid-inner p-5">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <span id="detailBadge" class="badge">Ready stock</span>
+                  <h3 id="detailTitle" class="text-3xl font-black mt-4">Produk</h3>
+                  <p id="detailCategory" class="text-[#2C1810]/55 mt-2">Kategori</p>
+                </div>
+                <div class="liquid-inner px-4 py-3 text-right">
+                  <p id="detailOldPrice" class="text-sm text-[#2C1810]/38 line-through">Rp 0</p>
+                  <p id="detailPrice" class="text-2xl font-black text-[#AE0001]">Rp 0</p>
+                </div>
+              </div>
+              <p id="detailDescription" class="text-[#2C1810]/62 mt-4 leading-7">Deskripsi.</p>
+            </div>
+
+            <div class="liquid-inner p-5">
+              <div class="flex items-center justify-between gap-3">
+                <h4 class="text-xl font-black">Pilih ukuran</h4>
+                <span class="badge">No review</span>
+              </div>
+              <div id="detailSizeOptions" class="grid grid-cols-4 gap-3 mt-4"></div>
+              <div class="mt-5 flex flex-wrap gap-3">
+                <button onclick="addDetailToCart()" class="cta rounded-[22px] px-6 py-4 font-black">Masukkan ke cart</button>
+                <button onclick="toggleWishlist(currentDetailId)" class="ghost rounded-[22px] px-6 py-4 font-bold">Tambah wishlist</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="wishlistPage" class="page">
+      <div class="liquid p-4 md:p-5 wizard-border"><div class="wizard-grain"></div>
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <p class="text-[11px] uppercase tracking-[0.28em] text-[#2C1810]/45">Wishlist</p>
+            <h2 class="text-3xl md:text-4xl font-black mt-1 text-[#2C1810]">Produk favorit</h2>
+          </div>
+          <button onclick="showPage('catalogPage')" class="liquid-pill px-4 py-2 text-sm font-semibold text-[#2C1810]">Tambah lagi</button>
+        </div>
+        <div id="wishlistGrid" class="wishlist-grid mt-5"></div>
+      </div>
+    </section>
+
+    <section id="cartPage" class="page">
+      <div class="cart-grid">
+        <div class="liquid p-4 md:p-5">
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <p class="text-[11px] uppercase tracking-[0.28em] text-[#2C1810]/45">Cart</p>
+              <h2 class="text-3xl md:text-4xl font-black mt-1 text-[#2C1810]">Keranjang belanja</h2>
+            </div>
+            <button onclick="showPage('catalogPage')" class="liquid-pill px-4 py-2 text-sm font-semibold text-[#2C1810]">Tambah produk</button>
+          </div>
+          <div id="cartItems" class="space-y-4 mt-5"></div>
+        </div>
+
+        <div class="liquid p-4 md:p-5 h-fit">
+          <h3 class="section-title">Ringkasan checkout</h3>
+          <div class="mt-4 space-y-3 text-sm">
+            <div class="flex items-center justify-between text-[#2C1810]/65"><span>Subtotal</span><span id="summarySubtotal">Rp 0</span></div>
+            <div class="flex items-center justify-between text-[#2C1810]/65"><span>Shipping</span><span>Rp 20.000</span></div>
+          </div>
+          <div class="h-px bg-white/10 my-4"></div>
+          <div class="flex items-end justify-between gap-3">
+            <div>
+              <p class="text-sm text-[#2C1810]/45">Total bayar</p>
+              <p id="summaryTotal" class="text-3xl font-black text-[#AE0001]">Rp 0</p>
+            </div>
+            <button onclick="showPage('checkoutPage')" class="cta rounded-[22px] px-5 py-4 font-black">Checkout</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+    <section id="checkoutPage" class="page space-y-5">
+      <div class="liquid p-4 md:p-5 wizard-border">
+        <div class="wizard-grain"></div>
+        <div class="max-w-[960px] mx-auto">
+          <div class="flex items-center gap-4 mb-2">
+            <button onclick="showPage('cartPage')" class="liquid-icon h-11 w-11 rounded-[18px] flex items-center justify-center shrink-0" title="Kembali ke Keranjang">←</button>
+            <div>
+              <p class="text-[11px] uppercase tracking-[0.28em] text-[#2C1810]/45">Checkout</p>
+              <h2 class="text-3xl md:text-4xl font-black mt-1 text-[#2C1810]">Data diri & pengiriman</h2>
+              <p class="text-[#2C1810]/55 mt-2 text-sm">Isi data diri dulu, lalu lanjut ke halaman pembayaran yang terpisah.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="max-w-[860px] mx-auto w-full relative z-10">
+        <div class="checkout-card">
+          <div class="px-5 py-4 border-b border-slate-300">
+            <h3 class="text-[24px] font-extrabold">Data Diri & Pengiriman</h3>
+          </div>
+          <div class="p-5 space-y-6">
+            <div>
+              <label class="block text-[15px] font-medium mb-2">Nama Lengkap*</label>
+              <input id="buyerName" class="checkout-field" type="text" />
+            </div>
+            <div>
+              <label class="block text-[15px] font-medium mb-2">Email*</label>
+              <input id="buyerEmail" class="checkout-field" type="email" />
+            </div>
+            <div>
+              <label class="block text-[15px] font-medium mb-2">ID Line / No. Whatsapp*</label>
+              <input id="buyerContact" class="checkout-field" type="text" />
+            </div>
+            <div>
+              <p class="text-[15px] font-medium mb-3">Angkatan*</p>
+              <div class="space-y-2 text-[15px]">
+                <label class="flex items-center gap-3"><input type="radio" name="angkatan" value="2022" /> 2022</label>
+                <label class="flex items-center gap-3"><input type="radio" name="angkatan" value="2023" /> 2023</label>
+                <label class="flex items-center gap-3"><input type="radio" name="angkatan" value="2024" checked /> 2024</label>
+                <label class="flex items-center gap-3"><input type="radio" name="angkatan" value="2025" /> 2025</label>
+                <label class="flex items-center gap-3"><input type="radio" name="angkatan" value="Non Civitas" /> Non Civitas</label>
+              </div>
+            </div>
+            <div>
+              <p class="text-[15px] font-medium mb-3">Opsi Pengambilan Barang*</p>
+              <div class="space-y-2 text-[15px]">
+                <label class="flex items-center gap-3"><input type="radio" name="ship" value="Ambil di lingkungan FTUI" checked onchange="toggleAddressField(this)" /> Ambil di lingkungan FTUI</label>
+                <label class="flex items-center gap-3"><input type="radio" name="ship" value="Kirim ke Alamat" onchange="toggleAddressField(this)" /> Kirim ke Alamat</label>
+              </div>
+              <div id="addressBox" class="hidden mt-3">
+                <label class="block text-[14px] font-medium mb-1 text-[#1A2740]">Alamat Lengkap*</label>
+                <textarea id="buyerAddress" class="checkout-field" rows="3" placeholder="Jl. Nama Jalan No.X, Kelurahan, Kecamatan, Kota, Kode Pos..."></textarea>
+              </div>
+            </div>
+            <div id="checkoutValidation" class="hidden text-[14px] text-red-600 font-medium">Mohon lengkapi nama, email, dan nomor kontak terlebih dahulu.</div>
+            <button class="checkout-btn cursor-pointer" onclick="goToPaymentPage()">Bayar Sekarang</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="paymentPage" class="page space-y-5">
+      <div class="liquid p-4 md:p-5 wizard-border">
+        <div class="wizard-grain"></div>
+        <div class="max-w-[980px] mx-auto">
+          <div class="flex items-center gap-4 mb-2">
+            <button onclick="showPage('checkoutPage')" class="liquid-icon h-11 w-11 rounded-[18px] flex items-center justify-center shrink-0" title="Kembali ke Checkout">←</button>
+            <div>
+              <p class="text-[11px] uppercase tracking-[0.28em] text-[#2C1810]/45">Pembayaran</p>
+              <h2 class="text-3xl md:text-4xl font-black mt-1 text-[#2C1810]">Pilih metode pembayaran</h2>
+              <p class="text-[#2C1810]/55 mt-2 text-sm">Pilih salah satu metode pembayaran, lalu upload bukti pembayaran di bawahnya.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="max-w-[980px] mx-auto w-full space-y-5 relative z-10">
+        <div class="liquid p-4 md:p-5 wizard-border">
+          <div class="wizard-grain"></div>
+          <div class="space-y-4">
+            <button id="bankOption" onclick="selectPaymentMethod('bank')" class="payment-option liquid-inner rounded-[24px] p-5 w-full text-left">
+              <p class="text-[11px] uppercase tracking-[0.22em] text-[#2C1810]/45">Opsi 1</p>
+              <h3 class="text-2xl font-black mt-2 text-[#2C1810]">Transfer Bank BCA</h3>
+              <p class="muted mt-3 leading-7">
+                Nomor rekening: <span class="text-[#AE0001] font-semibold">5681669095</span><br>
+                Bank: <span class="text-[#AE0001] font-semibold">BCA</span><br>
+                Atas nama: <span class="text-[#AE0001] font-semibold">Praise Jecrol</span>
+              </p>
+            </button>
+
+            <button id="qrisOption" onclick="selectPaymentMethod('qris')" class="payment-option liquid-inner rounded-[24px] p-5 w-full text-left">
+              <p class="text-[11px] uppercase tracking-[0.22em] text-[#2C1810]/45">Opsi 2</p>
+              <h3 class="text-2xl font-black mt-2 text-[#2C1810]">QRIS</h3>
+              <p class="text-[#2C1810]/55 mt-3">Tekan opsi ini untuk menampilkan kotak gambar QRIS, nanti kamu bisa ganti manual di file.</p>
+            </button>
+
+            <div id="qrisBox" class="hidden liquid-inner p-4 rounded-[24px]">
+              <div class="image-frame h-[340px] md:h-[420px] flex items-center justify-center">
+                <img id="qrisPreview" data-image-id="qrisImage" data-label="QRIS" alt="QRIS" class="w-full h-full object-cover" />
+              </div>
+              <p class="text-[#2C1810]/55 mt-3 text-sm">Area QRIS ditampilkan di sini. Kamu bisa ganti gambar QRIS manual di source atau dari uploader bukti untuk preview testing.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="liquid p-4 md:p-5 wizard-border">
+          <div class="wizard-grain"></div>
+          <div class="space-y-4">
+            <div>
+              <h3 class="text-2xl font-black text-[#2C1810]">Upload bukti pembayaran</h3>
+              <p class="text-[#2C1810]/55 mt-2">Setelah transfer / scan QRIS, upload bukti pembayaran. Ringkasan data dan pesanan akan disiapkan untuk dikirim ke email.</p>
+            </div>
+
+            <div class="liquid-inner rounded-[24px] p-4">
+              <label class="block text-sm font-semibold text-[#2C1810]/80 mb-3">Unggah bukti pembayaran</label>
+              <input id="paymentProofInput" type="file" accept="image/*,.pdf" class="block w-full text-sm text-[#2C1810]/70 file:mr-4 file:rounded-full file:border-0 file:bg-[#AE0001] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white file:cursor-pointer" />
+              <div id="paymentProofPreviewWrap" class="hidden mt-4">
+                <div class="image-frame h-[220px] md:h-[320px]">
+                  <img id="paymentProofPreview" alt="Preview bukti pembayaran" class="w-full h-full object-cover" />
+                </div>
+              </div>
+            </div>
+
+            <div class="liquid-inner rounded-[24px] p-4">
+              <h4 class="text-lg font-black text-[#2C1810]">📋 Ringkasan Pesanan</h4>
+              <div id="finalSummary" class="space-y-2 mt-3 text-sm text-[#2C1810]/70"></div>
+            </div>
+
+            <button id="submitPaymentBtn" onclick="submitPayment()" class="cta rounded-[22px] w-full py-5 font-black text-[17px] cursor-pointer flex items-center justify-center gap-2">
+              <span>✉️</span>
+              <span>Kirim Konfirmasi Pembayaran</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ═══ Thank You Page ═══ -->
+  <section id="thankYouPage" class="page">
+    <div class="liquid p-8 md:p-12 wizard-border text-center max-w-[680px] mx-auto">
+      <div class="wizard-grain"></div>
+      <div class="relative z-10">
+        <div class="text-7xl mb-6">🎉</div>
+        <h2 class="text-3xl md:text-4xl font-black text-[#2C1810] leading-tight">Terima Kasih!</h2>
+        <p class="text-[#086C4A] font-black text-xl mt-2">Pesanan kamu sudah kami terima</p>
+        <div class="h-px bg-[#2C1810]/10 my-6"></div>
+        <div id="thankYouSummary" class="liquid-inner p-5 text-left space-y-2 text-sm text-[#2C1810]/70 mb-6"></div>
+        <p class="text-[#2C1810]/55 text-sm leading-6">
+          Konfirmasi pesanan telah dikirim ke email admin IMMt SHOP.<br/>
+          Tim kami akan memverifikasi pembayaran kamu dalam <strong class="text-[#2C1810]">1×24 jam</strong>.<br/>
+          Hubungi kami jika ada pertanyaan.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3 justify-center">
+          <button onclick="goHome()" class="cta rounded-[22px] px-8 py-4 font-black text-[15px]">🏠 Kembali ke Beranda</button>
+          <button onclick="showPage('catalogPage')" class="ghost rounded-[22px] px-8 py-4 font-bold text-[15px] text-[#2C1810]">🛍️ Belanja Lagi</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="offerPopup" class="modal-backdrop">
+    <div class="liquid modal-panel p-5 md:p-6 max-w-[1100px] shadow-[0_30px_80px_rgba(116,0,1,.18)]">
+      <div class="flex items-center justify-between gap-3 mb-5">
+        <div>
+          <p class="text-[11px] uppercase tracking-[0.26em] text-[#2C1810]/45">Penawaran Terbatas</p>
+          <h3 class="text-[1.6rem] md:text-[2rem] font-black text-[#2C1810] mt-1">🔥 Bundle Spesial IMMt SHOP!</h3>
+          <p class="text-[#2C1810]/55 text-sm mt-1">Hemat lebih banyak dengan paket bundle pilihan kami</p>
+        </div>
+        <button onclick="closeOfferPopup()" class="liquid-icon h-11 w-11 rounded-[18px] flex items-center justify-center text-lg text-[#AE0001] shrink-0">✕</button>
+      </div>
+      <div id="offerGrid" class="bundle-strip pt-1 pb-3"></div>
+    </div>
+  </div>
+
+  <!-- IMMt SHOP Bundle Offer Popup -->
+  <div id="shopOfferPopup" class="modal-backdrop">
+    <div class="liquid modal-panel p-5 md:p-6 max-w-[1100px] shadow-[0_30px_80px_rgba(0,0,0,.54)]">
+      <div class="flex items-center justify-between gap-3 mb-5">
+        <div>
+          <p class="text-[11px] uppercase tracking-[0.28em] text-[#2C1810]/45">Penawaran eksklusif</p>
+          <h3 class="text-[1.75rem] md:text-[2.2rem] font-black text-[#2C1810] mt-1">🛍️ Bundle IMMt SHOP</h3>
+          <p class="text-[#2C1810]/55 text-sm mt-1">Hemat lebih banyak dengan paket bundle pilihan kami!</p>
+        </div>
+        <button onclick="closeShopOfferPopup()" class="liquid-icon h-11 w-11 rounded-[18px] flex items-center justify-center text-lg shrink-0">✕</button>
+      </div>
+      <div id="shopOfferStrip" class="bundle-strip pb-3"></div>
+    </div>
+  </div>
+
+  <div id="bundleModal" class="modal-backdrop">
+    <div class="liquid modal-panel p-4 md:p-5">
+      <div class="flex items-center justify-between gap-3 mb-4">
+        <button onclick="closeBundleModal()" class="liquid-icon h-11 w-11 rounded-[18px] flex items-center justify-center text-lg">✕</button>
+        <div class="text-right">
+          <p class="text-[11px] uppercase tracking-[0.28em] text-[#2C1810]/45">Bundle</p>
+          <h3 class="text-2xl md:text-3xl font-black mt-1 text-[#2C1810]">Pilih 3 bundle</h3>
+        </div>
+      </div>
+      <div id="bundleGrid" class="offer-grid"></div>
+    </div>
+  </div>
+
+  
+  <div id="productModal" class="modal-backdrop">
+    <div class="liquid modal-panel p-4 md:p-5 max-w-[940px] w-full">
+      <div class="relative flex items-center justify-center mb-4 md:mb-5">
+        <button onclick="closeProductModal()" class="absolute left-0 top-0 liquid-icon h-11 w-11 rounded-[18px] flex items-center justify-center text-lg">✕</button>
+        <div class="text-center px-14">
+          <p class="text-[11px] uppercase tracking-[0.28em] text-[#2C1810]/45">Quick add</p>
+          <h3 class="text-2xl md:text-3xl font-black mt-1 text-[#2C1810]">Pilih ukuran dulu</h3>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-[1fr_1fr] gap-5 items-start">
+        <div class="liquid-inner p-4 min-w-0">
+          <div class="image-frame h-[320px] md:h-[380px]">
+            <img id="modalImage" alt="Preview produk" class="w-full h-full object-cover" />
+          </div>
+          <div id="modalThumbs" class="grid grid-cols-4 gap-3 mt-4"></div>
+        </div>
+
+        <div class="space-y-4 min-w-0">
+          <div class="liquid-inner p-5">
+            <p id="modalCategory" class="text-[11px] uppercase tracking-[0.28em] text-[#2C1810]/45">Kategori</p>
+            <h4 id="modalTitle" class="text-3xl font-black mt-2 text-[#2C1810] break-words">Produk</h4>
+            <p id="modalDesc" class="text-[#2C1810]/60 mt-3 leading-7">Deskripsi</p>
+            <div class="flex items-end justify-between gap-3 mt-4 flex-wrap">
+              <div>
+                <p id="modalOldPrice" class="text-sm text-[#2C1810]/38 line-through">Rp 0</p>
+                <p id="modalPrice" class="text-3xl font-black text-[#AE0001]">Rp 0</p>
+              </div>
+              <button id="modalWishlistBtn" class="liquid-icon h-11 w-11 rounded-[18px] flex items-center justify-center text-lg shrink-0">♡</button>
+            </div>
+          </div>
+
+          <div class="liquid-inner p-5">
+            <h5 class="text-xl font-black text-[#2C1810]">Ukuran</h5>
+            <div id="modalSizes" class="grid grid-cols-4 gap-3 mt-4"></div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+              <div class="liquid-inner p-4">
+                <p class="text-[11px] uppercase tracking-[0.22em] text-[#2C1810]/45">Jumlah</p>
+                <div class="mt-3 flex items-center gap-3">
+                  <button onclick="changeModalQty(-1)" class="liquid-pill h-10 w-10 flex items-center justify-center text-[#2C1810]">−</button>
+                  <span id="modalQty" class="text-xl font-black text-[#2C1810]">1</span>
+                  <button onclick="changeModalQty(1)" class="liquid-pill h-10 w-10 flex items-center justify-center text-[#2C1810]">＋</button>
+                </div>
+              </div>
+              <div class="liquid-inner p-4">
+                <p class="text-[11px] uppercase tracking-[0.22em] text-[#2C1810]/45">Info</p>
+                <div class="mt-3 text-sm text-[#2C1810]/55 leading-6">
+                  4 slides disediakan untuk tiap katalog dan bundle. Gambar bisa kamu ganti manual di source data gallery.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sticky bottom-0 mt-5 pt-4 bg-gradient-to-t from-[#FBF6EE] via-[#FBF6EE]/95 to-transparent">
+        <button onclick="confirmModalAdd()" class="cta rounded-[22px] w-full py-4 font-black">Masukkan ke keranjang</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="toast" class="rounded-[22px] px-4 py-3" style="background:linear-gradient(135deg,rgba(116,0,1,.95),rgba(174,0,1,.92));border:1px solid rgba(238,186,48,.3);box-shadow:0 8px 32px rgba(116,0,1,.3),0 0 20px rgba(174,0,1,.15);">
+    <div class="flex items-center gap-3">
+      <div class="h-10 w-10 flex items-center justify-center shrink-0 text-[#EEBA30] text-2xl font-black">✓</div>
+      <div class="min-w-0">
+        <div class="text-[#EEBA30] font-black" id="toastTitle">Berhasil</div>
+        <div class="text-white/90 text-sm" id="toastMessage">Produk berhasil dimasukkan ke keranjang.</div>
+      </div>
+    </div>
+  </div>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    const formatIDR = n => new Intl.NumberFormat('id-ID', {style:'currency', currency:'IDR', maximumFractionDigits:0}).format(n).replace(',00','');
+
+    const uploads = {};
+    let uploadTarget = null;
+    let currentFilter = 'all';
+    let currentSort = 'default';
+    let searchTerm = '';
+    let currentDetailId = 'workshirt-resonansi';
+    let currentDetailSize = 'M';
+    let currentModalId = null;
+    let currentModalSize = null;
+    let currentModalQty = 1;
+
+    const cart = JSON.parse(localStorage.getItem('immt_soft_cart') || '[]');
+    const wishlist = JSON.parse(localStorage.getItem('immt_soft_wishlist') || '[]');
+
+    const bundles = [
+      {
+        id:'final-suit-bundle',
+        name:'The Final Suit',
+        category:'Bundle',
+        price:599000,
+        oldPrice:699000,
+        description:'Paket terlengkap dan paling premium dengan sentuhan koleksi utama IMMt.',
+        sizes:['M','L','XL'],
+        bestSeller:true
+      },
+      {
+        id:'face-card-edition',
+        name:'Face Card Edition',
+        category:'Bundle',
+        price:429000,
+        oldPrice:519000,
+        description:'Tunjukkan identitas Anda dengan bundle merchandise eksklusif ini.',
+        sizes:['M','L','XL'],
+        bestSeller:false
+      },
+      {
+        id:'ground-entry-bundle',
+        name:'Ground Entry Bundle',
+        category:'Bundle',
+        price:499000,
+        oldPrice:599000,
+        description:'Dapatkan koleksi merchandise esensial dengan harga spesial.',
+        sizes:['M','L','XL'],
+        bestSeller:false
+      }
+    ];
+
+    const products = [
+      {
+        id:'workshirt-resonansi',
+        name:'Workshirt Resonansi',
+        category:'Apparel',
+        price:269000,
+        oldPrice:329000,
+        description:'Workshirt utama dengan potongan clean dan badge best seller.',
+        sizes:['S','M','L','XL'],
+        bestSeller:true
+      },
+      {
+        id:'immt-varsity',
+        name:'IMMt Varsity Jacket',
+        category:'Apparel',
+        price:339000,
+        oldPrice:399000,
+        description:'Varsity jacket premium dengan nuansa magical collection.',
+        sizes:['S','M','L','XL']
+      },
+      {
+        id:'final-suit-tee',
+        name:'Final Suit Tee',
+        category:'Apparel',
+        price:219000,
+        oldPrice:279000,
+        description:'T-shirt koleksi utama dengan fit regular dan pilihan ukuran lengkap.',
+        sizes:['S','M','L','XL']
+      },
+      {
+        id:'ground-entry-jersey',
+        name:'Ground Entry Jersey',
+        category:'Apparel',
+        price:249000,
+        oldPrice:309000,
+        description:'Jersey event bernuansa house collection dengan size set lengkap.',
+        sizes:['S','M','L','XL']
+      },
+      {
+        id:'supporter-scarf',
+        name:'Supporter Scarf',
+        category:'Merch',
+        price:129000,
+        oldPrice:169000,
+        description:'Scarf supporter dengan warna tegas dan material lembut.',
+        sizes:['All Size']
+      },
+      {
+        id:'matchday-cap',
+        name:'Matchday Cap',
+        category:'Accessories',
+        price:149000,
+        oldPrice:189000,
+        description:'Cap harian untuk melengkapi outfit merchandise.',
+        sizes:['All Size']
+      },
+      {
+        id:'urban-carry-bag',
+        name:'Urban Carry Bag',
+        category:'Bag',
+        price:249000,
+        oldPrice:319000,
+        description:'Tas praktis untuk kebutuhan event dan daily use.',
+        sizes:['All Size']
+      }
+    ];
+
+    const allItems = [...bundles, ...products];
+
+    let currentModalGalleryIndex = 0;
+
+    const manualGalleryConfig = {
+      'final-suit-bundle': ['', '', '', ''],
+      'face-card-edition': ['', '', '', ''],
+      'ground-entry-bundle': ['', '', '', ''],
+      'workshirt-resonansi': ['', '', '', ''],
+      'immt-varsity': ['', '', '', ''],
+      'supporter-scarf': ['', '', '', ''],
+      'matchday-cap': ['', '', '', ''],
+      'fan-pass-card': ['', '', '', ''],
+      'hydro-tumbler': ['', '', '', ''],
+      'urban-carry-bag': ['', '', '', '']
+    };
+
+    function getGalleryImages(item){
+      const configured = manualGalleryConfig[item.id] || ['', '', '', ''];
+      return configured.map((url, index) => {
+        if (url) return url;
+        return makePlaceholder(`${item.name} ${index + 1}`, '#7a2020', '#6b4b2a', '#bfa46f');
+      });
+    }
+
+    function renderModalGallery(item){
+      const gallery = getGalleryImages(item);
+      const safeIndex = Math.max(0, Math.min(currentModalGalleryIndex, gallery.length - 1));
+      currentModalGalleryIndex = safeIndex;
+      const hero = document.getElementById('modalImage');
+      if (hero){
+        hero.src = gallery[safeIndex];
+      }
+      const thumbs = document.getElementById('modalThumbs');
+      if (thumbs){
+        thumbs.innerHTML = gallery.map((src, index) => `
+          <button type="button" onclick="setModalGalleryImage(${index})" class="modal-thumb ${index === safeIndex ? 'active' : ''} image-frame h-[86px] overflow-hidden rounded-[18px]">
+            <img src="${src}" alt="${item.name} slide ${index + 1}" class="w-full h-full object-cover" />
+          </button>
+        `).join('');
+      }
+    }
+
+    function setModalGalleryImage(index){
+      currentModalGalleryIndex = index;
+      const item = getItem(currentModalId);
+      if (item) renderModalGallery(item);
+    }
+
+
+
+    function makePlaceholder(label, a='#AE0001', b='#EEBA30', c='#740001'){
+      const safe = String(label).replace(/&/g,'&amp;');
+      const svg = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900">
+        <defs>
+          <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#030705"/>
+            <stop offset="68%" stop-color="#091510"/>
+            <stop offset="100%" stop-color="#111613"/>
+          </linearGradient>
+          <radialGradient id="o1" cx="14%" cy="72%" r="44%">
+            <stop offset="0%" stop-color="${a}" stop-opacity=".86"/>
+            <stop offset="42%" stop-color="${a}" stop-opacity=".24"/>
+            <stop offset="100%" stop-color="${a}" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="o2" cx="78%" cy="22%" r="34%">
+            <stop offset="0%" stop-color="${b}" stop-opacity=".26"/>
+            <stop offset="42%" stop-color="${b}" stop-opacity=".10"/>
+            <stop offset="100%" stop-color="${b}" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="o3" cx="58%" cy="32%" r="22%">
+            <stop offset="0%" stop-color="${c}" stop-opacity=".14"/>
+            <stop offset="44%" stop-color="${c}" stop-opacity=".06"/>
+            <stop offset="100%" stop-color="${c}" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="1200" height="900" fill="url(#bg)"/>
+        <rect width="1200" height="900" fill="url(#o1)"/>
+        <rect width="1200" height="900" fill="url(#o2)"/>
+        <rect width="1200" height="900" fill="url(#o3)"/>
+        <rect x="84" y="84" width="1032" height="732" rx="56" fill="rgba(255,255,255,.10)" stroke="rgba(255,255,255,.18)"/>
+        <rect x="148" y="148" width="904" height="604" rx="40" fill="rgba(255,255,255,.05)"/>
+        <text x="50%" y="46%" fill="#F2F6F2" font-size="80" font-family="Plus Jakarta Sans, Inter, Arial, sans-serif" font-weight="800" text-anchor="middle">${safe}</text>
+        <text x="50%" y="56%" fill="rgba(242,246,242,.70)" font-size="28" font-family="Plus Jakarta Sans, Inter, Arial, sans-serif" text-anchor="middle">Editable image frame</text>
+      </svg>`;
+      return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+    }
+
+    function getImageSrc(id, label){
+      if (uploads[id]) return uploads[id];
+      if (id === 'siteLogo') return makePlaceholder('IMMt', '#AE0001', '#EEBA30', '#740001');
+      if (id === 'heroBanner') return makePlaceholder('Banner Hero', '#740001', '#AE0001', '#EEBA30');
+      return makePlaceholder(label);
+    }
+
+    function persist(){
+      localStorage.setItem('immt_soft_cart', JSON.stringify(cart));
+      localStorage.setItem('immt_soft_wishlist', JSON.stringify(wishlist));
+    }
+
+    function triggerImageUpload(id){
+      uploadTarget = id;
+      document.getElementById('uploader').click();
+    }
+
+    document.getElementById('uploader').addEventListener('change', e => {
+      const file = e.target.files?.[0];
+      if (!file || !uploadTarget) return;
+      uploads[uploadTarget] = URL.createObjectURL(file);
+      refreshImages(uploadTarget);
+      e.target.value = '';
+      uploadTarget = null;
+    });
+
+    function refreshImages(id){
+      document.querySelectorAll(`[data-image-id="${id}"]`).forEach(img => {
+        const label = img.dataset.label || id;
+        img.src = getImageSrc(id, label);
+      });
+      if (id === currentDetailId) updateDetail();
+    }
+
+    function setAllImages(){
+      document.querySelectorAll('[data-image-id]').forEach(img => {
+        const id = img.dataset.imageId;
+        const label = img.dataset.label || id;
+        img.src = getImageSrc(id, label);
+      });
+    }
+
+    function getItem(id){
+      return allItems.find(item => item.id === id);
+    }
+
+    function toggleWishlist(id){
+      const idx = wishlist.indexOf(id);
+      if (idx > -1) wishlist.splice(idx,1);
+      else wishlist.push(id);
+      persist();
+      updateCartCount();
+      renderWishlist();
+    }
+
+    const checkoutData = {
+      name: '',
+      email: '',
+      contact: '',
+      angkatan: '2024',
+      shipping: 'Ambil di lingkungan FTUI',
+      address: '',
+      paymentMethod: 'bank',
+      proofUrl: ''
+    };
+
+    function toggleAddressField(radio){
+      const box = document.getElementById('addressBox');
+      if (!box) return;
+      if (radio.value === 'Kirim ke Alamat') {
+        box.classList.remove('hidden');
+      } else {
+        box.classList.add('hidden');
+        document.getElementById('buyerAddress').value = '';
+      }
+    }
+
+    function goToPaymentPage(){
+      const name = document.getElementById('buyerName')?.value.trim() || '';
+      const email = document.getElementById('buyerEmail')?.value.trim() || '';
+      const contact = document.getElementById('buyerContact')?.value.trim() || '';
+      const angkatan = document.querySelector('input[name="angkatan"]:checked')?.value || '';
+      const shipping = document.querySelector('input[name="ship"]:checked')?.value || '';
+      const validation = document.getElementById('checkoutValidation');
+
+      const isShipToAddress = shipping === 'Kirim ke Alamat';
+      const address = document.getElementById('buyerAddress')?.value.trim() || '';
+      if (!name || !email || !contact || (isShipToAddress && !address)){
+        const msg = isShipToAddress && !address && name && email && contact
+          ? 'Mohon isi alamat pengiriman terlebih dahulu.'
+          : 'Mohon lengkapi nama, email, dan nomor kontak terlebih dahulu.';
+        if (validation) { validation.textContent = msg; validation.classList.remove('hidden'); }
+        return;
+      }
+      validation?.classList.add('hidden');
+
+      checkoutData.name = name;
+      checkoutData.email = email;
+      checkoutData.contact = contact;
+      checkoutData.angkatan = angkatan;
+      checkoutData.shipping = shipping;
+      checkoutData.address = isShipToAddress ? address : '';
+      updateFinalSummary();
+      showPage('paymentPage');
+      renderCart();
+      selectPaymentMethod(checkoutData.paymentMethod || 'bank');
+    }
+
+    function selectPaymentMethod(method){
+      checkoutData.paymentMethod = method;
+      const bank = document.getElementById('bankOption');
+      const qris = document.getElementById('qrisOption');
+      const qrisBox = document.getElementById('qrisBox');
+      bank?.classList.toggle('active', method === 'bank');
+      qris?.classList.toggle('active', method === 'qris');
+      qrisBox?.classList.toggle('hidden', method !== 'qris');
+      updateFinalSummary();
+    }
+
+    function updateFinalSummary(){
+      const target = document.getElementById('finalSummary');
+      if (!target) return;
+      const row = (label, val) => `
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;padding:7px 0;border-bottom:1px solid rgba(44,24,16,.1);">
+          <span style="font-weight:800;color:#2C1810;min-width:90px;">${label}</span>
+          <span style="color:#3a1e10;text-align:right;max-width:60%;">${val}</span>
+        </div>`;
+      const itemRows = cart.length
+        ? cart.map(item => `
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;padding:5px 0;">
+            <span style="color:#3a1e10;">${item.name} · ${item.size} · ${item.qty}×</span>
+            <span style="font-weight:700;color:#AE0001;">${formatIDR(item.price * item.qty)}</span>
+          </div>`).join('')
+        : '<div style="color:#888;">Belum ada item.</div>';
+
+      target.innerHTML = `
+        <div style="font-size:13px;">
+          ${row('Nama', checkoutData.name || '-')}
+          ${row('Email', checkoutData.email || '-')}
+          ${row('Kontak', checkoutData.contact || '-')}
+          ${row('Angkatan', checkoutData.angkatan || '-')}
+          ${row('Pengambilan', checkoutData.shipping || '-')}
+          ${checkoutData.address ? row('Alamat', checkoutData.address) : ''}
+          ${row('Metode', checkoutData.paymentMethod === 'qris' ? 'QRIS' : 'Transfer BCA')}
+          <div style="margin-top:12px;padding-top:8px;border-top:2px solid rgba(44,24,16,.12);">
+            <div style="font-weight:900;color:#2C1810;font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">📋 Rekap Pesanan</div>
+            ${itemRows}
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:2px solid rgba(44,24,16,.15);">
+            <span style="font-weight:900;color:#2C1810;font-size:14px;">Total + Ongkos Kirim</span>
+            <span style="font-weight:900;color:#AE0001;font-size:15px;">${formatIDR(totalCheckout())}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    async function submitPayment(){
+      // ── Validasi bukti pembayaran wajib ──
+      const proofInput = document.getElementById('paymentProofInput');
+      if (!proofInput || !proofInput.files || proofInput.files.length === 0){
+        showPaymentError('⚠️ Upload bukti pembayaran dulu ya sebelum kirim!');
+        return;
+      }
+      updateFinalSummary();
+
+      // ── Susun rekap pesanan ──
+      const itemsText = cart.length
+        ? cart.map(item => `- ${item.name} | ${item.size} | ${item.qty}x | ${formatIDR(item.price * item.qty)}`).join('\n')
+        : '- Tidak ada item';
+
+      // ── Susun template params untuk EmailJS ──
+      const templateParams = {
+        customer_name  : checkoutData.name       || '-',
+        email          : checkoutData.email      || '-',
+        kontak         : checkoutData.contact    || '-',
+        angkatan       : checkoutData.angkatan   || '-',
+        pengambilan    : checkoutData.shipping   || '-',
+        alamat         : checkoutData.address    || '(Ambil langsung)',
+        metode_bayar   : checkoutData.paymentMethod === 'qris' ? 'QRIS' : 'Transfer BCA — 5681669095 a.n Praise Jecrol',
+        order_details  : itemsText,
+        total_amount   : formatIDR(totalCheckout()),
+        to_email       : checkoutData.email      || '',   // email konsumen (auto CC)
+        reply_to       : checkoutData.email      || 'praisemarpaung@gmail.com',
+      };
+
+      // ── Loading state tombol ──
+      const btn = document.getElementById('submitPaymentBtn');
+      const originalHTML = btn ? btn.innerHTML : '';
+      if (btn){ btn.innerHTML = '<span>⏳</span><span>Mengirim... mohon tunggu</span>'; btn.disabled = true; }
+      hidePaymentError();
+
+      try {
+        // Kirim ke admin (praisemarpaung@gmail.com sudah di-set di EmailJS template)
+        await emailjs.send('service_x79r258', 'template_pealc2t', templateParams);
+
+        // ── Isi halaman terima kasih ──
+        const summary = document.getElementById('thankYouSummary');
+        if (summary){
+          summary.innerHTML = `
+            <div style="font-size:14px;color:#3a1e10;">
+              <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(44,24,16,.1);"><span style="font-weight:800;color:#2C1810;">Nama</span><span>${checkoutData.name || '-'}</span></div>
+              <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(44,24,16,.1);"><span style="font-weight:800;color:#2C1810;">Email</span><span>${checkoutData.email || '-'}</span></div>
+              <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(44,24,16,.1);"><span style="font-weight:800;color:#2C1810;">Kontak</span><span>${checkoutData.contact || '-'}</span></div>
+              <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(44,24,16,.1);"><span style="font-weight:800;color:#2C1810;">Angkatan</span><span>${checkoutData.angkatan || '-'}</span></div>
+              <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(44,24,16,.1);"><span style="font-weight:800;color:#2C1810;">Pengambilan</span><span>${checkoutData.shipping || '-'}</span></div>
+              ${checkoutData.address ? `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(44,24,16,.1);"><span style="font-weight:800;color:#2C1810;">Alamat</span><span style="text-align:right;max-width:55%;">${checkoutData.address}</span></div>` : ''}
+              <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(44,24,16,.1);"><span style="font-weight:800;color:#2C1810;">Metode Bayar</span><span>${checkoutData.paymentMethod === 'qris' ? 'QRIS' : 'Transfer BCA'}</span></div>
+              <div style="height:1px;background:rgba(44,24,16,.12);margin:10px 0;"></div>
+              <div style="font-weight:900;color:#2C1810;margin-bottom:6px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;">📋 Rekap Pesanan</div>
+              ${cart.map(item => `<div style="display:flex;justify-content:space-between;padding:4px 0;"><span>${item.name} · ${item.size} · ${item.qty}×</span><span style="font-weight:700;color:#AE0001;">${formatIDR(item.price * item.qty)}</span></div>`).join('')}
+              <div style="height:1px;background:rgba(44,24,16,.15);margin:10px 0;"></div>
+              <div style="display:flex;justify-content:space-between;font-weight:900;font-size:15px;"><span style="color:#2C1810;">Total + Ongkir</span><span style="color:#AE0001;">${formatIDR(totalCheckout())}</span></div>
+            </div>`;
+        }
+        showPage('thankYouPage');
+
+      } catch(err){
+        console.error('EmailJS error:', err);
+        showPaymentError('❌ Gagal mengirim. Periksa koneksi internet kamu dan coba lagi.');
+        if (btn){ btn.innerHTML = originalHTML; btn.disabled = false; }
+      }
+    }
+
+    function showPaymentError(msg){
+      let el = document.getElementById('paymentErrorMsg');
+      if (!el){
+        el = document.createElement('div');
+        el.id = 'paymentErrorMsg';
+        el.style.cssText = 'background:#AE0001;color:white;border-radius:14px;padding:12px 16px;font-size:14px;font-weight:700;margin-bottom:8px;';
+        const btn = document.getElementById('submitPaymentBtn');
+        btn?.parentNode?.insertBefore(el, btn);
+      }
+      el.textContent = msg;
+      el.style.display = 'block';
+      el.scrollIntoView({ behavior:'smooth', block:'center' });
+    }
+    function hidePaymentError(){
+      const el = document.getElementById('paymentErrorMsg');
+      if (el) el.style.display = 'none';
+    }
+
+    const paymentProofInput = document.getElementById('paymentProofInput');
+    if (paymentProofInput){
+      paymentProofInput.addEventListener('change', (e) => {
+        const file = e.target.files?.[0];
+        const wrap = document.getElementById('paymentProofPreviewWrap');
+        const preview = document.getElementById('paymentProofPreview');
+        if (!file){
+          wrap?.classList.add('hidden');
+          return;
+        }
+        if (file.type.startsWith('image/')){
+          const url = URL.createObjectURL(file);
+          checkoutData.proofUrl = url;
+          if (preview){
+            preview.src = url;
+          }
+          wrap?.classList.remove('hidden');
+        } else {
+          wrap?.classList.add('hidden');
+        }
+      });
+    }
+
+
+
+    let toastTimer = null;
+    function showToast(title, message){
+      const toast = document.getElementById('toast');
+      const titleNode = document.getElementById('toastTitle');
+      const messageNode = document.getElementById('toastMessage');
+      if (!toast || !titleNode || !messageNode) return;
+      titleNode.textContent = title;
+      messageNode.textContent = message;
+      toast.classList.remove('show');
+      void toast.offsetWidth; // force reflow agar animasi restart kalau toast masih muncul
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    function syncChromeForPage(pageId){
+      const hideChromePages = ['cartPage', 'checkoutPage', 'paymentPage', 'catalogPage', 'detailPage', 'wishlistPage'];
+      document.body.classList.toggle('no-chrome', hideChromePages.includes(pageId));
+    }
+
+    renderCatalogs();
+    renderWishlist();
+
+    function addToCart(id, size='All Size', qty=1, options = {}){
+      const product = getItem(id);
+      if (!product) return;
+      const existing = cart.find(item => item.id === id && item.size === size);
+      if (existing) existing.qty += qty;
+      else cart.push({ id, size, qty, price: product.price, name: product.name });
+      persist();
+      renderCart();
+      updateCartCount();
+      showToast('✓ Berhasil dimasukkan ke keranjang!', `${product.name} · Ukuran ${size} · ${qty} pcs sudah masuk keranjang.`);
+      if (options.redirectToCart) showPage('cartPage');
+    }
+
+    function removeCart(index){
+      cart.splice(index,1);
+      persist();
+      renderCart();
+      updateCartCount();
+    }
+
+    function changeCartQty(index, delta){
+      if (!cart[index]) return;
+      cart[index].qty += delta;
+      if (cart[index].qty <= 0) cart.splice(index,1);
+      persist();
+      renderCart();
+      updateCartCount();
+    }
+
+    function subtotal(){
+      return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+    }
+
+    function totalCheckout(){
+      const sub = subtotal();
+      if (sub <= 0) return 0;
+      return sub + 20000;
+    }
+
+    function updateCartCount(){
+      const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+      const el = document.getElementById('headerCartCount');
+      if (!el) return;
+      el.textContent = totalQty;
+      el.style.display = 'flex';
+      // Force visible even if parent is fading in
+      el.style.opacity = '1';
+      el.style.visibility = 'visible';
+    }
+
+    function productCard(item, compact = false){
+      const heart = wishlist.includes(item.id) ? '♥' : '♡';
+      if (compact) {
+        return `
+          <article class="liquid overflow-hidden cursor-pointer" onclick="openProductModal('${item.id}')">
+            <div class="image-frame" style="height:160px;border-radius:20px 20px 0 0;">
+              ${item.bestSeller ? '<span class="badge best-badge absolute top-2 left-2 z-10" style="font-size:9px;padding:4px 8px;">Best Seller</span>' : ''}
+              <img data-image-id="${item.id}" data-label="${item.name}" alt="${item.name}" style="border-radius:20px 20px 0 0;" />
+            </div>
+            <div class="px-3 py-2.5">
+              <h4 class="text-[.85rem] font-black leading-tight text-[#2C1810] truncate">${item.name}</h4>
+              <div class="flex items-center justify-between mt-1.5">
+                <p class="text-[1rem] font-black text-[#AE0001]">${formatIDR(item.price)}</p>
+                <button onclick="event.stopPropagation(); openProductModal('${item.id}')" class="cta rounded-[12px] px-3 py-1.5 text-[11px] font-black">+ Cart</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }
+      const sizeNote = item.sizes && item.sizes.length > 1 && item.sizes[0] !== 'All Size'
+        ? `<div class="mt-3 text-xs font-semibold text-[#AE0001]">Ukuran: ${item.sizes.join(' / ')}</div>`
+        : `<div class="mt-3 text-xs font-semibold text-[#2C1810]/45">All Size</div>`;
+      return `
+        <article class="liquid p-3 flex flex-col h-full min-w-0">
+          <div class="image-frame h-[220px]">
+            ${item.bestSeller ? '<span class="badge best-badge absolute top-3 left-3 z-10">Best Seller ✦</span>' : ''}
+            <img data-image-id="${item.id}" data-label="${item.name}" alt="${item.name}" />
+          </div>
+          <div class="mt-4 flex items-start justify-between gap-3">
+            <div class="min-w-0">
+              <p class="text-[11px] uppercase tracking-[0.24em] text-[#2C1810]/45">${item.category}</p>
+              <h4 class="text-[1.28rem] font-black mt-2 leading-tight text-[#2C1810]">${item.name}</h4>
+            </div>
+            <button onclick="toggleWishlist('${item.id}')" class="liquid-icon h-10 w-10 shrink-0 flex items-center justify-center text-lg text-[#AE0001]">${heart}</button>
+          </div>
+          <p class="muted mt-3 text-sm leading-6 min-h-[72px] break-words">${item.description}</p>
+          ${sizeNote}
+          <div class="mt-4 flex items-end justify-between gap-3 flex-wrap">
+            <div>
+              <p class="text-sm text-[#2C1810]/38 line-through">${formatIDR(item.oldPrice)}</p>
+              <p class="text-2xl font-black text-[#AE0001]">${formatIDR(item.price)}</p>
+            </div>
+            <div class="ml-auto">
+              <button onclick="openProductModal('${item.id}')" class="cta rounded-[18px] px-5 py-2.5 text-sm font-black">Cart</button>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function bundleCard(item){
+      return `
+        <article class="liquid p-3">
+          <div class="image-frame h-[240px]">
+            ${item.bestSeller ? '<span class="badge best-badge absolute top-3 left-3 z-10">Best Seller ✦</span>' : ''}
+            <img data-image-id="${item.id}" data-label="${item.name}" alt="${item.name}" />
+          </div>
+          <div class="mt-4">
+            <h4 class="text-[1.32rem] font-black text-[#2C1810]">${item.name}</h4>
+            <p class="text-[#2C1810]/55 mt-2 text-sm leading-6">${item.description}</p>
+          </div>
+          <div class="mt-4 flex items-end justify-between gap-3">
+            <div>
+              <p class="text-sm text-[#2C1810]/38 line-through">${formatIDR(item.oldPrice)}</p>
+              <p class="text-2xl font-black text-[#AE0001]">${formatIDR(item.price)}</p>
+            </div>
+            <button onclick="openProductModal('${item.id}')" class="cta rounded-[18px] px-4 py-3 text-sm font-black">Pilih ukuran</button>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderCatalogs(){
+      let filtered = [...products];
+      if (currentFilter !== 'all') filtered = filtered.filter(item => item.category === currentFilter);
+      if (searchTerm) {
+        filtered = filtered.filter(item => item.name.toLowerCase().includes(searchTerm) || item.category.toLowerCase().includes(searchTerm));
+      }
+      if (currentSort === 'priceDesc') filtered.sort((a,b) => b.price - a.price);
+      else if (currentSort === 'nameAsc') filtered.sort((a,b) => a.name.localeCompare(b.name));
+
+      document.getElementById('homeCatalogGrid').innerHTML = products.map(p => productCard(p, true)).join('');
+      document.getElementById('catalogGrid').innerHTML = filtered.map(productCard).join('');
+      document.getElementById('bundleStrip').innerHTML = bundles.map(bundleCard).join('');
+      document.getElementById('bundleGrid').innerHTML = bundles.map(item => `
+        <article class="liquid p-3">
+          <div class="image-frame h-[240px]">
+            ${item.bestSeller ? '<span class="badge best-badge absolute top-3 left-3 z-10">Best Seller ✦</span>' : ''}
+            <img data-image-id="${item.id}" data-label="${item.name}" alt="${item.name}" />
+            
+          </div>
+          <div class="mt-4">
+            <h4 class="text-[1.28rem] font-black text-[#2C1810]">${item.name}</h4>
+            <p class="text-[#2C1810]/55 mt-2 text-sm leading-6">${item.description}</p>
+          </div>
+          <div class="mt-4">
+            <p class="text-sm text-[#2C1810]/55 mb-3">Pilih ukuran:</p>
+            <div class="flex flex-wrap gap-2">
+              ${item.sizes.map(size => `<button onclick="quickAddBundle('${item.id}','${size}')" class="liquid-pill px-4 py-2 text-sm font-bold">${size}</button>`).join('')}
+            </div>
+          </div>
+          <div class="mt-5 flex items-end justify-between gap-3">
+            <div>
+              <p class="text-sm text-[#2C1810]/38 line-through">${formatIDR(item.oldPrice)}</p>
+              <p class="text-2xl font-black text-[#AE0001]">${formatIDR(item.price)}</p>
+            </div>
+            <button onclick="openProductModal('${item.id}')" class="cta rounded-[18px] px-4 py-3 text-sm font-black">Detail bundle</button>
+          </div>
+        </article>
+      `).join('');
+      document.getElementById('offerGrid').innerHTML = bundles.map(item => `
+        <article class="liquid p-4" style="min-width:300px;scroll-snap-align:start;">
+          <div class="image-frame h-[200px]">
+            ${item.bestSeller ? '<span class="badge best-badge absolute top-2 left-2 z-10" style="font-size:9px;padding:4px 8px;">Best Seller ✦</span>' : ''}
+            <img data-image-id="${item.id}" data-label="${item.name}" alt="${item.name}" class="w-full h-full object-cover"/>
+          </div>
+          <div class="mt-3">
+            <h4 class="text-[1.2rem] font-black text-[#2C1810]">${item.name}</h4>
+            <p class="mt-1 text-sm leading-5 text-[#2C1810]/60 line-clamp-2">${item.description}</p>
+            <div class="mt-3 flex items-center justify-between gap-2 flex-wrap">
+              <div>
+                <p class="text-xs text-[#2C1810]/38 line-through">${formatIDR(item.oldPrice)}</p>
+                <p class="text-[1.3rem] font-black text-[#AE0001]">${formatIDR(item.price)}</p>
+              </div>
+              <button onclick="openProductModal('${item.id}'); closeOfferPopup();" class="cta rounded-[16px] px-4 py-2.5 text-sm font-black">Lihat Detail →</button>
+            </div>
+          </div>
+        </article>
+      `).join('');
+      setAllImages();
+    }
+
+    function renderWishlist(){
+      const items = allItems.filter(item => wishlist.includes(item.id));
+      document.getElementById('wishlistGrid').innerHTML = items.length ? items.map(item => `
+        <article class="liquid p-3">
+          <div class="image-frame h-[220px]">
+            <img data-image-id="${item.id}" data-label="${item.name}" alt="${item.name}" />
+            
+          </div>
+          <div class="mt-4">
+            <p class="text-[11px] uppercase tracking-[0.24em] text-[#2C1810]/45">${item.category}</p>
+            <h4 class="text-[1.28rem] font-black mt-2 text-[#2C1810]">${item.name}</h4>
+            <p class="text-2xl font-black text-[#AE0001] mt-3">${formatIDR(item.price)}</p>
+          </div>
+          <div class="mt-4 flex gap-2">
+            <button onclick="openProductModal('${item.id}')" class="cta rounded-[18px] px-4 py-3 text-sm font-black flex-1">Beli</button>
+            <button onclick="toggleWishlist('${item.id}')" class="ghost rounded-[18px] px-4 py-3 text-sm font-bold">Hapus</button>
+          </div>
+        </article>
+      `).join('') : `
+        <div class="liquid-inner p-6 col-span-full">
+          <h4 class="text-2xl font-black text-[#2C1810]">Wishlist masih kosong</h4>
+          <p class="text-[#2C1810]/55 mt-2">Tekan ikon hati di katalog untuk menyimpan produk favorit.</p>
+        </div>
+      `;
+      setAllImages();
+    }
+
+    function renderCart(){
+      const node = document.getElementById('cartItems');
+      if (!cart.length){
+        node.innerHTML = `
+          <div class="liquid-inner p-6">
+            <h4 class="text-2xl font-black text-[#2C1810]">Cart masih kosong</h4>
+            <p class="text-[#2C1810]/55 mt-2">Tambah produk dulu dari katalog atau bundle.</p>
+          </div>
+        `;
+      } else {
+        node.innerHTML = cart.map((item, i) => {
+          const product = getItem(item.id);
+          return `
+            <article class="liquid p-3">
+              <div class="grid grid-cols-[110px_1fr] gap-4 items-center">
+                <div class="image-frame h-[110px]">
+                  <img data-image-id="${item.id}" data-label="${product.name}" alt="${product.name}" src="${getImageSrc(item.id, product.name)}" style="width:100%;height:100%;object-fit:cover;" />
+                </div>
+                <div>
+                  <div class="flex items-start justify-between gap-3">
+                    <div>
+                      <p class="text-[11px] uppercase tracking-[0.24em] text-[#2C1810]/45">${product.category}</p>
+                      <h4 class="text-[1.32rem] font-black mt-2 text-[#2C1810]">${product.name}</h4>
+                      <p class="text-[#2C1810]/55 mt-2 text-sm">Ukuran: ${item.size}</p>
+                    </div>
+                    <button onclick="removeCart(${i})" class="liquid-icon h-10 w-10 flex items-center justify-center">✕</button>
+                  </div>
+                  <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center gap-2">
+                      <button onclick="changeCartQty(${i},-1)" class="liquid-pill h-10 w-10 flex items-center justify-center text-[#2C1810]">−</button>
+                      <span class="liquid-pill px-4 py-2 font-black text-[#2C1810]">${item.qty}</span>
+                      <button onclick="changeCartQty(${i},1)" class="liquid-pill h-10 w-10 flex items-center justify-center text-[#2C1810]">＋</button>
+                    </div>
+                    <p class="text-2xl font-black text-[#AE0001]">${formatIDR(item.price * item.qty)}</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+          `;
+        }).join('');
+      }
+
+      document.getElementById('summarySubtotal').textContent = formatIDR(subtotal());
+      document.getElementById('summaryTotal').textContent = formatIDR(totalCheckout());
+      document.getElementById('paymentTotal').textContent = formatIDR(totalCheckout());
+      document.getElementById('paymentSummary').innerHTML = cart.length ? cart.map(item => `
+        <div class="flex items-center justify-between text-[#2C1810]/65">
+          <span>${item.name} · ${item.size} · ${item.qty}x</span>
+          <span>${formatIDR(item.price * item.qty)}</span>
+        </div>
+      `).join('') + `
+        <div class="flex items-center justify-between text-[#2C1810]/65"><span>Ongkos kirim</span><span>${formatIDR(20000)}</span></div>
+      ` : `<div class="text-white/45">Belum ada item untuk dibayar.</div>`;
+      setAllImages();
+    }
+
+    function updateDetail(){
+      const item = getItem(currentDetailId);
+      if (!item) return;
+      if (!item.sizes.includes(currentDetailSize)) currentDetailSize = item.sizes[0];
+      document.getElementById('detailHeading').textContent = item.name;
+      document.getElementById('detailTitle').textContent = item.name;
+      document.getElementById('detailCategory').textContent = item.category;
+      document.getElementById('detailOldPrice').textContent = formatIDR(item.oldPrice);
+      document.getElementById('detailPrice').textContent = formatIDR(item.price);
+      document.getElementById('detailDescription').textContent = item.description + ' Semua frame gambar tetap bisa diganti sendiri dari browser.';
+      const badge = document.getElementById('detailBadge');
+      badge.className = item.bestSeller ? 'badge best-badge' : 'badge';
+      badge.textContent = item.bestSeller ? 'Best Seller' : 'Ready Stock';
+
+      const img = document.getElementById('detailImage');
+      img.dataset.imageId = item.id;
+      img.dataset.label = item.name;
+      img.src = getImageSrc(item.id, item.name);
+
+      document.getElementById('detailSizeOptions').innerHTML = item.sizes.map(size => `
+        <button onclick="setDetailSize('${size}')" class="${currentDetailSize === size ? 'cta' : ''} rounded-[18px] px-4 py-4 font-black" style="${currentDetailSize === size ? '' : 'background:rgba(174,0,1,.08);border:2px solid rgba(174,0,1,.45);color:#2C1810;'}">
+          ${size}
+        </button>
+      `).join('');
+    }
+
+    function openDetail(id){
+      currentDetailId = id;
+      currentDetailSize = getItem(id).sizes[0];
+      updateDetail();
+      showPage('detailPage');
+    }
+
+    function setDetailSize(size){
+      currentDetailSize = size;
+      updateDetail();
+    }
+
+    function addDetailToCart(){
+      addToCart(currentDetailId, currentDetailSize, 1, { redirectToCart: false });
+    }
+
+    function openProductModal(id){
+      const item = getItem(id);
+      if (!item) return;
+      currentModalId = id;
+      currentModalSize = item.sizes[0];
+      currentModalQty = 1;
+      currentModalGalleryIndex = 0;
+      document.getElementById('modalCategory').textContent = item.category;
+      document.getElementById('modalTitle').textContent = item.name;
+      document.getElementById('modalDesc').textContent = item.description;
+      document.getElementById('modalOldPrice').textContent = formatIDR(item.oldPrice);
+      document.getElementById('modalPrice').textContent = formatIDR(item.price);
+      document.getElementById('modalQty').textContent = currentModalQty;
+      document.getElementById('modalWishlistBtn').onclick = () => toggleWishlist(item.id);
+      renderModalSizes();
+      renderModalGallery(item);
+      document.getElementById('productModal').classList.add('open');
+      document.body.classList.add('modal-open');
+    }
+
+    function renderModalSizes(){
+      const item = getItem(currentModalId);
+      if (!item) return;
+      document.getElementById('modalSizes').innerHTML = item.sizes.map(size => `
+        <button onclick="setModalSize('${size}')" class="${currentModalSize === size ? 'cta' : ''} rounded-[18px] px-3 py-3 font-black" style="${currentModalSize === size ? '' : 'background:rgba(174,0,1,.08);border:2px solid rgba(174,0,1,.45);color:#2C1810;'}">
+          ${size}
+        </button>
+      `).join('');
+    }
+
+    function setModalSize(size){
+      currentModalSize = size;
+      renderModalSizes();
+    }
+
+    function changeModalQty(delta){
+      currentModalQty = Math.max(1, currentModalQty + delta);
+      document.getElementById('modalQty').textContent = currentModalQty;
+    }
+
+    function confirmModalAdd(){
+      const id = currentModalId;
+      const size = currentModalSize;
+      const qty = currentModalQty;
+      // Tutup modal dulu, baru tampilkan toast setelah animasi selesai
+      closeProductModal();
+      setTimeout(() => {
+        addToCart(id, size, qty, { redirectToCart: false });
+      }, 180);
+    }
+
+    function closeProductModal(){
+      document.getElementById('productModal').classList.remove('open');
+      document.body.classList.remove('modal-open');
+    }
+
+    function openBundleModal(){
+      document.getElementById('bundleModal').classList.add('open');
+      document.body.classList.add('modal-open');
+    }
+
+    function closeBundleModal(){
+      document.getElementById('bundleModal').classList.remove('open');
+      document.body.classList.remove('modal-open');
+    }
+
+    function quickAddBundle(id, size){
+      closeBundleModal();
+      setTimeout(() => {
+        addToCart(id, size, 1, { redirectToCart: false });
+      }, 180);
+    }
+
+    function openOfferPopup(){
+      const popup = document.getElementById('offerPopup');
+      popup.classList.add('open');
+      document.body.classList.add('modal-open');
+    }
+
+    function closeOfferPopup(){
+      document.getElementById('offerPopup').classList.remove('open');
+      document.body.classList.remove('modal-open');
+    }
+
+    function openShopOfferPopup(){
+      renderShopOfferStrip();
+      document.getElementById('shopOfferPopup').classList.add('open');
+      document.body.classList.add('modal-open');
+    }
+
+    function closeShopOfferPopup(){
+      document.getElementById('shopOfferPopup').classList.remove('open');
+      document.body.classList.remove('modal-open');
+    }
+
+    function renderShopOfferStrip(){
+      const strip = document.getElementById('shopOfferStrip');
+      if (!strip) return;
+      strip.innerHTML = bundles.map(item => `
+        <article class="liquid p-4" style="min-width:340px;scroll-snap-align:start;">
+          <div class="image-frame h-[220px]">
+            ${item.bestSeller ? '<span class="badge best-badge absolute top-3 left-3 z-10">Best Seller ✦</span>' : ''}
+            <img data-image-id="${item.id}" data-label="${item.name}" alt="${item.name}" class="w-full h-full object-cover" />
+          </div>
+          <div class="mt-4">
+            <p class="text-[11px] uppercase tracking-[0.24em] text-white/45">${item.category}</p>
+            <h4 class="text-[1.3rem] font-black mt-2 text-[#2C1810]">${item.name}</h4>
+            <p class="muted mt-2 text-sm leading-6">${item.description}</p>
+          </div>
+          <div class="mt-4 flex items-center justify-between gap-3">
+            <div>
+              <p class="text-sm text-white/38 line-through">${formatIDR(item.oldPrice)}</p>
+              <p class="text-2xl font-black text-white">${formatIDR(item.price)}</p>
+            </div>
+          </div>
+          <div class="mt-3">
+            <p class="text-xs text-white/55 mb-2 font-semibold uppercase tracking-wider">Pilih ukuran & tambah ke keranjang:</p>
+            <div class="flex flex-wrap gap-2">
+              ${item.sizes.map(size => `
+                <button onclick="shopOfferAddToCart('${item.id}','${size}')" class="liquid-pill px-4 py-2 text-sm font-bold hover:opacity-90 transition-opacity">
+                  ${size}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        </article>
+      `).join('');
+      setAllImages();
+    }
+
+    function shopOfferAddToCart(id, size){
+      closeShopOfferPopup();
+      setTimeout(() => {
+        addToCart(id, size, 1, { redirectToCart: false });
+      }, 180);
+    }
+
+    function showPage(id){
+      document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.getElementById('bundleModal').classList.remove('open');
+      document.getElementById('productModal').classList.remove('open');
+      document.getElementById('offerPopup').classList.remove('open');
+      document.getElementById('shopOfferPopup').classList.remove('open');
+      document.body.classList.remove('modal-open');
+      // Toggle search bar — only visible on homePage
+      const hideChromePages = ['cartPage', 'checkoutPage', 'paymentPage', 'catalogPage', 'detailPage', 'wishlistPage'];
+      document.body.classList.toggle('no-chrome', hideChromePages.includes(id));
+      if (id === 'detailPage') updateDetail();
+      if (id === 'wishlistPage') renderWishlist();
+      if (id === 'cartPage' || id === 'checkoutPage' || id === 'paymentPage') renderCart();
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    function goHome(){
+      showPage('homePage');
+    }
+
+    function scrollToFooterAbout(){
+      showPage('homePage');
+      setTimeout(() => {
+        document.getElementById('footerAbout').scrollIntoView({behavior:'smooth', block:'start'});
+      }, 120);
+    }
+
+    function setFilter(filter){
+      currentFilter = filter;
+      renderCatalogs();
+    }
+
+    function setSort(sort){
+      currentSort = sort;
+      renderCatalogs();
+    }
+
+    document.getElementById('globalSearch').addEventListener('input', e => {
+      searchTerm = e.target.value.trim().toLowerCase();
+      renderCatalogs();
+      if (document.getElementById('homePage').classList.contains('active') && searchTerm) {
+        showPage('catalogPage');
+      }
+    });
+
+    document.getElementById('offerPopup').addEventListener('click', e => {
+      if (e.target.id === 'offerPopup') closeOfferPopup();
+    });
+    document.getElementById('shopOfferPopup').addEventListener('click', e => {
+      if (e.target.id === 'shopOfferPopup') closeShopOfferPopup();
+    });
+    document.getElementById('bundleModal').addEventListener('click', e => {
+      if (e.target.id === 'bundleModal') closeBundleModal();
+    });
+    document.getElementById('productModal').addEventListener('click', e => {
+      if (e.target.id === 'productModal') closeProductModal();
+    });
+
+    renderCatalogs();
+    renderWishlist();
+    renderCart();
+    updateCartCount();
+    updateDetail();
+    setAllImages();
+    // Force-sync cart count every second (guard against any missed updates)
+    setInterval(updateCartCount, 1000);
+    openOfferPopup();
+  </script>
+</body>
+</html>
