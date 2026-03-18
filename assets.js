@@ -27,7 +27,7 @@ window.__assets = {
   heroBanner: "",
 
   /** Gambar QRIS untuk metode pembayaran QRIS */
-  qrisImage: "",
+  qrisImage: "Qris.jpg",
 
 
   /* ──────────────────────────────────────────────
