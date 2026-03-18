@@ -1,0 +1,2241 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IMMt SHOP — Diagon Alley Edition</title>
+  <!-- Performance: preconnect to CDN origins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;900&display=swap&font-display=swap");
+
+/* ═══════════════════════════════════════════════════
+   IMMt SHOP — DARK LUXURY · Great Hall Edition
+   Deep crimson · Burnished gold · Readable on dark
+   ═══════════════════════════════════════════════════ */
+
+:root{
+  --gold:        #EEBA30;
+  --amber:       #C9973A;
+  --dark-gold:   #A07820;
+  --scarlet:     #AE0001;
+  --crimson:     #8B0000;
+  --grad-gold:   linear-gradient(135deg,#EEBA30 0%,#C9973A 42%,#EEBA30 68%,#A07820 100%);
+  /* Text — bright enough to read on dark bg */
+  --text:        #F5E6C8;
+  --text-sub:    rgba(245,230,200,.75);
+  --text-muted:  rgba(245,230,200,.52);
+  --text-faint:  rgba(245,230,200,.36);
+  --header-h:    88px;
+}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-overflow-scrolling:touch}
+html{scroll-behavior:smooth;overflow-x:hidden;overscroll-behavior:none}
+
+body{
+  margin:0;
+  font-family:'Plus Jakarta Sans',system-ui,sans-serif;
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+  overscroll-behavior-x:none;
+  background:
+    radial-gradient(ellipse 80% 55% at 20% 8%,rgba(139,0,0,.28),transparent 62%),
+    linear-gradient(180deg,#1A0500 0%,#0D0200 65%,#0A0100 100%);
+}
+
+/* Page grain texture — dinonaktifkan untuk performa, aktifkan kembali di perangkat desktop jika perlu */
+/* body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:999;opacity:.030;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px 200px;
+} */
+
+/* Ambient orbs */
+.ambient{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.orb{position:absolute;border-radius:999px;filter:blur(40px)}
+.orb.one  {width:420px;height:420px;left:-100px;top:3%;background:radial-gradient(circle,rgba(139,0,0,.28),transparent 70%)}
+.orb.two  {width:320px;height:320px;right:-60px;top:0%;background:radial-gradient(circle,rgba(201,151,58,.14),transparent 70%)}
+.orb.three{display:none}
+@keyframes orbDrift{0%,100%{transform:translate(0,0)}}
+
+/* Floating stars */
+.hp-star{position:fixed;border-radius:50%;background:rgba(238,186,48,.35);pointer-events:none;z-index:0;opacity:.25}
+/* starTwinkle dimatikan untuk performa */
+
+/* Floating candles */
+.hp-candle{display:none} /* candleLift dimatikan untuk performa */
+
+/* Floating runes */
+.hp-floating-rune{position:fixed;pointer-events:none;z-index:0;color:rgba(238,186,48,.10);opacity:.10}
+/* floatRune dimatikan untuk performa */
+
+/* Shell */
+/* Performance: hint GPU for animated elements */
+.orb,.hp-star,.hp-candle,.hp-floating-rune{will-change:transform,opacity}
+.glass-card{will-change:transform}
+.cta,.ghost{will-change:transform,box-shadow}
+.shell{position:relative;z-index:1;width:min(100%,1380px);margin:0 auto;padding:calc(var(--header-h) + 0px) 0 64px;overflow-x:hidden;contain:layout}
+.page{display:none}
+.page.active{display:block;animation:pageReveal .42s cubic-bezier(.22,1,.36,1)}
+@keyframes pageReveal{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Section HP Title ── */
+.section-hp-title{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:12px}
+.section-hp-title::before,.section-hp-title::after{content:'';flex:1;height:1.5px;max-width:180px;background:linear-gradient(90deg,transparent,rgba(238,186,48,.55),rgba(238,186,48,.28));border-radius:2px}
+.section-hp-title::after{background:linear-gradient(90deg,rgba(238,186,48,.28),rgba(238,186,48,.55),transparent)}
+.section-hp-title span{font-size:11px;font-weight:800;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);white-space:nowrap}
+
+/* ── Liquid panels ── */
+.liquid{
+  position:relative;overflow:hidden;border-radius:28px;
+  border:1px solid rgba(238,186,48,.14);
+  background:linear-gradient(145deg,rgba(32,8,1,.90) 0%,rgba(20,4,0,.85) 100%);
+  box-shadow:0 0 0 1px rgba(238,186,48,.07),0 24px 64px rgba(0,0,0,.60),0 4px 12px rgba(0,0,0,.40),inset 0 1px 0 rgba(238,186,48,.12),inset 0 0 80px rgba(139,0,0,.08);
+  backdrop-filter:blur(8px) saturate(130%);-webkit-backdrop-filter:blur(8px) saturate(130%);
+}
+.liquid::before{content:'';position:absolute;inset:0;border-radius:inherit;background:linear-gradient(145deg,rgba(238,186,48,.055) 0%,rgba(255,255,255,.02) 30%,transparent 60%,rgba(238,186,48,.030) 100%);pointer-events:none}
+.liquid::after{content:'';position:absolute;top:10px;left:10px;right:10px;bottom:10px;border-radius:20px;border:1px solid rgba(238,186,48,.06);pointer-events:none}
+.liquid > *{position:relative;z-index:1}
+
+.liquid-inner{
+  position:relative;overflow:hidden;border-radius:20px;
+  border:1px solid rgba(238,186,48,.12);
+  background:linear-gradient(145deg,rgba(40,10,1,.75) 0%,rgba(26,6,0,.70) 100%);
+  box-shadow:0 4px 20px rgba(0,0,0,.35),inset 0 1px 0 rgba(238,186,48,.08);
+}
+
+.liquid-pill{
+  border:1px solid rgba(238,186,48,.25);border-radius:999px;
+  background:linear-gradient(145deg,rgba(238,186,48,.12) 0%,rgba(201,151,58,.08) 100%);
+  box-shadow:0 2px 8px rgba(0,0,0,.30),inset 0 1px 0 rgba(238,186,48,.14);
+  color:var(--gold) !important;transition:all .2s ease;
+}
+.liquid-pill:hover{background:linear-gradient(145deg,rgba(238,186,48,.22) 0%,rgba(201,151,58,.15) 100%);border-color:rgba(238,186,48,.45)}
+
+.liquid-icon{
+  border:1px solid rgba(238,186,48,.18);border-radius:16px;
+  background:linear-gradient(145deg,rgba(38,10,1,.82) 0%,rgba(24,5,0,.78) 100%);
+  box-shadow:0 3px 10px rgba(0,0,0,.35),inset 0 1px 0 rgba(238,186,48,.10);
+  color:var(--gold) !important;
+}
+
+/* Wizard grain */
+.wizard-grain{position:absolute;inset:0;pointer-events:none;opacity:.055;
+  background-image:radial-gradient(circle at 15% 25%,rgba(238,186,48,.8) 0 1px,transparent 1px),radial-gradient(circle at 75% 35%,rgba(174,0,1,.7) 0 1px,transparent 1px),radial-gradient(circle at 45% 75%,rgba(238,186,48,.6) 0 1px,transparent 1px),radial-gradient(circle at 85% 80%,rgba(174,0,1,.5) 0 1px,transparent 1px);
+  background-size:18px 18px,22px 22px,28px 28px,34px 34px;mix-blend-mode:screen;
+}
+.wizard-border{
+  box-shadow:0 0 0 1px rgba(238,186,48,.15),0 0 0 4px rgba(174,0,1,.05),0 24px 64px rgba(0,0,0,.62),inset 0 1px 0 rgba(238,186,48,.12),inset 0 0 60px rgba(139,0,0,.10) !important;
+}
+
+/* ── Product Cards ── */
+.glass-card{
+  position:relative;overflow:hidden;border-radius:22px;
+  border:1px solid rgba(238,186,48,.14);
+  background:linear-gradient(155deg,rgba(32,8,1,.92) 0%,rgba(18,4,0,.88) 100%);
+  box-shadow:0 8px 32px rgba(0,0,0,.52),inset 0 1px 0 rgba(238,186,48,.09);
+  /* CLICKABLE */
+  cursor:pointer !important;
+  transition:transform .30s cubic-bezier(.22,1,.36,1),box-shadow .30s ease,border-color .30s ease;
+}
+.glass-card::before{content:'';position:absolute;inset:0;border-radius:inherit;background:linear-gradient(145deg,rgba(238,186,48,.065) 0%,transparent 40%,rgba(238,186,48,.025) 100%);pointer-events:none}
+.glass-card::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;box-shadow:inset 0 0 40px rgba(139,0,0,.08)}
+/* cardFlicker dihapus untuk performa — animasi opacity per-kartu sangat berat */
+/* Keep all children on top & clickable */
+.glass-card > *{position:relative;z-index:2;pointer-events:auto}
+.glass-card:hover{
+  transform:translateY(-7px) scale(1.012) !important;
+  border-color:rgba(238,186,48,.50) !important;
+  box-shadow:0 0 0 1px rgba(238,186,48,.38),0 28px 70px rgba(0,0,0,.70),0 0 50px rgba(238,186,48,.16),inset 0 1px 0 rgba(238,186,48,.20) !important;
+}
+
+/* Image frame */
+.image-frame{position:relative;overflow:hidden;border-radius:16px;border:1px solid rgba(238,186,48,.18) !important;background:linear-gradient(135deg,rgba(139,0,0,.15),rgba(201,151,58,.05));min-height:180px;box-shadow:inset 0 0 0 3px rgba(238,186,48,.04),0 6px 20px rgba(0,0,0,.45) !important}
+.image-frame img{display:block;width:100%;height:100%;object-fit:cover}
+
+/* ── Header ── */
+header.topbar{
+  position:fixed;left:0;right:0;top:0;z-index:100;padding:12px 14px 10px;
+  background:linear-gradient(180deg,rgba(14,3,0,.97) 0%,rgba(10,2,0,.94) 70%,rgba(8,1,0,.80) 100%) !important;
+  border-bottom:1px solid rgba(238,186,48,.10) !important;
+  box-shadow:0 4px 32px rgba(0,0,0,.65) !important;
+  transition:opacity .22s ease,transform .22s ease;
+}
+header.topbar::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent 0%,rgba(174,0,1,.55) 15%,#EEBA30 35%,#FFC837 50%,#EEBA30 65%,rgba(174,0,1,.55) 85%,transparent 100%);
+  /* headerLine dimatikan untuk performa */
+}
+/* @keyframes headerLine dimatikan untuk performa */
+
+.header-card{width:min(100%,1320px);margin:0 auto;display:grid;grid-template-columns:auto minmax(360px,1fr) auto auto;gap:18px;align-items:center;padding:10px 14px}
+
+/* Search */
+.search-bar-wrap{transition:opacity .22s ease,width .22s ease,flex .22s ease}
+body.no-chrome .search-bar-wrap{opacity:0;pointer-events:none;width:0;overflow:hidden;flex:0 0 0;min-width:0;padding:0;transition:opacity .22s ease,width .22s ease}
+.search-input{color:var(--text) !important}
+.search-input::placeholder{color:rgba(238,186,48,.30)}
+
+/* ── Hero ── */
+.hero{min-height:420px;padding:22px}
+.hero-media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.18;filter:saturate(55%) contrast(1.1) sepia(30%)}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,2,0,.50),rgba(8,2,0,.70)),linear-gradient(0deg,rgba(8,2,0,.85),rgba(30,8,0,.25))}
+
+/* ── Buttons ── */
+.cta{
+  color:#1A0900;background:var(--grad-gold);
+  box-shadow:0 8px 24px rgba(0,0,0,.45),0 0 24px rgba(238,186,48,.22),inset 0 1px 0 rgba(255,255,255,.30),inset 0 -1px 0 rgba(0,0,0,.20);
+  position:relative;overflow:hidden;transition:transform .22s ease,box-shadow .22s ease;
+}
+.cta::after{display:none} /* ctaShine dimatikan untuk performa */
+@keyframes ctaShine{0%,100%{opacity:0}}
+.cta:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(0,0,0,.55),0 0 44px rgba(238,186,48,.38)}
+
+.ghost{color:var(--gold);background:linear-gradient(145deg,rgba(238,186,48,.10),rgba(201,151,58,.06));border:1px solid rgba(238,186,48,.28);box-shadow:0 4px 16px rgba(0,0,0,.30),inset 0 1px 0 rgba(238,186,48,.10);backdrop-filter:blur(10px);transition:all .22s ease}
+.ghost:hover{background:linear-gradient(145deg,rgba(238,186,48,.18),rgba(201,151,58,.12));border-color:rgba(238,186,48,.52)}
+
+/* ── Badges ── */
+.badge{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:999px;font-size:10px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);background:linear-gradient(135deg,rgba(238,186,48,.14),rgba(201,151,58,.08));border:1px solid rgba(238,186,48,.26);box-shadow:0 2px 8px rgba(0,0,0,.30),inset 0 1px 0 rgba(238,186,48,.10)}
+.best-badge{color:#1A0900;background:var(--grad-gold);border-color:rgba(238,186,48,.60);box-shadow:0 4px 16px rgba(0,0,0,.40),0 0 20px rgba(238,186,48,.28),inset 0 1px 0 rgba(255,255,255,.28)}
+
+/* ── Text colors ── */
+.hero-highlight{color:#EEBA30} /* goldShimmer dimatikan untuk performa */
+/* @keyframes goldShimmer dimatikan */
+
+.muted{color:var(--text-muted)}
+.section-title{font-size:1.24rem;font-weight:900;line-height:1.14;color:var(--gold)}
+
+/* Force all text readable on dark */
+h1,h2,h3,h4,h5,h6{color:var(--text)}
+p{color:var(--text-sub)}
+span{color:inherit}
+
+/* Tailwind text class overrides */
+.text-\[#2C1810\]    {color:var(--text) !important}
+.text-\[#2C1810\]\/55{color:var(--text-sub) !important}
+.text-\[#2C1810\]\/60{color:var(--text-sub) !important}
+.text-\[#2C1810\]\/62{color:var(--text-sub) !important}
+.text-\[#2C1810\]\/65{color:var(--text-sub) !important}
+.text-\[#2C1810\]\/45{color:var(--text-muted) !important}
+.text-\[#2C1810\]\/38{color:var(--text-faint) !important}
+.text-\[#2C1810\]\/70{color:rgba(245,230,200,.70) !important}
+.text-\[#AE0001\]    {color:var(--gold) !important}
+.line-through        {color:var(--text-faint) !important}
+
+/* Grids */
+.grid-hero{display:grid;grid-template-columns:1.12fr .88fr;gap:18px;align-items:end}
+.catalog-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.home-catalog-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.wishlist-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.cart-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:18px}
+.stats-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+
+/* Bundle strip */
+.bundle-strip{display:grid;grid-template-columns:1fr 1.35fr 1fr;gap:14px;align-items:stretch}
+.bundle-strip > article{scroll-snap-align:start}
+
+/* Modal */
+.modal-backdrop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:16px;z-index:200;background:rgba(4,1,0,.85)}
+.modal-backdrop.open{display:flex;animation:modalIn .25s ease}
+@keyframes modalIn{from{opacity:0}to{opacity:1}}
+.modal-panel{width:min(100%,860px);max-height:88vh;overflow-y:auto;border-radius:28px}
+.payment-option{transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.payment-option.active{border-color:rgba(238,186,48,.48) !important;box-shadow:0 0 0 1px rgba(238,186,48,.22),0 16px 40px rgba(0,0,0,.55),0 0 40px rgba(238,186,48,.12),inset 0 1px 0 rgba(238,186,48,.14) !important;transform:translateY(-1px)}
+.modal-thumb{border:1px solid rgba(238,186,48,.12);transition:all .18s ease;opacity:.75}
+.modal-thumb.active{border-color:rgba(238,186,48,.55);box-shadow:0 0 0 1px rgba(238,186,48,.28),0 0 20px rgba(238,186,48,.18);opacity:1;transform:translateY(-1px)}
+
+/* Toast */
+/* toast styled via JS */
+
+/* Checkout */
+.checkout-card{background:linear-gradient(155deg,rgba(30,8,1,.92) 0%,rgba(18,4,0,.90) 100%) !important;border:1px solid rgba(238,186,48,.16) !important;border-radius:24px !important;box-shadow:0 0 0 1px rgba(238,186,48,.07),0 24px 64px rgba(0,0,0,.65),inset 0 1px 0 rgba(238,186,48,.10) !important;position:relative;overflow:hidden}
+.checkout-card .border-b{border-color:rgba(238,186,48,.14) !important}
+.checkout-field{background:rgba(255,248,220,.06) !important;border:1px solid rgba(238,186,48,.22) !important;border-radius:12px !important;padding:11px 14px !important;width:100% !important;font-family:'Plus Jakarta Sans',sans-serif !important;font-size:15px !important;color:var(--text) !important;box-shadow:inset 0 2px 8px rgba(0,0,0,.28) !important;transition:border-color .2s ease,box-shadow .2s ease !important}
+.checkout-field:focus{outline:none !important;border-color:rgba(238,186,48,.55) !important;box-shadow:0 0 0 3px rgba(238,186,48,.10),inset 0 2px 8px rgba(0,0,0,.22) !important}
+.checkout-field::placeholder{color:rgba(245,230,200,.22) !important}
+input[type="radio"]{accent-color:var(--gold)}
+.checkout-btn{width:100%;padding:16px;border-radius:16px;background:var(--grad-gold);color:#1a0900;font-size:16px;font-weight:900;border:none;font-family:'Plus Jakarta Sans',sans-serif;box-shadow:0 8px 28px rgba(0,0,0,.45),0 0 28px rgba(238,186,48,.20);position:relative;overflow:hidden;transition:transform .2s ease,box-shadow .2s ease}
+.checkout-btn::after{display:none} /* ctaShine dimatikan */
+.checkout-btn:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(0,0,0,.55),0 0 40px rgba(238,186,48,.32)}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:rgba(12,3,0,.50)}
+::-webkit-scrollbar-thumb{background:rgba(238,186,48,.28);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(238,186,48,.52)}
+
+/* Wand cursor */
+body    {cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M7 2L9 8L3 10L9 12L7 18L12 13L17 18L15 12L21 10L15 8L17 2L12 7Z' fill='%23EEBA30' stroke='%238B0000' stroke-width='1'/%3E%3C/svg%3E") 12 12,auto}
+button,a{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M7 2L9 8L3 10L9 12L7 18L12 13L17 18L15 12L21 10L15 8L17 2L12 7Z' fill='%23EEBA30' stroke='%238B0000' stroke-width='1'/%3E%3C/svg%3E") 12 12,pointer}
+
+.hidden-file{display:none}
+
+/* Responsive */
+@media(max-width:1024px){.grid-hero,.detail-grid,.cart-grid,.offer-grid{grid-template-columns:1fr}.catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.home-catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}}
+@media(max-width:640px){
+  :root{--header-h:82px}
+  .shell{padding-left:0;padding-right:0}
+  .header-card{grid-template-columns:auto minmax(0,1fr) auto;gap:10px}
+  .brand-title{display:none}
+  .hero{padding:18px;min-height:380px}
+  .catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .home-catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+  .wishlist-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.bundle-strip{grid-template-columns:1fr !important;gap:12px !important}
+  .modal-panel{border-radius:24px}
+  .modal-inner-grid{grid-template-columns:1fr !important}
+  .modal-img-col{border-radius:20px 20px 0 0 !important;padding:12px !important}
+  .modal-info-col{padding:14px 14px 20px !important;max-height:none !important;overflow-y:visible !important}
+  #productModal > div{border-radius:20px !important;max-height:92vh !important}
+  #homeCatalogSection{padding:8px !important}
+}
+</style>
+
+  <!-- ═══ Konfigurasi Foto — edit di assets.js ═══ -->
+  <script src="assets.js"></script>
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>emailjs.init("RfwESh63YJGqddNRD");</script>
+</head>
+<body>
+  <!-- ✨ Magical floating stars ✨ -->
+  <div id="magicStars" style="position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;"></div>
+  <script>
+    (function(){
+      const container = document.getElementById('magicStars');
+      const runes = ['⚡','✦','★'];
+      // Stars - dikurangi dari 38 → 12 untuk performa
+      for(let i=0;i<12;i++){
+        const s = document.createElement('div');
+        s.className='hp-star';
+        s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${Math.random()*4}s;animation-duration:${2+Math.random()*3}s;width:2px;height:2px;`;
+        container.appendChild(s);
+      }
+      // Floating runes - dikurangi dari 6 → 3
+      for(let i=0;i<3;i++){
+        const r = document.createElement('div');
+        r.className='hp-floating-rune';
+        r.textContent=runes[i];
+        r.style.cssText=`left:${15+i*35}%;top:${20+i*25}%;animation-delay:${i*2}s;animation-duration:${8+i*2}s;font-size:1.2rem;`;
+        container.appendChild(r);
+      }
+      // Floating candles - dikurangi dari 7 → 3
+      const candlePositions = [[8,20],[88,30],[50,15]];
+      candlePositions.forEach(([left,top],i) => {
+        const c = document.createElement('div');
+        c.className='hp-candle';
+        c.style.cssText=`left:${left}%;top:${top}%;animation-delay:${i*2}s;animation-duration:${12+i*1.5}s;`;
+        c.innerHTML=`<svg width="12" height="32" viewBox="0 0 12 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="10" width="6" height="22" rx="2" fill="rgba(238,186,48,.55)"/>
+          <ellipse cx="6" cy="9" rx="3" ry="4" fill="rgba(255,200,50,.70)"/>
+          <ellipse cx="6" cy="7" rx="2" ry="3" fill="rgba(255,240,180,.90)"/>
+          <line x1="6" y1="6" x2="6" y2="1" stroke="rgba(80,40,10,.60)" stroke-width="1.2"/>
+        </svg>`;
+        container.appendChild(c);
+      });
+    })();
+  </script>
+  <input id="uploader" class="hidden-file" type="file" accept="image/*" multiple />
+
+  <div class="ambient">
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+    <div class="orb three"></div>
+  </div>
+
+  <header class="topbar">
+    <div class="liquid header-card">
+      <button onclick="goHome()" class="liquid-icon h-12 w-12 rounded-full overflow-hidden flex items-center justify-center" style="border:2px solid rgba(174,0,1,.20);box-shadow:0 4px 14px rgba(116,0,1,.10),inset 0 1px 0 rgba(255,255,255,.95);">
+        <img data-image-id="siteLogo" alt="Logo IMMt SHOP" class="h-full w-full object-cover" />
+      </button>
+
+      <div class="min-w-0 flex items-center gap-3 flex-1">
+        <div class="brand-title min-w-0">
+          <button onclick="openShopOfferPopup()" class="text-[1.5rem] font-black leading-none truncate" style="color:var(--gold);" hover:opacity-70 transition-opacity cursor-pointer bg-transparent border-0 p-0" style="font-family:'Plus Jakarta Sans',sans-serif;">IMMt SHOP</button>
+        </div>
+        <div class="search-bar-wrap liquid-inner flex-1 rounded-[20px] px-3 py-2.5 flex items-center gap-2 min-w-0">
+          <svg class="h-5 w-5 shrink-0" style="color:rgba(245,230,200,.45);" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m20 20-3.5-3.5"></path>
+          </svg>
+          <input id="globalSearch" class="search-input bg-transparent outline-none border-0 flex-1 text-[15px] md:text-[16px]" placeholder="Cari produk..." style="font-family:'Plus Jakarta Sans',sans-serif;" />
+          <!-- Nav links di dalam search bar, hanya tampil di homePage -->
+          <nav id="inlineNav" style="display:flex;align-items:center;gap:20px;padding-left:14px;border-left:1.5px solid rgba(44,24,16,.12);flex-shrink:0;">
+            <a style="font-size:14px;font-weight:700;color:rgba(245,230,200,.82);text-decoration:none;opacity:1;cursor:pointer;white-space:nowrap;" href="javascript:void(0)" onclick="goHome()">Beranda</a>
+            <a style="font-size:14px;font-weight:700;color:rgba(245,230,200,.82);text-decoration:none;opacity:1;cursor:pointer;white-space:nowrap;" href="javascript:void(0)" onclick="document.getElementById('homeCatalogSection')?.scrollIntoView({behavior:'smooth',block:'start'})">Produk</a>
+            <a style="font-size:14px;font-weight:700;color:rgba(245,230,200,.82);text-decoration:none;opacity:1;cursor:pointer;white-space:nowrap;" href="javascript:void(0)" onclick="scrollToFooterAbout()">Tentang Kami</a>
+          </nav>
+        </div>
+      </div>
+
+      <button onclick="showPage('cartPage')" class="liquid-icon h-12 w-12 rounded-[18px] flex items-center justify-center relative" style="border:1.5px solid rgba(238,186,48,.28);box-shadow:0 4px 14px rgba(0,0,0,.30),0 0 14px rgba(238,186,48,.10),inset 0 1px 0 rgba(238,186,48,.12);">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#EEBA30" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+        <span id="headerCartCount" style="position:absolute;right:-6px;top:-6px;min-width:20px;height:20px;border-radius:999px;background:linear-gradient(135deg,#AE0001,#8B0000);color:#fff;font-size:10px;font-weight:900;padding:0 4px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.40);border:1.5px solid rgba(238,186,48,.35);z-index:10;transition:transform .15s ease;font-size:11px;">✦</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="shell">
+    <main id="homePage" class="page active space-y-5">
+      <section style="position:relative;overflow:hidden;margin:-12px -14px 0;border-radius:0;background:linear-gradient(145deg,rgba(28,6,0,.95) 0%,rgba(18,4,0,.92) 100%);border-bottom:1px solid rgba(238,186,48,.12);box-shadow:0 8px 40px rgba(0,0,0,.60),inset 0 0 120px rgba(139,0,0,.12);">
+        <!-- Top ornamental border row -->
+        <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#740001,#AE0001 20%,#EEBA30 40%,#D3A625 50%,#EEBA30 60%,#AE0001 80%,#740001);z-index:3;pointer-events:none;"></div>
+        <!-- Diagonal Gryffindor stripe pattern overlay -->
+        <div style="position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.035;background:repeating-linear-gradient(-45deg,#AE0001 0,#AE0001 2px,transparent 2px,transparent 22px);"></div>
+        <!-- Corner ornament top-left -->
+        <div style="position:absolute;top:12px;left:12px;z-index:2;pointer-events:none;opacity:.35;">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M2 2 L18 2 L2 18 Z" fill="none" stroke="#AE0001" stroke-width="1.5"/><path d="M2 2 L8 2 L2 8 Z" fill="#EEBA30" opacity=".6"/><circle cx="18" cy="2" r="2" fill="#AE0001"/><circle cx="2" cy="18" r="2" fill="#AE0001"/></svg>
+        </div>
+        <!-- Corner ornament top-right -->
+        <div style="position:absolute;top:12px;right:12px;z-index:2;pointer-events:none;opacity:.35;">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M46 2 L30 2 L46 18 Z" fill="none" stroke="#AE0001" stroke-width="1.5"/><path d="M46 2 L40 2 L46 8 Z" fill="#EEBA30" opacity=".6"/><circle cx="30" cy="2" r="2" fill="#AE0001"/><circle cx="46" cy="18" r="2" fill="#AE0001"/></svg>
+        </div>
+        <div class="wizard-grain"></div>
+        <img data-image-id="heroBanner" class="hero-media" alt="Hero banner" loading="lazy" />
+        <div class="hero-overlay"></div>
+        <div style="padding:2rem 2rem 1.8rem;text-align:center;position:relative;z-index:1;">
+          <!-- Ruang untuk logo di atas -->
+          <div style="min-height:56px;margin-bottom:1rem;" id="heroLogoSlot"></div>
+          <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;letter-spacing:.45em;text-transform:uppercase;color:rgba(238,186,48,.70);margin-bottom:.8rem;">IMMt SHOP · Official Merchandise</div>
+          <h2 style="margin:0 0 0.5rem;font-size:clamp(2rem,5vw,4rem);font-weight:900;line-height:1;color:rgba(245,230,200,.90);font-family:'Plus Jakarta Sans',sans-serif;text-shadow:0 2px 12px rgba(238,186,48,.18);">
+            Selamat Datang di <span class="hero-highlight">IMMt SHOP</span>
+          </h2>
+          <p style="margin:0.75rem auto 0;font-size:clamp(.9rem,1.5vw,1.05rem);color:rgba(245,230,200,.72);max-width:600px;line-height:1.7;">
+            Marketplace resmi IMMt SHOP — Keuangan IMMt FTUI 2026. Berbelanja dengan mudah dan nyaman.
+          </p>
+          <div style="display:flex;align-items:center;gap:12px;justify-content:center;margin-top:1rem;opacity:.5;">
+            <span style="flex:1;max-width:80px;height:1px;background:linear-gradient(90deg,transparent,#EEBA30)"></span>
+            <span style="color:#EEBA30;font-size:1rem;">⚡</span>
+            <span style="flex:1;max-width:80px;height:1px;background:linear-gradient(90deg,#EEBA30,transparent)"></span>
+          </div>
+
+          <!-- HP Ornamental Divider Row -->
+          <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:14px;opacity:.55;">
+            <div style="flex:1;max-width:60px;height:1.5px;background:linear-gradient(90deg,transparent,rgba(174,0,1,.7));border-radius:2px;"></div>
+            <div style="width:6px;height:6px;border:1.5px solid rgba(174,0,1,.65);transform:rotate(45deg);border-radius:1px;"></div>
+            <div style="width:4px;height:4px;background:rgba(238,186,48,.80);border-radius:50%;"></div>
+            <div style="font-size:12px;font-weight:900;letter-spacing:.30em;color:rgba(174,0,1,.70);text-transform:uppercase;">HOUSE of metal</div>
+            <div style="width:4px;height:4px;background:rgba(238,186,48,.80);border-radius:50%;"></div>
+            <div style="width:6px;height:6px;border:1.5px solid rgba(174,0,1,.65);transform:rotate(45deg);border-radius:1px;"></div>
+            <div style="flex:1;max-width:60px;height:1.5px;background:linear-gradient(90deg,rgba(174,0,1,.7),transparent);border-radius:2px;"></div>
+          </div>
+
+          <!-- Hogwarts Crest SVG watermark -->
+          <div style="position:absolute;right:32px;bottom:16px;opacity:.055;pointer-events:none;z-index:0;">
+            <svg width="90" height="110" viewBox="0 0 90 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M45 5 L85 25 L85 75 C85 90 65 105 45 110 C25 105 5 90 5 75 L5 25 Z" fill="#AE0001" stroke="#EEBA30" stroke-width="2"/>
+              <text x="45" y="58" text-anchor="middle" fill="#EEBA30" font-size="28" font-weight="900" font-family="serif">H</text>
+              <path d="M20 30 L70 30" stroke="#EEBA30" stroke-width="1.5" opacity=".6"/>
+              <path d="M20 80 L70 80" stroke="#EEBA30" stroke-width="1.5" opacity=".6"/>
+              <path d="M45 10 L45 100" stroke="#EEBA30" stroke-width="1" opacity=".3"/>
+              <path d="M5 55 L85 55" stroke="#EEBA30" stroke-width="1" opacity=".3"/>
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <div style="padding:0 14px;">
+      <div class="text-center py-4 px-4">
+        <div class="section-hp-title" style="margin-bottom:10px;"><span>⚡ Penawaran Terbatas ⚡</span></div>
+        <h2 class="text-[2rem] md:text-[2.8rem] font-black" style="color:rgba(245,230,200,.96);">Penawaran Spesial Untukmu</h2>
+        <p class="mt-2 text-[15px]" style="color:rgba(245,230,200,.60);">Hemat lebih banyak dengan paket bundle pilihan kami.</p>
+      </div>
+      <section class="liquid p-4 md:p-5 wizard-border"><div class="wizard-grain"></div>
+        <div id="bundleStrip" class="bundle-strip"></div>
+      </section>
+
+      <div class="text-center py-4 px-4">
+        <div class="section-hp-title" style="margin-bottom:10px;"><span>✦ Koleksi Produk ✦</span></div>
+        <h2 class="text-[2rem] md:text-[2.8rem] font-black" style="color:rgba(245,230,200,.96);">Koleksi Produk Pilihan Kami</h2>
+        <p class="mt-2 text-[15px]" style="color:rgba(245,230,200,.60);">Temukan produk berkualitas tinggi yang kami siapkan khusus untuk kamu.</p>
+      </div>
+      <section id="homeCatalogSection" class="liquid wizard-border" style="padding:12px;"><div class="wizard-grain"></div>
+        <div id="homeCatalogGrid" class="home-catalog-grid"></div>
+      </section>
+
+      <section id="footerAbout" class="py-6">
+        <div class="flex flex-col items-center gap-4">
+          <div class="section-hp-title" style="width:100%;max-width:340px;"><span>✦ About Us ✦</span></div>
+          <h3 style="font-size:1.3rem;font-weight:900;color:rgba(245,230,200,.96);">Tentang Kami</h3>
+          <p style="text-align:center;color:rgba(245,230,200,.62);max-width:420px;line-height:1.7;font-size:.95rem;">Marketplace resmi IMMt SHOP, tempat kamu bisa menemukan koleksi produk terbaik dari Keuangan IMMt FTUI 2026.</p>
+          <!-- HP ornamental divider -->
+          <div style="display:flex;align-items:center;gap:10px;opacity:.45;">
+            <div style="width:5px;height:5px;border:1.5px solid #AE0001;transform:rotate(45deg);"></div>
+            <div style="width:32px;height:1.5px;background:linear-gradient(90deg,transparent,#AE0001);"></div>
+            <span style="font-size:16px;color:#AE0001;">⚡</span>
+            <div style="width:32px;height:1.5px;background:linear-gradient(90deg,#AE0001,transparent);"></div>
+            <div style="width:5px;height:5px;border:1.5px solid #AE0001;transform:rotate(45deg);"></div>
+          </div>
+          <a class="cta rounded-[22px] px-6 py-3.5 text-[15px] font-black flex items-center gap-2.5" target="_blank" rel="noopener noreferrer"
+             href="https://www.instagram.com/immtshop?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+            </svg>
+            Instagram IMMt SHOP
+          </a>
+          <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;letter-spacing:.25em;color:rgba(44,24,16,.35);text-align:center;margin-top:.5rem;">Keuangan IMMt FTUI 2026</div>
+        </div>
+      </section>
+      </div>
+    </main>
+
+    <section id="catalogPage" class="page space-y-5">
+      <div class="liquid p-4 md:p-5 wizard-border"><div class="wizard-grain"></div>
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <p class="text-[11px] uppercase tracking-[0.28em]" style="color:rgba(238,186,48,.45);" style="font-family:'Plus Jakarta Sans',sans-serif;">Koleksi Produk</p>
+            <h2 style="font-family:'Plus Jakarta Sans',sans-serif;" class="text-3xl md:text-4xl font-black mt-1" style="color:rgba(245,230,200,.96);">Katalog IMMt SHOP</h2>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="setFilter('all')" class="liquid-pill px-4 py-2 text-sm font-semibold">All</button>
+            <button onclick="setFilter('Apparel')" class="liquid-pill px-4 py-2 text-sm font-semibold">Apparel</button>
+            <button onclick="setFilter('Bundle')" class="liquid-pill px-4 py-2 text-sm font-semibold">Bundle</button>
+            <button onclick="setFilter('Merch')" class="liquid-pill px-4 py-2 text-sm font-semibold">Merch</button>
+            <button onclick="setFilter('Accessories')" class="liquid-pill px-4 py-2 text-sm font-semibold">Accessories</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="liquid p-4 md:p-5 wizard-border"><div class="wizard-grain"></div>
+        <div class="flex gap-2 mb-4">
+          <button onclick="setSort('priceDesc')" class="liquid-pill px-4 py-2 text-sm font-semibold">Harga tertinggi</button>
+          <button onclick="setSort('nameAsc')" class="liquid-pill px-4 py-2 text-sm font-semibold">A-Z</button>
+        </div>
+        <div id="catalogGrid" class="catalog-grid"></div>
+      </div>
+    </section>
+
+    <section id="detailPage" class="page">
+      <div class="liquid p-4 md:p-5 wizard-border"><div class="wizard-grain"></div>
+        <div class="flex items-center justify-between gap-3 mb-4">
+          <div>
+            <p class="text-[11px] uppercase tracking-[0.28em]" style="color:rgba(238,186,48,.45);" style="font-family:'Plus Jakarta Sans',sans-serif;">Detail Produk</p>
+            <h2 id="detailHeading" style="font-family:'Plus Jakarta Sans',sans-serif;" class="text-3xl md:text-4xl font-black mt-1"></h2>
+          </div>
+          <button onclick="showPage('catalogPage')" class="liquid-icon h-11 w-11 rounded-[18px] flex items-center justify-center">←</button>
+        </div>
+
+        <div class="detail-grid">
+          <div class="liquid-inner p-4">
+            <div class="image-frame h-[360px] md:h-[500px]">
+              <img id="detailImage" alt="Detail produk" />
+              
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <div class="liquid-inner p-5">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <span id="detailBadge" class="badge">Ready stock</span>
+                  <h3 id="detailTitle" style="font-family:'Plus Jakarta Sans',sans-serif;" class="text-3xl font-black mt-4">Produk</h3>
+                  <p id="detailCategory" style="color:rgba(245,230,200,.58);margin-top:.5rem;">Kategori</p>
+                </div>
+                <div class="liquid-inner px-4 py-3 text-right">
+                  <p id="detailOldPrice" style="font-size:.875rem;text-decoration:line-through;color:rgba(245,230,200,.55);">Rp 0</p>
+                  <p id="detailPrice" style="font-size:1.5rem;font-weight:900;color:#EEBA30;">Rp 0</p>
+                </div>
+              </div>
+              <p id="detailDescription" style="color:rgba(245,230,200,.62);margin-top:1rem;line-height:1.75;">Deskripsi.</p>
+            </div>
+
+            <div class="liquid-inner p-5">
+              <div class="flex items-center justify-between gap-3">
+                <h4 style="font-size:1.25rem;font-weight:900;color:rgba(245,230,200,.96);">Pilih ukuran</h4>
+                <span class="badge">No review</span>
+              </div>
+              <div id="detailSizeOptions" class="grid grid-cols-4 gap-3 mt-4"></div>
+              <div class="mt-5 flex flex-wrap gap-3">
+                <button onclick="addDetailToCart()" class="cta rounded-[22px] px-6 py-4 font-black">Masukkan ke Cart</button>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="cartPage" class="page">
+      <div class="cart-grid">
+        <div class="liquid p-4 md:p-5">
+          <div class="flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <button onclick="goHome()" class="liquid-icon h-10 w-10 rounded-[16px] flex items-center justify-center" title="Kembali ke Beranda">←</button>
+              <div>
+                <p class="text-[11px] uppercase tracking-[0.28em]" style="color:rgba(238,186,48,.45);" style="font-family:'Plus Jakarta Sans',sans-serif;">Cart</p>
+                <h2 style="font-family:'Plus Jakarta Sans',sans-serif;" class="text-3xl md:text-4xl font-black mt-1" style="color:rgba(245,230,200,.96);">Keranjang Belanja</h2>
+              </div>
+            </div>
+            <button onclick="showPage('catalogPage')" class="liquid-pill px-4 py-2 text-sm font-semibold">Tambah produk</button>
+          </div>
+          <div id="cartItems" class="space-y-4 mt-5"></div>
+        </div>
+
+        <div class="liquid p-4 md:p-5 h-fit">
+          <h3 class="section-title">Ringkasan Pesanan</h3>
+          <div class="mt-4 space-y-3 text-sm">
+            <div style="display:flex;align-items:center;justify-content:space-between;color:rgba(245,230,200,.65);"><span>Subtotal</span><span id="summarySubtotal">Rp 0</span></div>
+          </div>
+          <div class="h-px bg-white/10 my-4"></div>
+          <div class="flex items-end justify-between gap-3">
+            <div>
+              <p class="text-sm" style="color:rgba(245,230,200,.45);">Total bayar</p>
+              <p id="summaryTotal" style="font-size:1.75rem;font-weight:900;color:#EEBA30;">Rp 0</p>
+            </div>
+            <button onclick="showPage('checkoutPage')" class="cta rounded-[22px] px-5 py-4 font-black">Checkout</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+    <section id="checkoutPage" class="page space-y-5">
+      <div class="liquid p-4 md:p-5 wizard-border">
+        <div class="wizard-grain"></div>
+        <div class="max-w-[960px] mx-auto">
+          <div class="flex items-center gap-4 mb-2">
+            <button onclick="showPage('cartPage')" class="liquid-icon h-11 w-11 rounded-[18px] flex items-center justify-center shrink-0" title="Kembali ke Keranjang">←</button>
+            <div>
+              <p class="text-[11px] uppercase tracking-[0.28em]" style="color:rgba(238,186,48,.45);" style="font-family:'Plus Jakarta Sans',sans-serif;">Checkout</p>
+              <h2 style="font-family:'Plus Jakarta Sans',sans-serif;" class="text-3xl md:text-4xl font-black mt-1" style="color:rgba(245,230,200,.96);">Data Diri & Pengiriman</h2>
+              <p style="color:rgba(245,230,200,.58);margin-top:.5rem;font-size:.875rem;">Isi data dirimu, lalu lanjut ke halaman pembayaran.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="max-w-[860px] mx-auto w-full relative z-10">
+        <div class="checkout-card">
+          <div class="px-5 py-4 border-b border-slate-300">
+            <h3 style="font-family:'Plus Jakarta Sans',sans-serif;" class="text-[24px] font-extrabold">Data Diri & Pengiriman</h3>
+          </div>
+          <div class="p-5 space-y-6">
+            <div>
+              <label class="block text-[15px] font-medium mb-2" style="font-family:'Plus Jakarta Sans',sans-serif;">Nama Lengkap*</label>
+              <input id="buyerName" class="checkout-field" type="text" placeholder="" />
+            </div>
+            <div>
+              <label class="block text-[15px] font-medium mb-2" style="font-family:'Plus Jakarta Sans',sans-serif;">Email*</label>
+              <input id="buyerEmail" class="checkout-field" type="email" placeholder="" />
+            </div>
+            <div>
+              <label style="display:block;font-size:15px;font-weight:600;margin-bottom:8px;color:rgba(245,230,200,.82);">ID Line / No. WhatsApp*</label>
+              <input id="buyerContact" class="checkout-field" type="text" placeholder="" />
+            </div>
+            <div>
+              <p class="text-[15px] font-medium mb-3" style="font-family:'Plus Jakarta Sans',sans-serif;">Angkatan*</p>
+              <div class="space-y-2 text-[15px]">
+                <label style="display:flex;align-items:center;gap:12px;color:rgba(245,230,200,.80);"><input type="radio" name="angkatan" value="2022" /> 2022</label>
+                <label style="display:flex;align-items:center;gap:12px;color:rgba(245,230,200,.80);"><input type="radio" name="angkatan" value="2023" /> 2023</label>
+                <label style="display:flex;align-items:center;gap:12px;color:rgba(245,230,200,.80);"><input type="radio" name="angkatan" value="2024" checked /> 2024</label>
+                <label style="display:flex;align-items:center;gap:12px;color:rgba(245,230,200,.80);"><input type="radio" name="angkatan" value="2025" /> 2025</label>
+                <label style="display:flex;align-items:center;gap:12px;color:rgba(245,230,200,.80);"><input type="radio" name="angkatan" value="Non Civitas" /> Non Civitas</label>
+              </div>
+            </div>
+            <div>
+              <p class="text-[15px] font-medium mb-3" style="font-family:'Plus Jakarta Sans',sans-serif;">Opsi Pengambilan Barang*</p>
+              <div class="space-y-2 text-[15px]">
+                <label style="display:flex;align-items:center;gap:12px;color:rgba(245,230,200,.80);"><input type="radio" name="ship" value="Ambil di lingkungan FTUI" checked onchange="toggleAddressField(this)" /> Ambil di lingkungan FTUI</label>
+                <label style="display:flex;align-items:center;gap:12px;color:rgba(245,230,200,.80);"><input type="radio" name="ship" value="Kirim ke Alamat" onchange="toggleAddressField(this)" /> Kirim ke Alamat</label>
+              </div>
+              <div id="addressBox" class="hidden mt-3">
+                <label class="block text-[14px] font-medium mb-1 text-[#1A2740]">Alamat Lengkap*</label>
+                <textarea id="buyerAddress" class="checkout-field" rows="3" placeholder="Jl. Nama Jalan No.X, Kelurahan, Kecamatan, Kota, Kode Pos..."></textarea>
+              </div>
+            </div>
+            <div id="checkoutValidation" class="hidden" style="font-size:14px;color:#FF6B6B;font-weight:600;">Mohon lengkapi nama, email, dan nomor kontak terlebih dahulu.</div>
+            <button class="checkout-btn cursor-pointer" onclick="goToPaymentPage()" style="font-family:'Plus Jakarta Sans',sans-serif;">Bayar Sekarang</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="paymentPage" class="page space-y-5">
+      <div class="liquid p-4 md:p-5 wizard-border">
+        <div class="wizard-grain"></div>
+        <div class="max-w-[980px] mx-auto">
+          <div class="flex items-center gap-4 mb-2">
+            <button onclick="showPage('checkoutPage')" class="liquid-icon h-11 w-11 rounded-[18px] flex items-center justify-center shrink-0" title="Kembali ke Checkout">←</button>
+            <div>
+              <p class="text-[11px] uppercase tracking-[0.28em]" style="color:rgba(238,186,48,.45);" style="font-family:'Plus Jakarta Sans',sans-serif;">Pembayaran</p>
+              <h2 style="font-family:'Plus Jakarta Sans',sans-serif;" class="text-3xl md:text-4xl font-black mt-1" style="color:rgba(245,230,200,.96);">Pilih Metode Pembayaran</h2>
+              <p style="color:rgba(245,230,200,.58);margin-top:.5rem;font-size:.875rem;">Pilih salah satu metode pembayaran, lalu upload bukti pembayaran.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="max-w-[980px] mx-auto w-full space-y-5 relative z-10">
+        <div class="liquid p-4 md:p-5 wizard-border">
+          <div class="wizard-grain"></div>
+          <div class="space-y-4">
+            <button id="bankOption" onclick="selectPaymentMethod('bank')" class="payment-option liquid-inner rounded-[24px] p-5 w-full text-left">
+              <p style="font-size:11px;text-transform:uppercase;letter-spacing:.22em;color:rgba(238,186,48,.45);" style="font-family:'Plus Jakarta Sans',sans-serif;">Opsi 1</p>
+              <h3 style="font-family:'Plus Jakarta Sans',sans-serif;" style="font-size:1.5rem;font-weight:900;margin-top:.5rem;color:rgba(245,230,200,.96);">🏦 Transfer Bank BCA</h3>
+              <p class="muted mt-3 leading-7">
+                Nomor rekening: <span style="color:#EEBA30;font-weight:600;">5681669095</span><br>
+                Bank: <span style="color:#EEBA30;font-weight:600;">BCA</span><br>
+                Atas nama: <span style="color:#EEBA30;font-weight:600;">Praise Jecrol</span>
+              </p>
+            </button>
+
+            <button id="qrisOption" onclick="selectPaymentMethod('qris')" class="payment-option liquid-inner rounded-[24px] p-5 w-full text-left">
+              <p style="font-size:11px;text-transform:uppercase;letter-spacing:.22em;color:rgba(238,186,48,.45);" style="font-family:'Plus Jakarta Sans',sans-serif;">Opsi 2</p>
+              <h3 style="font-family:'Plus Jakarta Sans',sans-serif;" style="font-size:1.5rem;font-weight:900;margin-top:.5rem;color:rgba(245,230,200,.96);">QRIS</h3>
+              <p style="color:rgba(245,230,200,.58);margin-top:.75rem;">Tekan opsi ini untuk menampilkan kode QRIS pembayaran.</p>
+            </button>
+
+            <div id="qrisBox" class="hidden liquid-inner p-4 rounded-[24px]">
+              <div class="image-frame h-[340px] md:h-[420px] flex items-center justify-center">
+                <img id="qrisPreview" data-image-id="qrisImage" data-label="QRIS" alt="QRIS" class="w-full h-full object-cover" />
+              </div>
+              <p style="color:rgba(245,230,200,.55);margin-top:.75rem;font-size:.875rem;">Area QRIS ditampilkan di sini. Kamu bisa ganti gambar QRIS manual di source atau dari uploader bukti untuk preview testing.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="liquid p-4 md:p-5 wizard-border">
+          <div class="wizard-grain"></div>
+          <div class="space-y-4">
+            <div>
+              <h3 style="font-family:'Plus Jakarta Sans',sans-serif;" style="font-size:1.5rem;font-weight:900;color:rgba(245,230,200,.96);">Upload Bukti Pembayaran</h3>
+              <p style="color:rgba(245,230,200,.58);margin-top:.5rem;" style="font-family:'Plus Jakarta Sans',sans-serif;">Setelah transfer / scan QRIS, upload bukti pembayaran. Data pesanan akan dikirim ke admin IMMt SHOP.</p>
+            </div>
+
+            <div class="liquid-inner rounded-[24px] p-4">
+              <label style="display:block;font-size:.875rem;font-weight:700;color:rgba(245,230,200,.80);margin-bottom:.75rem;">Unggah Bukti Pembayaran</label>
+              <input id="paymentProofInput" type="file" accept="image/*,.pdf" class="block w-full text-sm" style="color:rgba(245,230,200,.75);"/70 file:mr-4 file:rounded-full file:border-0 file:bg-[#AE0001] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white file:cursor-pointer" />
+              <div id="paymentProofPreviewWrap" class="hidden mt-4">
+                <div class="image-frame h-[220px] md:h-[320px]">
+                  <img id="paymentProofPreview" alt="Preview bukti pembayaran" class="w-full h-full object-cover" />
+                </div>
+              </div>
+            </div>
+
+            <div class="liquid-inner rounded-[24px] p-4">
+              <h4 style="font-family:'Plus Jakarta Sans',sans-serif;" style="font-size:1.125rem;font-weight:900;color:rgba(245,230,200,.96);">📋 Ringkasan Pesanan</h4>
+              <div id="finalSummary" class="space-y-2 mt-3 text-sm" style="color:rgba(245,230,200,.70);"></div>
+            </div>
+
+            <button id="submitPaymentBtn" onclick="submitPayment()" class="cta rounded-[22px] w-full py-5 font-black text-[17px] cursor-pointer flex items-center justify-center gap-2" style="font-family:'Plus Jakarta Sans',sans-serif;">
+              <span>🦉</span>
+              <span>Kirim Konfirmasi Pembayaran</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ═══ Thank You Page ═══ -->
+  <section id="thankYouPage" class="page">
+    <div class="liquid p-8 md:p-12 wizard-border text-center max-w-[680px] mx-auto">
+      <div class="wizard-grain"></div>
+      <div class="relative z-10">
+        <div class="text-7xl mb-6">⚡</div>
+        <h2 style="font-family:'Plus Jakarta Sans',sans-serif;" style="font-size:1.75rem;font-weight:900;color:rgba(245,230,200,.96);line-height:1.2;">Terima Kasih!</h2>
+        <p style="font-family:'Plus Jakarta Sans',sans-serif;" style="color:#EEBA30;font-weight:900;font-size:1.25rem;margin-top:.5rem;">Pesanan kamu sudah kami terima</p>
+        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;letter-spacing:.3em;color:rgba(238,186,48,.6);margin-top:.5rem;"></div>
+        <div class="h-px my-6" style="background:rgba(238,186,48,.14);"></div>
+        <div id="thankYouSummary" class="liquid-inner p-5 text-left space-y-2 text-sm mb-6" style="color:rgba(245,230,200,.70);"></div>
+        <p style="color:rgba(245,230,200,.62);font-size:.875rem;line-height:1.7;">
+          Konfirmasi pesanan telah dikirim ke email admin IMMt SHOP.<br/>
+          Tim kami akan memverifikasi pembayaran kamu dalam <strong style="color:rgba(245,230,200,.96);font-weight:700;">1×24 jam</strong>.<br/>
+          Hubungi kami jika ada pertanyaan.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3 justify-center">
+          <button onclick="goHome()" class="cta rounded-[22px] px-8 py-4 font-black text-[15px]">🏠 Kembali ke Beranda</button>
+          <button onclick="showPage('catalogPage')" class="ghost rounded-[22px] px-8 py-4 font-bold text-[15px]">🛍️ Belanja Lagi</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="offerPopup" class="modal-backdrop">
+    <div class="liquid modal-panel p-5 md:p-6 max-w-[1100px] shadow-[0_30px_80px_rgba(116,0,1,.18)]">
+      <div class="flex items-center justify-between gap-3 mb-5">
+        <div>
+          <p class="text-[11px] uppercase tracking-[0.26em]" style="color:rgba(238,186,48,.45);" style="font-family:'Plus Jakarta Sans',sans-serif;">Penawaran Terbatas</p>
+          <h3 style="font-family:'Plus Jakarta Sans',sans-serif;" style="font-size:1.6rem;font-weight:900;color:rgba(245,230,200,.96);margin-top:.25rem;">🔥 Bundle Spesial IMMt SHOP!</h3>
+          <p style="color:rgba(245,230,200,.58);font-size:.875rem;margin-top:.25rem;">Hemat lebih banyak dengan paket bundle pilihan kami</p>
+        </div>
+        <button onclick="closeOfferPopup()" class="liquid-icon h-11 w-11 rounded-[18px] flex items-center justify-center text-lg shrink-0" style="color:#EEBA30;">✕</button>
+      </div>
+      <div id="offerGrid" class="bundle-strip pt-1 pb-3"></div>
+    </div>
+  </div>
+
+  <!-- IMMt SHOP Bundle Offer Popup -->
+  <div id="shopOfferPopup" class="modal-backdrop">
+    <div class="liquid modal-panel p-5 md:p-6 max-w-[1100px] shadow-[0_30px_80px_rgba(0,0,0,.54)]">
+      <div class="flex items-center justify-between gap-3 mb-5">
+        <div>
+          <p class="text-[11px] uppercase tracking-[0.28em]" style="color:rgba(238,186,48,.45);" style="font-family:'Plus Jakarta Sans',sans-serif;">Penawaran Eksklusif</p>
+          <h3 style="font-family:'Plus Jakarta Sans',sans-serif;" style="font-size:1.75rem;font-weight:900;color:rgba(245,230,200,.96);margin-top:.25rem;">🛍️ Bundle IMMt SHOP</h3>
+          <p style="color:rgba(245,230,200,.58);font-size:.875rem;margin-top:.25rem;">Hemat lebih banyak dengan paket bundle pilihan kami!</p>
+        </div>
+        <button onclick="closeShopOfferPopup()" class="liquid-icon h-11 w-11 rounded-[18px] flex items-center justify-center text-lg shrink-0">✕</button>
+      </div>
+      <div id="shopOfferStrip" class="bundle-strip pb-3"></div>
+    </div>
+  </div>
+
+  <div id="bundleModal" class="modal-backdrop">
+    <div class="liquid modal-panel p-4 md:p-5">
+      <div class="flex items-center justify-between gap-3 mb-4">
+        <button onclick="closeBundleModal()" class="liquid-icon h-11 w-11 rounded-[18px] flex items-center justify-center text-lg">✕</button>
+        <div class="text-right">
+          <p class="text-[11px] uppercase tracking-[0.28em]" style="color:rgba(238,186,48,.45);" style="font-family:'Plus Jakarta Sans',sans-serif;">Bundle</p>
+          <h3 style="font-family:'Plus Jakarta Sans',sans-serif;" style="font-size:1.5rem;font-weight:900;margin-top:.25rem;color:rgba(245,230,200,.96);">Pilih Bundle</h3>
+        </div>
+      </div>
+      <div id="bundleGrid" class="offer-grid"></div>
+    </div>
+  </div>
+
+  
+  <div id="productModal" class="modal-backdrop">
+    <div class="w-full max-w-[860px] max-h-[92vh] overflow-y-auto" style="background:linear-gradient(155deg,rgba(28,7,1,.97) 0%,rgba(16,3,0,.95) 100%);border-radius:24px;border:1px solid rgba(238,186,48,.18);box-shadow:0 32px 80px rgba(0,0,0,.75),0 0 0 1px rgba(238,186,48,.12);position:relative;">
+
+      <!-- Close button - always visible top right -->
+      <button onclick="closeProductModal()" style="position:absolute;top:12px;right:12px;z-index:20;width:44px;height:44px;border-radius:50%;background:rgba(20,5,0,.90);border:2px solid rgba(238,186,48,.30);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;cursor:pointer;color:#EEBA30;box-shadow:0 4px 12px rgba(0,0,0,.12);">✕</button>
+
+      <div class="modal-inner-grid grid md:grid-cols-[1fr_1fr]" style="min-height:0;">
+
+        <!-- LEFT: Image + arrows + thumbs -->
+        <div class="modal-img-col" style="background:linear-gradient(145deg,rgba(28,7,1,.97) 0%,rgba(18,4,0,.95) 100%);border-radius:24px 0 0 24px;padding:20px;display:flex;flex-direction:column;gap:12px;position:relative;">
+          <!-- Arrow prev -->
+          <button onclick="changeModalGallery(-1)" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);z-index:5;width:36px;height:36px;border-radius:50%;background:rgba(28,6,0,.92);border:1px solid rgba(238,186,48,.25);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;font-weight:bold;box-shadow:0 2px 8px rgba(0,0,0,.12);color:#EEBA30;">‹</button>
+          <!-- Arrow next -->
+          <button onclick="changeModalGallery(1)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);z-index:5;width:36px;height:36px;border-radius:50%;background:rgba(28,6,0,.92);border:1px solid rgba(238,186,48,.25);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;font-weight:bold;box-shadow:0 2px 8px rgba(0,0,0,.12);color:#EEBA30;">›</button>
+
+          <div id="modalImageWrap" style="border-radius:16px;overflow:hidden;aspect-ratio:4/5;width:100%;touch-action:pan-y;user-select:none;">
+            <img id="modalImage" alt="Preview produk" style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;" />
+          </div>
+          <!-- Thumbnails -->
+          <div id="modalThumbs" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"></div>
+        </div>
+
+        <!-- RIGHT: Product info -->
+        <div class="modal-info-col" style="padding:24px 20px;display:flex;flex-direction:column;gap:0;overflow-y:auto;max-height:80vh;">
+          <p id="modalCategory" style="font-size:11px;text-transform:uppercase;letter-spacing:.22em;color:rgba(238,186,48,.45);margin:0 0 8px;font-family:'Plus Jakarta Sans',sans-serif;">Kategori</p>
+          <h4 id="modalTitle" style="font-size:1.8rem;font-weight:900;color:rgba(245,230,200,.96);margin:0 0 12px;line-height:1.2;font-family:'Plus Jakarta Sans',sans-serif;">Produk</h4>
+          <p id="modalDesc" style="font-size:14px;color:rgba(245,230,200,.62);line-height:1.7;margin:0 0 20px;font-family:'Plus Jakarta Sans',sans-serif;">Deskripsi produk</p>
+
+          <div style="margin-bottom:20px;">
+            <p id="modalOldPrice" style="font-size:13px;color:rgba(245,230,200,.55);text-decoration:line-through;margin:0 0 2px;"></p>
+            <p id="modalPrice" style="font-size:2rem;font-weight:900;color:#EEBA30;margin:0;">Rp 0</p>
+          </div>
+
+          <!-- Sizes -->
+          <div style="margin-bottom:20px;">
+            <p id="modalSizesLabel" style="font-size:13px;font-weight:900;color:rgba(245,230,200,.85);margin:0 0 10px;">Ukuran</p>
+            <div id="modalSizes" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+          </div>
+
+          <!-- Qty -->
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;">
+            <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:rgba(245,230,200,.50);margin:0;margin-right:4px;">Jumlah</p>
+            <button onclick="changeModalQty(-1)" style="width:36px;height:36px;border-radius:50%;border:2px solid rgba(238,186,48,.45);background:rgba(238,186,48,.15);font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#EEBA30;font-weight:900;box-shadow:0 0 8px rgba(238,186,48,.15);">−</button>
+            <span id="modalQty" style="font-size:18px;font-weight:900;color:rgba(245,230,200,.96);min-width:24px;text-align:center;">1</span>
+            <button onclick="changeModalQty(1)" style="width:36px;height:36px;border-radius:50%;border:2px solid rgba(238,186,48,.45);background:rgba(238,186,48,.15);font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#EEBA30;font-weight:900;box-shadow:0 0 8px rgba(238,186,48,.15);">＋</button>
+
+          </div>
+
+          <!-- CTA -->
+          <button onclick="confirmModalAdd()" style="width:100%;padding:16px;border-radius:16px;background:linear-gradient(135deg,rgba(238,186,48,.96),rgba(211,166,37,.90));color:#1a0900;font-size:15px;font-weight:900;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 8px 24px rgba(174,0,1,.18),0 0 20px rgba(238,186,48,.15);font-family:'Plus Jakarta Sans',sans-serif;letter-spacing:.04em;">
+            Tambahkan ke Keranjang
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- toast created dynamically via JS -->
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    const formatIDR = n => new Intl.NumberFormat('id-ID', {style:'currency', currency:'IDR', maximumFractionDigits:0}).format(n).replace(',00','');
+
+    const uploads = {};
+    window.__uploads = uploads; // expose ke assets.js
+    let uploadTarget = null;
+    let uploadSlot = null;
+    let currentFilter = 'all';
+    let currentSort = 'default';
+    let searchTerm = '';
+    let currentDetailId = 'workshirt-resonansi';
+    let currentDetailSize = 'M';
+    let currentModalId = null;
+    let currentModalSize = null;
+    let currentModalQty = 1;
+
+    const cart = JSON.parse(localStorage.getItem('immt_soft_cart') || '[]');
+    const wishlist = JSON.parse(localStorage.getItem('immt_soft_wishlist') || '[]');
+
+    const bundles = [
+      {
+        id:'wizarding-essentials-kit',
+        name:'Wizarding Essentials',
+        category:'Bundle',
+        price:45000,
+        oldPrice:50000,
+        description:'Dapatkan koleksi merchandise esensial dengan harga yang spesial! Termasuk keychain, Stikerpack lengkap, dan korek api!',
+        sizes:['All Size'],
+        bestSeller:false,
+        isBundle:true,
+        bundleOptions:[]
+      },
+      {
+        id:'ministry-magic-supply',
+        name:'Ministry of Magic',
+        category:'Bundle',
+        price:250000,
+        oldPrice:280000,
+        description:'Paket terlengkap dan paling MAGICAL! Disertakan sentuhan koleksi utama dari IMMt. Tersedia pilihan lengan pendek dan panjang.',
+        sizes:['S','M','L','XL','XXL'],
+        bestSeller:true,
+        isBundle:true,
+        isSleeveProduct:true,
+        sleeveUpcharge:5000,
+        bundleOptions:[]
+      },
+      {
+        id:'daily-muggle-kit',
+        name:'Muggle Kit',
+        category:'Bundle',
+        price:150000,
+        oldPrice:180000,
+        description:'Tunjukkan identitas kamu dengan bundle merchandise eksklusif dan enchanting ini. Termasuk Stikerpack lengkap, enamel, topi, korek, dan keychain!',
+        sizes:['All Size'],
+        bestSeller:false,
+        isBundle:true,
+        bundleOptions:[]
+      }
+    ];
+
+    // Store bundle selections
+    let currentBundleSelections = {};
+    let currentSleeveOption = 'pendek'; // untuk kaos: pendek/panjang
+
+    const products = [
+      {
+        id:'topi-immt',
+        name:'Topi IMMt',
+        category:'Accessories',
+        price:39000,
+        oldPrice:59000,
+        description:'Topi IMMt dengan bordir logo eksklusif, cocok untuk kegiatan sehari-hari maupun event kampus.',
+        sizes:['All Size']
+      },
+      {
+        id:'kaos-immt',
+        name:'Kaos IMMt',
+        category:'Apparel',
+        price:99000,
+        oldPrice:120000,
+        description:'Kaos IMMt dengan desain eksklusif. Tersedia pilihan lengan pendek dan lengan panjang (+Rp5.000).',
+        sizes:['S','M','L','XL','XXL'],
+        isSleeveProduct:true,
+        sleeveUpcharge:5000
+      },
+      {
+        id:'stiker-immt',
+        name:'Stiker IMMt',
+        category:'Merch',
+        price:15000,
+        oldPrice:20000,
+        description:'Stiker IMMt dengan desain eksklusif. Pilih opsi sesuai kebutuhan: Bundle A (Rp 15.000), Bundle B (Rp 15.000), atau Full All Sticker (Rp 25.000).',
+        sizes:['Bundle A – Rp15k','Bundle B – Rp15k','Full All – Rp25k'],
+        stickerPrices:{'Bundle A – Rp15k':15000,'Bundle B – Rp15k':15000,'Full All – Rp25k':25000},
+        stickerOldPrices:{'Bundle A – Rp15k':20000,'Bundle B – Rp15k':20000,'Full All – Rp25k':30000}
+      },
+      {
+        id:'enamel-bidang',
+        name:'Enamel Bidang',
+        category:'Accessories',
+        price:29000,
+        oldPrice:35000,
+        description:'Pin enamel eksklusif dengan motif bidang studi, finishing premium dan detail tajam.',
+        sizes:['All Size']
+      },
+      {
+        id:'enamel-immt',
+        name:'Enamel IMMt',
+        category:'Accessories',
+        price:29000,
+        oldPrice:35000,
+        description:'Pin enamel eksklusif berlogo IMMt, koleksi wajib bagi civitas IMMt FTUI.',
+        sizes:['All Size']
+      },
+      {
+        id:'korek-immt',
+        name:'Korek IMMt',
+        category:'Merch',
+        price:10000,
+        oldPrice:15000,
+        description:'Korek branded IMMt, edisi terbatas dengan desain unik dan elegan.',
+        sizes:['All Size']
+      },
+      {
+        id:'keychain-bordir',
+        name:'Keychain Bordir IMMt',
+        category:'Accessories',
+        price:15000,
+        oldPrice:20000,
+        description:'Gantungan kunci dengan bordir logo IMMt, material kain berkualitas tinggi dan finishing rapi.',
+        sizes:['All Size']
+      }
+    ];
+
+    const allItems = [...bundles, ...products];
+    // products sekarang include produk baru
+
+    let currentModalGalleryIndex = 0;
+
+    // ── Galeri & Foto diatur di assets.js ──
+    // Konfigurasi dipindah ke file assets.js supaya mudah diedit.
+    // Fungsi getImageSrc & getGalleryImages di-override setelah makePlaceholder siap.
+
+    function renderModalGallery(item){
+      const uploaded = galleries[item.id] || [];
+      const safeIndex = Math.max(0, Math.min(currentModalGalleryIndex, Math.max(0, uploaded.length - 1)));
+      currentModalGalleryIndex = safeIndex;
+
+      const hero = document.getElementById('modalImage');
+      if (hero) hero.src = uploaded.length > 0 ? uploaded[safeIndex] : getImageSrc(item.id, item.name);
+
+      const thumbs = document.getElementById('modalThumbs');
+      if (!thumbs) return;
+
+      const SLOTS = 4;
+      let slots = '';
+      for (let i = 0; i < SLOTS; i++) {
+        const hasImg = i < uploaded.length;
+        const isActive = hasImg && i === safeIndex;
+        slots += `
+          <div style="position:relative;flex-shrink:0;">
+            <div onclick="${hasImg ? `setModalGalleryImage(${i})` : ``}"
+              style="width:68px;height:68px;border-radius:12px;overflow:hidden;
+                cursor:${hasImg ? 'pointer' : 'default'};
+                border:2.5px solid ${isActive ? '#EEBA30' : hasImg ? 'rgba(238,186,48,.30)' : 'rgba(238,186,48,.10)'};
+                background:${hasImg ? 'none' : 'rgba(255,255,255,.02)'};
+                display:flex;align-items:center;justify-content:center;
+                transition:border-color .15s;">
+              ${hasImg
+                ? `<img src="${uploaded[i]}" alt="foto ${i+1}" style="width:100%;height:100%;object-fit:cover;display:block;" />`
+                : `<span style="font-size:16px;color:rgba(238,186,48,.10);">⬜</span>`
+              }
+            </div>
+          </div>`;
+      }
+
+      thumbs.innerHTML = `
+        <div style="display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;">
+          ${slots}
+        </div>
+      `;
+    }
+
+    function setSlotUpload(id, slotIndex){
+      uploadTarget = id;
+      uploadSlot = slotIndex;
+      document.getElementById('uploader').click();
+    }
+
+    function setModalGalleryImage(index){
+      currentModalGalleryIndex = index;
+      const item = getItem(currentModalId);
+      if (item) renderModalGallery(item);
+    }
+
+    function changeModalGallery(delta){
+      const item = getItem(currentModalId);
+      if (!item) return;
+      const gallery = getGalleryImages(item);
+      currentModalGalleryIndex = (currentModalGalleryIndex + delta + gallery.length) % gallery.length;
+      renderModalGallery(item);
+    }
+
+
+
+    function makePlaceholder(label, a='#AE0001', b='#EEBA30', c='#740001'){
+      const safe = String(label).replace(/&/g,'&amp;');
+      const svg = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900">
+        <defs>
+          <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#030705"/>
+            <stop offset="68%" stop-color="#091510"/>
+            <stop offset="100%" stop-color="#111613"/>
+          </linearGradient>
+          <radialGradient id="o1" cx="14%" cy="72%" r="44%">
+            <stop offset="0%" stop-color="${a}" stop-opacity=".86"/>
+            <stop offset="42%" stop-color="${a}" stop-opacity=".24"/>
+            <stop offset="100%" stop-color="${a}" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="o2" cx="78%" cy="22%" r="34%">
+            <stop offset="0%" stop-color="${b}" stop-opacity=".26"/>
+            <stop offset="42%" stop-color="${b}" stop-opacity=".10"/>
+            <stop offset="100%" stop-color="${b}" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="o3" cx="58%" cy="32%" r="22%">
+            <stop offset="0%" stop-color="${c}" stop-opacity=".14"/>
+            <stop offset="44%" stop-color="${c}" stop-opacity=".06"/>
+            <stop offset="100%" stop-color="${c}" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="1200" height="900" fill="url(#bg)"/>
+        <rect width="1200" height="900" fill="url(#o1)"/>
+        <rect width="1200" height="900" fill="url(#o2)"/>
+        <rect width="1200" height="900" fill="url(#o3)"/>
+        <rect x="84" y="84" width="1032" height="732" rx="56" fill="rgba(255,255,255,.10)" stroke="rgba(255,255,255,.18)"/>
+        <rect x="148" y="148" width="904" height="604" rx="40" fill="rgba(255,255,255,.05)"/>
+        <text x="50%" y="46%" fill="#F2F6F2" font-size="80" font-family="Plus Jakarta Sans, Inter, Arial, sans-serif" font-weight="800" text-anchor="middle">${safe}</text>
+        <text x="50%" y="56%" fill="rgba(242,246,242,.70)" font-size="28" font-family="Plus Jakarta Sans, Inter, Arial, sans-serif" text-anchor="middle">Editable image frame</text>
+      </svg>`;
+      return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+    }
+
+    // galleries[id] = array of blob URLs (multi-foto per produk)
+    const galleries = {};
+    window.__galleries = galleries; // expose ke assets.js
+
+    function getImageSrc(id, label){
+      if (galleries[id] && galleries[id].length > 0) return galleries[id][0];
+      if (uploads[id]) return uploads[id];
+      if (id === 'siteLogo') return makePlaceholder('IMMt', '#AE0001', '#EEBA30', '#740001');
+      if (id === 'heroBanner') return makePlaceholder('Banner Hero', '#740001', '#AE0001', '#EEBA30');
+      return makePlaceholder(label);
+    }
+
+    window.getGalleryImages = function(item) {
+      if (galleries[item.id] && galleries[item.id].length > 0) return galleries[item.id];
+      const main = getImageSrc(item.id, item.name);
+      return [main];
+    };
+
+    // Hook assets.js — aktifkan konfigurasi foto dari file terpisah
+    if (typeof window.__imageConfigReady === 'function') {
+      window.__imageConfigReady(makePlaceholder);
+    }
+
+    function persist(){
+      localStorage.setItem('immt_soft_cart', JSON.stringify(cart));
+      localStorage.setItem('immt_soft_wishlist', JSON.stringify(wishlist));
+    }
+
+    function triggerImageUpload(id){
+      uploadTarget = id;
+      document.getElementById('uploader').click();
+    }
+
+    // Multi-file uploader
+    document.getElementById('uploader').addEventListener('change', e => {
+      const files = Array.from(e.target.files || []);
+      if (!files.length || !uploadTarget) return;
+      const id = uploadTarget;
+      const slot = uploadSlot;
+      if (!galleries[id]) galleries[id] = [];
+
+      if (slot !== null && files.length === 1) {
+        // Upload ke slot tertentu
+        const url = URL.createObjectURL(files[0]);
+        if (slot < galleries[id].length) {
+          galleries[id][slot] = url; // replace
+        } else {
+          // Fill up to slot with existing or new
+          while (galleries[id].length < slot) galleries[id].push(url);
+          galleries[id][slot] = url;
+        }
+      } else {
+        // Multi-file: isi slot kosong dulu, sisanya append (max 4)
+        files.forEach(file => {
+          if (galleries[id].length < 4) {
+            galleries[id].push(URL.createObjectURL(file));
+          }
+        });
+      }
+
+      refreshImages(id);
+      if (currentModalId === id) {
+        const item = getItem(id);
+        if (item) { currentModalGalleryIndex = 0; renderModalGallery(item); }
+      }
+      e.target.value = '';
+      uploadTarget = null;
+      uploadSlot = null;
+    });
+
+    function removeGalleryImage(id, index){
+      if (!galleries[id]) return;
+      galleries[id].splice(index, 1);
+      refreshImages(id);
+      const item = getItem(id);
+      if (item && currentModalId === id) {
+        currentModalGalleryIndex = Math.max(0, Math.min(currentModalGalleryIndex, galleries[id].length - 1));
+        renderModalGallery(item);
+      }
+    }
+
+    function refreshImages(id){
+      document.querySelectorAll(`[data-image-id="${id}"]`).forEach(img => {
+        const label = img.dataset.label || id;
+        img.src = getImageSrc(id, label);
+      });
+      if (id === currentDetailId) updateDetail();
+    }
+
+    function setAllImages(){
+      // Gunakan IntersectionObserver untuk lazy-load gambar produk
+      const imgs = document.querySelectorAll('[data-image-id]');
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const img = entry.target;
+              const id = img.dataset.imageId;
+              const label = img.dataset.label || id;
+              img.src = getImageSrc(id, label);
+              obs.unobserve(img);
+            }
+          });
+        }, { rootMargin: '200px' });
+        imgs.forEach(img => io.observe(img));
+      } else {
+        imgs.forEach(img => {
+          const id = img.dataset.imageId;
+          const label = img.dataset.label || id;
+          img.src = getImageSrc(id, label);
+        });
+      }
+    }
+
+    function getItem(id){
+      return allItems.find(item => item.id === id);
+    }
+
+    function toggleWishlist(id){
+      const idx = wishlist.indexOf(id);
+      if (idx > -1) wishlist.splice(idx,1);
+      else wishlist.push(id);
+      persist();
+      updateCartCount();
+      renderWishlist();
+    }
+
+    const checkoutData = {
+      name: '',
+      email: '',
+      contact: '',
+      angkatan: '2024',
+      shipping: 'Ambil di lingkungan FTUI',
+      address: '',
+      paymentMethod: 'bank',
+      proofUrl: ''
+    };
+
+    function toggleAddressField(radio){
+      const box = document.getElementById('addressBox');
+      if (!box) return;
+      if (radio.value === 'Kirim ke Alamat') {
+        box.classList.remove('hidden');
+      } else {
+        box.classList.add('hidden');
+        document.getElementById('buyerAddress').value = '';
+      }
+    }
+
+    function goToPaymentPage(){
+      const name = document.getElementById('buyerName')?.value.trim() || '';
+      const email = document.getElementById('buyerEmail')?.value.trim() || '';
+      const contact = document.getElementById('buyerContact')?.value.trim() || '';
+      const angkatan = document.querySelector('input[name="angkatan"]:checked')?.value || '';
+      const shipping = document.querySelector('input[name="ship"]:checked')?.value || '';
+      const validation = document.getElementById('checkoutValidation');
+
+      const isShipToAddress = shipping === 'Kirim ke Alamat';
+      const address = document.getElementById('buyerAddress')?.value.trim() || '';
+      if (!name || !email || !contact || (isShipToAddress && !address)){
+        const msg = isShipToAddress && !address && name && email && contact
+          ? 'Mohon isi alamat pengiriman terlebih dahulu.'
+          : 'Mohon lengkapi nama, email, dan nomor kontak terlebih dahulu.';
+        if (validation) { validation.textContent = msg; validation.classList.remove('hidden'); }
+        return;
+      }
+      validation?.classList.add('hidden');
+
+      checkoutData.name = name;
+      checkoutData.email = email;
+      checkoutData.contact = contact;
+      checkoutData.angkatan = angkatan;
+      checkoutData.shipping = shipping;
+      checkoutData.address = isShipToAddress ? address : '';
+      updateFinalSummary();
+      showPage('paymentPage');
+      renderCart();
+      selectPaymentMethod(checkoutData.paymentMethod || 'bank');
+    }
+
+    function selectPaymentMethod(method){
+      checkoutData.paymentMethod = method;
+      const bank = document.getElementById('bankOption');
+      const qris = document.getElementById('qrisOption');
+      const qrisBox = document.getElementById('qrisBox');
+      bank?.classList.toggle('active', method === 'bank');
+      qris?.classList.toggle('active', method === 'qris');
+      qrisBox?.classList.toggle('hidden', method !== 'qris');
+      updateFinalSummary();
+    }
+
+    function updateFinalSummary(){
+      const target = document.getElementById('finalSummary');
+      if (!target) return;
+      const row = (label, val) => `
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;padding:7px 0;border-bottom:1px solid rgba(44,24,16,.1);">
+          <span style="font-weight:800;color:rgba(245,230,200,.90);min-width:90px;">${label}</span>
+          <span style="color:rgba(245,230,200,.85);text-align:right;max-width:60%;">${val}</span>
+        </div>`;
+      const itemRows = cart.length
+        ? cart.map(item => `
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;padding:5px 0;">
+            <span style="color:rgba(245,230,200,.85);">${item.name} · ${item.size} · ${item.qty}×</span>
+            <span style="font-weight:700;color:#AE0001;">${formatIDR(item.price * item.qty)}</span>
+          </div>`).join('')
+        : '<div style="color:#888;">Belum ada item.</div>';
+
+      target.innerHTML = `
+        <div style="font-size:13px;">
+          ${row('Nama', checkoutData.name || '-')}
+          ${row('Email', checkoutData.email || '-')}
+          ${row('Kontak', checkoutData.contact || '-')}
+          ${row('Angkatan', checkoutData.angkatan || '-')}
+          ${row('Pengambilan', checkoutData.shipping || '-')}
+          ${checkoutData.address ? row('Alamat', checkoutData.address) : ''}
+          ${row('Metode', checkoutData.paymentMethod === 'qris' ? 'QRIS' : 'Transfer BCA')}
+          <div style="margin-top:12px;padding-top:8px;border-top:2px solid rgba(44,24,16,.12);">
+            <div style="font-weight:900;color:rgba(245,230,200,.90);font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">📋 Rekap Pesanan</div>
+            ${itemRows}
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:2px solid rgba(44,24,16,.15);">
+            <span style="font-weight:900;color:rgba(245,230,200,.90);font-size:14px;">Total</span>
+            <span style="font-weight:900;color:#AE0001;font-size:15px;">${formatIDR(totalCheckout())}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    async function submitPayment(){
+      // ── Validasi bukti pembayaran wajib ──
+      const proofInput = document.getElementById('paymentProofInput');
+      if (!proofInput || !proofInput.files || proofInput.files.length === 0){
+        showPaymentError('⚠️ Upload bukti pembayaran dulu ya sebelum kirim!');
+        return;
+      }
+      updateFinalSummary();
+
+      const itemsText = cart.length
+        ? cart.map(item => `- ${item.name} | ${item.size} | ${item.qty}x | ${formatIDR(item.price * item.qty)}`).join('\n')
+        : '- Tidak ada item';
+
+      const btn = document.getElementById('submitPaymentBtn');
+      const originalHTML = btn ? btn.innerHTML : '';
+      if (btn){ btn.innerHTML = '<span>⏳</span><span>Mengupload bukti bayar...</span>'; btn.disabled = true; }
+      hidePaymentError();
+
+      try {
+        // ── STEP 1: Upload foto bukti ke Cloudinary ──
+        let buktiUrl = '';
+        try {
+          if (btn) btn.innerHTML = '<span>⏳</span><span>Mengupload foto ke server...</span>';
+          const cloudForm = new FormData();
+          cloudForm.append('file', proofInput.files[0]);
+          cloudForm.append('upload_preset', 'IMMt_SHOP');
+          cloudForm.append('folder', 'immt_shop_bukti_bayar');
+          const cloudRes = await fetch('https://api.cloudinary.com/v1_1/dwfnvljwp/image/upload', {
+            method: 'POST',
+            body: cloudForm
+          });
+          const cloudData = await cloudRes.json();
+          buktiUrl = cloudData.secure_url || '';
+        } catch(e) {
+          console.warn('Cloudinary gagal:', e);
+          buktiUrl = '(Foto gagal terupload)';
+        }
+
+        // ── STEP 2: Kirim via EmailJS ──
+        if (btn) btn.innerHTML = '<span>⏳</span><span>Mengirim konfirmasi...</span>';
+
+        const templateParams = {
+          customer_name  : checkoutData.name       || '-',
+          email          : checkoutData.email      || '-',
+          kontak         : checkoutData.contact    || '-',
+          angkatan       : checkoutData.angkatan   || '-',
+          pengambilan    : checkoutData.shipping   || '-',
+          alamat         : checkoutData.address    || '(Ambil langsung)',
+          metode_bayar   : checkoutData.paymentMethod === 'qris' ? 'QRIS' : 'Transfer BCA — 5681669095 a.n Praise Jecrol',
+          order_details  : itemsText,
+          total_amount   : formatIDR(totalCheckout()),
+          bukti_bayar    : buktiUrl,
+          to_email       : checkoutData.email      || '',
+          reply_to       : checkoutData.email      || 'praisemarpaung@gmail.com',
+        };
+
+        await emailjs.send('service_x79r258', 'template_pealc2t', templateParams);
+
+        // ── Isi halaman terima kasih ──
+        const summary = document.getElementById('thankYouSummary');
+        if (summary){
+          summary.innerHTML = `
+            <div style="font-size:14px;color:rgba(245,230,200,.85);">
+              <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(44,24,16,.1);"><span style="font-weight:800;color:rgba(245,230,200,.90);">Nama</span><span>${checkoutData.name || '-'}</span></div>
+              <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(44,24,16,.1);"><span style="font-weight:800;color:rgba(245,230,200,.90);">Email</span><span>${checkoutData.email || '-'}</span></div>
+              <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(44,24,16,.1);"><span style="font-weight:800;color:rgba(245,230,200,.90);">Kontak</span><span>${checkoutData.contact || '-'}</span></div>
+              <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(44,24,16,.1);"><span style="font-weight:800;color:rgba(245,230,200,.90);">Angkatan</span><span>${checkoutData.angkatan || '-'}</span></div>
+              <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(44,24,16,.1);"><span style="font-weight:800;color:rgba(245,230,200,.90);">Pengambilan</span><span>${checkoutData.shipping || '-'}</span></div>
+              ${checkoutData.address ? `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(44,24,16,.1);"><span style="font-weight:800;color:rgba(245,230,200,.90);">Alamat</span><span style="text-align:right;max-width:55%;">${checkoutData.address}</span></div>` : ''}
+              <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(44,24,16,.1);"><span style="font-weight:800;color:rgba(245,230,200,.90);">Metode Bayar</span><span>${checkoutData.paymentMethod === 'qris' ? 'QRIS' : 'Transfer BCA'}</span></div>
+              ${buktiUrl && buktiUrl.startsWith('http') ? `<div style="padding:8px 0;border-bottom:1px solid rgba(44,24,16,.1);"><span style="font-weight:800;color:rgba(245,230,200,.90);">Bukti Bayar</span><br><a href="${buktiUrl}" target="_blank" style="color:#EEBA30;font-size:12px;word-break:break-all;">📎 Lihat foto bukti pembayaran →</a></div>` : ''}
+              <div style="height:1px;background:rgba(44,24,16,.12);margin:10px 0;"></div>
+              <div style="font-weight:900;color:rgba(245,230,200,.90);margin-bottom:6px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;">📋 Rekap Pesanan</div>
+              ${cart.map(item => `<div style="display:flex;justify-content:space-between;padding:4px 0;"><span>${item.name} · ${item.size} · ${item.qty}×</span><span style="font-weight:700;color:#AE0001;">${formatIDR(item.price * item.qty)}</span></div>`).join('')}
+              <div style="height:1px;background:rgba(44,24,16,.15);margin:10px 0;"></div>
+              <div style="display:flex;justify-content:space-between;font-weight:900;font-size:15px;"><span style="color:rgba(245,230,200,.90);">Total</span><span style="color:#AE0001;">${formatIDR(totalCheckout())}</span></div>
+            </div>`;
+        }
+        showPage('thankYouPage');
+
+      } catch(err){
+        console.error('Error:', err);
+        showPaymentError('❌ Gagal mengirim. Periksa koneksi internet kamu dan coba lagi.');
+        if (btn){ btn.innerHTML = originalHTML; btn.disabled = false; }
+      }
+    }
+
+    function showPaymentError(msg){
+      let el = document.getElementById('paymentErrorMsg');
+      if (!el){
+        el = document.createElement('div');
+        el.id = 'paymentErrorMsg';
+        el.style.cssText = 'background:#AE0001;color:white;border-radius:14px;padding:12px 16px;font-size:14px;font-weight:700;margin-bottom:8px;';
+        const btn = document.getElementById('submitPaymentBtn');
+        btn?.parentNode?.insertBefore(el, btn);
+      }
+      el.textContent = msg;
+      el.style.display = 'block';
+      el.scrollIntoView({ behavior:'smooth', block:'center' });
+    }
+    function hidePaymentError(){
+      const el = document.getElementById('paymentErrorMsg');
+      if (el) el.style.display = 'none';
+    }
+
+    const paymentProofInput = document.getElementById('paymentProofInput');
+    if (paymentProofInput){
+      paymentProofInput.addEventListener('change', (e) => {
+        const file = e.target.files?.[0];
+        const wrap = document.getElementById('paymentProofPreviewWrap');
+        const preview = document.getElementById('paymentProofPreview');
+        if (!file){
+          wrap?.classList.add('hidden');
+          return;
+        }
+        if (file.type.startsWith('image/')){
+          const url = URL.createObjectURL(file);
+          checkoutData.proofUrl = url;
+          if (preview){
+            preview.src = url;
+          }
+          wrap?.classList.remove('hidden');
+        } else {
+          wrap?.classList.add('hidden');
+        }
+      });
+    }
+
+
+
+    let toastTimer = null;
+    function showToast(title, message){
+      clearTimeout(toastTimer);
+      // Remove any existing toast
+      const old = document.getElementById('immt-toast');
+      if (old) old.remove();
+
+      // Create fresh toast element every time
+      const el = document.createElement('div');
+      el.id = 'immt-toast';
+      el.innerHTML = `
+        <div style="display:flex;align-items:center;gap:12px;padding:14px 18px;">
+          <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#EEBA30,#C9973A);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🛒</div>
+          <div style="min-width:0;flex:1;">
+            <div style="font-weight:900;font-size:14px;color:#EEBA30;line-height:1.2;">${title}</div>
+            <div style="font-size:13px;color:rgba(245,230,200,.85);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${message}</div>
+          </div>
+          <div style="width:28px;height:28px;border-radius:50%;border:1.5px solid rgba(238,186,48,.35);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M1 6L4.5 9.5L11 2.5" stroke="#EEBA30" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div id="immt-toast-bar" style="height:3px;background:linear-gradient(90deg,#AE0001,#EEBA30,#AE0001);border-radius:0 0 18px 18px;width:100%;transition:none;"></div>
+      `;
+      Object.assign(el.style, {
+        position: 'fixed',
+        top: '-150px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        zIndex: '2147483647',
+        minWidth: 'min(92vw, 440px)',
+        maxWidth: '500px',
+        borderRadius: '18px',
+        background: 'linear-gradient(135deg,rgba(12,2,0,.98),rgba(24,5,0,.98))',
+        border: '1.5px solid rgba(238,186,48,.50)',
+        boxShadow: '0 8px 40px rgba(0,0,0,.80), 0 0 0 1px rgba(238,186,48,.15)',
+        fontFamily: "'Plus Jakarta Sans', sans-serif",
+        transition: 'top 0.4s cubic-bezier(0.22,1,0.36,1)',
+        pointerEvents: 'none',
+      });
+
+      document.body.appendChild(el);
+
+      // Slide in after paint
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          el.style.top = (88 + 14) + 'px';
+          // Start progress bar shrink
+          const bar = document.getElementById('immt-toast-bar');
+          if (bar) {
+            setTimeout(() => {
+              bar.style.transition = 'width 2.8s linear';
+              bar.style.width = '0%';
+            }, 80);
+          }
+        });
+      });
+
+      // Auto remove
+      toastTimer = setTimeout(() => {
+        el.style.top = '-150px';
+        setTimeout(() => { if (el.parentNode) el.remove(); }, 500);
+      }, 3200);
+    }
+
+    function syncChromeForPage(pageId){
+      const hideChromePages = ['cartPage', 'checkoutPage', 'paymentPage', 'catalogPage', 'detailPage'];
+      document.body.classList.toggle('no-chrome', hideChromePages.includes(pageId));
+    }
+
+    renderCatalogs();
+    renderWishlist();
+
+    function addToCart(id, size='All Size', qty=1, options = {}){
+      const product = getItem(id);
+      if (!product) return;
+      const existing = cart.find(item => item.id === id && item.size === size);
+      if (existing) existing.qty += qty;
+      else cart.push({ id, size, qty, price: product.price, name: product.name });
+      persist();
+      renderCart();
+      updateCartCount();
+      // Update count again after modal close animation
+      setTimeout(updateCartCount, 300);
+      alert('Pemberitahuan\n\n' + product.name + ' telah ditambahkan ke keranjang!');
+      if (options.redirectToCart) showPage('cartPage');
+    }
+
+    function removeCart(index){
+      cart.splice(index,1);
+      persist();
+      renderCart();
+      updateCartCount();
+    }
+
+    function changeCartQty(index, delta){
+      if (!cart[index]) return;
+      cart[index].qty += delta;
+      if (cart[index].qty <= 0) cart.splice(index,1);
+      persist();
+      renderCart();
+      updateCartCount();
+    }
+
+    function subtotal(){
+      return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+    }
+
+    function totalCheckout(){
+      const sub = subtotal();
+      if (sub <= 0) return 0;
+      return sub;
+    }
+
+    function updateCartCount(){
+      const totalQty = cart.reduce((sum, item) => sum + (item.qty || 0), 0);
+      const el = document.getElementById('headerCartCount');
+      if (!el) return;
+      const newVal = totalQty === 0 ? '✦' : String(totalQty);
+      if (el.textContent !== newVal) {
+        el.textContent = newVal;
+        el.style.fontSize  = totalQty === 0 ? '11px' : '10px';
+        el.style.transform = 'scale(1.55)';
+        el.style.transition = 'transform .12s ease';
+        setTimeout(() => { el.style.transform = 'scale(1)'; }, 160);
+      }
+    }
+
+    function productCard(item, compact = false){
+      if (compact) {
+        return `
+          <article class="glass-card cursor-pointer" onclick="openProductModal('${item.id}')">
+            <div class="image-frame" style="aspect-ratio:4/5;width:100%;border-radius:16px 16px 0 0;margin:-1px -1px 0;overflow:hidden;">
+              ${item.bestSeller ? '<span class="badge best-badge absolute top-2 left-2 z-10" style="font-size:9px;padding:4px 8px;">Best Seller</span>' : ''}
+              <img data-image-id="${item.id}" data-label="${item.name}" alt="${item.name}" style="border-radius:20px 20px 0 0;" />
+            </div>
+            <div style="padding:8px 10px 10px;">
+              <h4 style="font-size:.8rem;font-weight:900;color:rgba(245,230,200,.96);line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">${item.name}</h4>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;gap:4px;">
+                <div>
+                  <p style="font-size:.7rem;text-decoration:line-through;color:rgba(245,230,200,.55);line-height:1;">${item.oldPrice ? formatIDR(item.oldPrice) : ''}</p>
+                  <p style="font-size:.9rem;font-weight:900;color:#EEBA30;white-space:nowrap;">${formatIDR(item.price)}</p>
+                </div>
+                <button onclick="event.stopPropagation(); openProductModal('${item.id}')" style="background:linear-gradient(135deg,rgba(238,186,48,.96),rgba(211,166,37,.90));color:#1a0900;font-size:10px;font-weight:900;border:none;border-radius:10px;padding:5px 10px;cursor:pointer;white-space:nowrap;flex-shrink:0;">+ Cart</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }
+      const sizeNote = item.sizes && item.sizes.length > 1 && item.sizes[0] !== 'All Size'
+        ? `<div style="margin-top:.75rem;font-size:.75rem;font-weight:700;color:rgba(238,186,48,.75);">Ukuran: ${item.sizes.join(' / ')}</div>`
+        : `<div style="margin-top:.75rem;font-size:.75rem;font-weight:700;color:rgba(245,230,200,.45);">All Size</div>`;
+      return `
+        <article class="glass-card p-3 flex flex-col h-full min-w-0 cursor-pointer" onclick="openProductModal('${item.id}')">
+          <div class="image-frame h-[220px]">
+            ${item.bestSeller ? '<span class="badge best-badge absolute top-3 left-3 z-10">Best Seller ✦</span>' : ''}
+            <img data-image-id="${item.id}" data-label="${item.name}" alt="${item.name}" />
+          </div>
+          <div class="mt-4 flex items-start justify-between gap-3">
+            <div class="min-w-0">
+              <p style="font-size:11px;text-transform:uppercase;letter-spacing:.24em;color:rgba(238,186,48,.50);">${item.category}</p>
+              <h4 style="font-size:1.28rem;font-weight:900;margin-top:.5rem;line-height:1.2;color:rgba(245,230,200,.96);">${item.name}</h4>
+            </div>
+          </div>
+          <p style="color:rgba(245,230,200,.58);margin-top:.75rem;font-size:.875rem;line-height:1.6;min-height:72px;word-break:break-word;">${item.description}</p>
+          ${sizeNote}
+          <div class="mt-4 flex items-end justify-between gap-3 flex-wrap">
+            <div>
+              <p style="font-size:.875rem;text-decoration:line-through;color:rgba(245,230,200,.55);">${formatIDR(item.oldPrice)}</p>
+              <p style="font-size:1.5rem;font-weight:900;color:#EEBA30;">${formatIDR(item.price)}</p>
+            </div>
+            <div class="ml-auto">
+              <button onclick="openProductModal('${item.id}')" class="cta rounded-[18px] px-5 py-2.5 text-sm font-black">Cart</button>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function bundleCard(item){
+      const imgH = item.bestSeller ? 'h-[290px]' : 'h-[220px]';
+      const titleSize = item.bestSeller ? '1.5rem' : '1.15rem';
+      const priceSize = item.bestSeller ? '1.8rem' : '1.35rem';
+      return `
+        <article class="glass-card p-3 cursor-pointer flex flex-col h-full" onclick="openProductModal('${item.id}')"
+          ${item.bestSeller ? 'style="border-color:rgba(238,186,48,.40);box-shadow:0 0 0 1px rgba(238,186,48,.25),0 20px 50px rgba(0,0,0,.65),0 0 30px rgba(238,186,48,.10);"' : ''}>
+          <div class="image-frame ${imgH}">
+            ${item.bestSeller ? '<span class="badge best-badge absolute top-3 left-3 z-10">Best Seller ✦</span>' : ''}
+            <img data-image-id="${item.id}" data-label="${item.name}" alt="${item.name}" />
+          </div>
+          <div class="mt-4 flex-1 flex flex-col">
+            <h4 style="font-size:${titleSize};font-weight:900;color:rgba(245,230,200,.96);">${item.name}</h4>
+            <p style="color:rgba(245,230,200,.58);margin-top:.4rem;font-size:.875rem;line-height:1.55;flex:1;">${item.description}</p>
+            <div class="mt-4 flex items-end justify-between gap-3">
+              <div>
+                <p style="font-size:.875rem;text-decoration:line-through;color:rgba(245,230,200,.55);">${formatIDR(item.oldPrice)}</p>
+                <p style="font-size:${priceSize};font-weight:900;color:#EEBA30;">${formatIDR(item.price)}</p>
+              </div>
+              <button onclick="event.stopPropagation();openProductModal('${item.id}')" class="cta rounded-[18px] px-4 py-3 text-sm font-black" style="${item.bestSeller ? 'padding:14px 22px;font-size:1rem;' : ''}">Pilih ukuran</button>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderCatalogs(){
+      let filtered = [...products];
+      if (currentFilter !== 'all') filtered = filtered.filter(item => item.category === currentFilter);
+      if (searchTerm) {
+        filtered = filtered.filter(item => item.name.toLowerCase().includes(searchTerm) || item.category.toLowerCase().includes(searchTerm));
+      }
+      if (currentSort === 'priceDesc') filtered.sort((a,b) => b.price - a.price);
+      else if (currentSort === 'nameAsc') filtered.sort((a,b) => a.name.localeCompare(b.name));
+
+      document.getElementById('homeCatalogGrid').innerHTML = products.map(p => productCard(p, true)).join('');
+      document.getElementById('catalogGrid').innerHTML = filtered.map(productCard).join('');
+      document.getElementById('bundleStrip').innerHTML = bundles.map(bundleCard).join('');
+      document.getElementById('bundleGrid').innerHTML = bundles.map(item => `
+        <article class="glass-card p-3 cursor-pointer" onclick="openProductModal('${item.id}')">
+          <div class="image-frame h-[240px]">
+            ${item.bestSeller ? '<span class="badge best-badge absolute top-3 left-3 z-10">Best Seller ✦</span>' : ''}
+            <img data-image-id="${item.id}" data-label="${item.name}" alt="${item.name}" />
+            
+          </div>
+          <div class="mt-4">
+            <h4 style="font-size:1.28rem;font-weight:900;color:rgba(245,230,200,.96);">${item.name}</h4>
+            <p style="color:rgba(245,230,200,.58);margin-top:.5rem;font-size:.875rem;line-height:1.6;">${item.description}</p>
+          </div>
+          <div class="mt-4">
+            <p style="font-size:.875rem;color:rgba(245,230,200,.55);margin-bottom:.75rem;">Pilih ukuran:</p>
+            <div class="flex flex-wrap gap-2">
+              ${item.sizes.map(size => `<button onclick="quickAddBundle('${item.id}','${size}')" class="liquid-pill px-4 py-2 text-sm font-bold">${size}</button>`).join('')}
+            </div>
+          </div>
+          <div class="mt-5 flex items-end justify-between gap-3">
+            <div>
+              <p style="font-size:.875rem;text-decoration:line-through;color:rgba(245,230,200,.55);">${formatIDR(item.oldPrice)}</p>
+              <p style="font-size:1.5rem;font-weight:900;color:#EEBA30;">${formatIDR(item.price)}</p>
+            </div>
+            <button onclick="openProductModal('${item.id}')" class="cta rounded-[18px] px-4 py-3 text-sm font-black">Detail bundle</button>
+          </div>
+        </article>
+      `).join('');
+      document.getElementById('offerGrid').innerHTML = bundles.map(item => `
+        <article class="liquid p-4" style="min-width:300px;scroll-snap-align:start;">
+          <div class="image-frame h-[200px]">
+            ${item.bestSeller ? '<span class="badge best-badge absolute top-2 left-2 z-10" style="font-size:9px;padding:4px 8px;">Best Seller ✦</span>' : ''}
+            <img data-image-id="${item.id}" data-label="${item.name}" alt="${item.name}" class="w-full h-full object-cover"/>
+          </div>
+          <div class="mt-3">
+            <h4 style="font-size:1.2rem;font-weight:900;color:rgba(245,230,200,.96);">${item.name}</h4>
+            <p style="margin-top:.25rem;font-size:.875rem;line-height:1.4;color:rgba(245,230,200,.58);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">${item.description}</p>
+            <div class="mt-3 flex items-center justify-between gap-2 flex-wrap">
+              <div>
+                <p style="font-size:.75rem;text-decoration:line-through;color:rgba(245,230,200,.55);">${formatIDR(item.oldPrice)}</p>
+                <p style="font-size:1.3rem;font-weight:900;color:#EEBA30;">${formatIDR(item.price)}</p>
+              </div>
+              <button onclick="openProductModal('${item.id}'); closeOfferPopup();" class="cta rounded-[16px] px-4 py-2.5 text-sm font-black">Lihat Detail →</button>
+            </div>
+          </div>
+        </article>
+      `).join('');
+      setAllImages();
+    }
+
+    function renderWishlist(){ /* wishlist dihapus */ }
+
+    function renderCart(){
+      const node = document.getElementById('cartItems');
+      if (!cart.length){
+        node.innerHTML = `
+          <div class="liquid-inner p-6">
+            <h4 style="font-size:1.5rem;font-weight:900;color:rgba(245,230,200,.96);">Cart masih kosong</h4>
+            <p style="color:rgba(245,230,200,.58);margin-top:.5rem;">Tambah produk dulu dari katalog atau bundle.</p>
+          </div>
+        `;
+      } else {
+        node.innerHTML = cart.map((item, i) => {
+          const product = getItem(item.id);
+          return `
+            <article class="glass-card p-4">
+              <div class="grid grid-cols-[88px_1fr] gap-4 items-start">
+                <div style="width:88px;height:88px;border-radius:16px;overflow:hidden;flex-shrink:0;">
+                  <img data-image-id="${item.id}" data-label="${product.name}" alt="${product.name}" src="${getImageSrc(item.id, product.name)}" style="width:88px;height:88px;object-fit:cover;display:block;" />
+                </div>
+                <div>
+                  <div class="flex items-start justify-between gap-2">
+                    <div class="min-w-0">
+                      <p style="font-size:11px;text-transform:uppercase;letter-spacing:.22em;color:rgba(238,186,48,.45);">${product.category}</p>
+                      <h4 style="font-size:1rem;font-weight:900;margin-top:2px;color:rgba(245,230,200,.96);line-height:1.3;">${product.name}</h4>
+                      <p style="font-size:13px;color:rgba(245,230,200,.58);margin-top:2px;">Ukuran: <span style="font-weight:700;color:#EEBA30;">${item.size}</span></p>
+                    </div>
+                    <button onclick="removeCart(${i})" class="liquid-icon h-8 w-8 flex items-center justify-center shrink-0" style="color:#EEBA30;" style="font-size:14px;font-weight:900;">✕</button>
+                  </div>
+                  <div class="mt-2 flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-1.5">
+                      <button onclick="changeCartQty(${i},-1)" class="liquid-pill h-7 w-7 flex items-center justify-center font-black text-sm">−</button>
+                      <span class="liquid-pill px-3 py-1 font-black text-sm">${item.qty}</span>
+                      <button onclick="changeCartQty(${i},1)" class="liquid-pill h-7 w-7 flex items-center justify-center font-black text-sm">＋</button>
+                    </div>
+                    <p style="font-size:1.05rem;font-weight:900;color:#EEBA30;">${formatIDR(item.price * item.qty)}</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+          `;
+        }).join('');
+      }
+
+      document.getElementById('summarySubtotal').textContent = formatIDR(subtotal());
+      document.getElementById('summaryTotal').textContent = formatIDR(totalCheckout());
+      document.getElementById('paymentTotal').textContent = formatIDR(totalCheckout());
+      document.getElementById('paymentSummary').innerHTML = cart.length ? cart.map(item => `
+        <div style="display:flex;align-items:center;justify-content:space-between;color:rgba(245,230,200,.65);">
+          <span>${item.name} · ${item.size} · ${item.qty}x</span>
+          <span>${formatIDR(item.price * item.qty)}</span>
+        </div>
+      `).join('') + `
+      ` : `<div class="text-white/45">Belum ada item untuk dibayar.</div>`;
+      setAllImages();
+    }
+
+    function updateDetail(){
+      const item = getItem(currentDetailId);
+      if (!item) return;
+      if (!item.sizes.includes(currentDetailSize)) currentDetailSize = item.sizes[0];
+      document.getElementById('detailHeading').textContent = item.name;
+      document.getElementById('detailTitle').textContent = item.name;
+      document.getElementById('detailCategory').textContent = item.category;
+      document.getElementById('detailOldPrice').textContent = formatIDR(item.oldPrice);
+      document.getElementById('detailPrice').textContent = formatIDR(item.price);
+      document.getElementById('detailDescription').textContent = item.description + ' Semua frame gambar tetap bisa diganti sendiri dari browser.';
+      const badge = document.getElementById('detailBadge');
+      badge.className = item.bestSeller ? 'badge best-badge' : 'badge';
+      badge.textContent = item.bestSeller ? 'Best Seller' : 'Ready Stock';
+
+      const img = document.getElementById('detailImage');
+      img.dataset.imageId = item.id;
+      img.dataset.label = item.name;
+      img.src = getImageSrc(item.id, item.name);
+
+      document.getElementById('detailSizeOptions').innerHTML = item.sizes.map(size => `
+        <button onclick="setDetailSize('${size}')" class="${currentDetailSize === size ? 'cta' : ''} rounded-[18px] px-4 py-4 font-black" style="${currentDetailSize === size ? '' : 'background:rgba(174,0,1,.08);border:2px solid rgba(174,0,1,.45);color:rgba(245,230,200,.90);'}">
+          ${size}
+        </button>
+      `).join('');
+    }
+
+    function openDetail(id){
+      currentDetailId = id;
+      currentDetailSize = getItem(id).sizes[0];
+      updateDetail();
+      showPage('detailPage');
+    }
+
+    function setDetailSize(size){
+      currentDetailSize = size;
+      updateDetail();
+    }
+
+    function addDetailToCart(){
+      addToCart(currentDetailId, currentDetailSize, 1, { redirectToCart: false });
+    }
+
+    function openProductModal(id){
+      const item = getItem(id);
+      if (!item) return;
+      currentModalId = id;
+      currentModalSize = item.sizes[0];
+      currentModalQty = 1;
+      currentModalGalleryIndex = 0;
+      currentBundleSelections = {};
+      currentSleeveOption = 'pendek'; // reset sleeve
+      // Init bundle default selections
+      if (item.isBundle && item.bundleOptions) {
+        item.bundleOptions.forEach(opt => {
+          currentBundleSelections[opt.key] = opt.choices[0];
+        });
+      }
+      document.getElementById('modalCategory').textContent = item.category;
+      document.getElementById('modalTitle').textContent = item.name;
+      document.getElementById('modalDesc').textContent = item.description;
+      document.getElementById('modalOldPrice').textContent = formatIDR(item.oldPrice);
+      document.getElementById('modalPrice').textContent = formatIDR(item.price);
+      document.getElementById('modalQty').textContent = currentModalQty;
+      // Update sizes section label
+      const lbl = document.getElementById('modalSizesLabel');
+      if (lbl) lbl.textContent = (item.isBundle && item.isSleeveProduct) ? 'Pilih Ukuran & Tipe Lengan:' : item.isBundle ? '' : 'Ukuran';
+      renderModalSizes();
+      renderModalGallery(item);
+      document.getElementById('productModal').classList.add('open');
+      document.body.classList.add('modal-open');
+    }
+
+    function renderModalSizes(){
+      const item = getItem(currentModalId);
+      if (!item) return;
+      const container = document.getElementById('modalSizes');
+      if (item.isBundle && item.isSleeveProduct) {
+        // Bundle Ministry of Magic: pilih ukuran + lengan
+        const isLong = currentSleeveOption === 'panjang';
+        const displayPrice = isLong ? item.price + item.sleeveUpcharge : item.price;
+        container.innerHTML = `
+          <div style="margin-bottom:14px;">
+            <p style="font-size:13px;font-weight:800;color:rgba(238,186,48,.60);margin:0 0 8px;">Pilih Ukuran Baju:</p>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              ${item.sizes.map(size => `
+                <button onclick="setModalSize('${size}')"
+                  style="padding:8px 16px;border-radius:10px;font-weight:800;font-size:14px;cursor:pointer;
+                    border:2px solid ${currentModalSize === size ? '#EEBA30' : 'rgba(174,0,1,.35)'};
+                    background:${currentModalSize === size ? '#EEBA30' : 'rgba(174,0,1,.06)'};
+                    color:${currentModalSize === size ? '#1a0900' : 'rgba(245,230,200,.85)'};
+                    transition:all .15s;">${size}</button>
+              `).join('')}
+            </div>
+          </div>
+          <div style="margin-bottom:8px;">
+            <p style="font-size:13px;font-weight:800;color:rgba(238,186,48,.60);margin:0 0 8px;">Pilih Tipe Lengan:</p>
+            <div style="display:flex;gap:8px;">
+              <button onclick="setSleeveOption('pendek')"
+                style="padding:8px 18px;border-radius:10px;font-weight:800;font-size:14px;cursor:pointer;
+                  border:2px solid ${!isLong ? '#EEBA30' : 'rgba(174,0,1,.35)'};
+                  background:${!isLong ? '#EEBA30' : 'rgba(174,0,1,.06)'};
+                  color:${!isLong ? '#1a0900' : 'rgba(245,230,200,.85)'};
+                  transition:all .15s;">Lengan Pendek</button>
+              <button onclick="setSleeveOption('panjang')"
+                style="padding:8px 18px;border-radius:10px;font-weight:800;font-size:14px;cursor:pointer;
+                  border:2px solid ${isLong ? '#EEBA30' : 'rgba(174,0,1,.35)'};
+                  background:${isLong ? '#EEBA30' : 'rgba(174,0,1,.06)'};
+                  color:${isLong ? '#1a0900' : 'rgba(245,230,200,.85)'};
+                  transition:all .15s;">Lengan Panjang <span style="font-size:11px;opacity:.80;">(+Rp5.000)</span></button>
+            </div>
+          </div>
+          <p id="sleevePrice" style="font-size:1.6rem;font-weight:900;color:#EEBA30;margin:10px 0 0;">
+            ${new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(displayPrice).replace(',00','')}
+          </p>
+        `;
+      } else if (item.isBundle) {
+        // Bundle tanpa opsi tambahan — langsung bisa dibeli
+        container.innerHTML = `<p style="font-size:13px;color:rgba(245,230,200,.55);margin:0;">Langsung masuk keranjang, tidak ada pilihan tambahan.</p>`;
+      } else if (item.isSleeveProduct) {
+        // Kaos: size + opsi lengan panjang
+        const isLong = currentSleeveOption === 'panjang';
+        const displayPrice = isLong ? item.price + item.sleeveUpcharge : item.price;
+        container.innerHTML = `
+          <div style="margin-bottom:14px;">
+            <p style="font-size:13px;font-weight:800;color:rgba(238,186,48,.60);margin:0 0 8px;">Pilih Ukuran:</p>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              ${item.sizes.map(size => `
+                <button onclick="setModalSize('${size}')"
+                  style="padding:8px 16px;border-radius:10px;font-weight:800;font-size:14px;cursor:pointer;
+                    border:2px solid ${currentModalSize === size ? '#EEBA30' : 'rgba(174,0,1,.35)'};
+                    background:${currentModalSize === size ? '#EEBA30' : 'rgba(174,0,1,.06)'};
+                    color:${currentModalSize === size ? '#1a0900' : 'rgba(245,230,200,.85)'};
+                    transition:all .15s;">${size}</button>
+              `).join('')}
+            </div>
+          </div>
+          <div style="margin-bottom:8px;">
+            <p style="font-size:13px;font-weight:800;color:rgba(238,186,48,.60);margin:0 0 8px;">Pilih Tipe Lengan:</p>
+            <div style="display:flex;gap:8px;">
+              <button onclick="setSleeveOption('pendek')"
+                style="padding:8px 18px;border-radius:10px;font-weight:800;font-size:14px;cursor:pointer;
+                  border:2px solid ${!isLong ? '#EEBA30' : 'rgba(174,0,1,.35)'};
+                  background:${!isLong ? '#EEBA30' : 'rgba(174,0,1,.06)'};
+                  color:${!isLong ? '#1a0900' : 'rgba(245,230,200,.85)'};
+                  transition:all .15s;">
+                Lengan Pendek
+              </button>
+              <button onclick="setSleeveOption('panjang')"
+                style="padding:8px 18px;border-radius:10px;font-weight:800;font-size:14px;cursor:pointer;
+                  border:2px solid ${isLong ? '#EEBA30' : 'rgba(174,0,1,.35)'};
+                  background:${isLong ? '#EEBA30' : 'rgba(174,0,1,.06)'};
+                  color:${isLong ? '#1a0900' : 'rgba(245,230,200,.85)'};
+                  transition:all .15s;">
+                Lengan Panjang <span style="font-size:11px;opacity:.80;">(+Rp5.000)</span>
+              </button>
+            </div>
+          </div>
+          <p id="sleevePrice" style="font-size:1.6rem;font-weight:900;color:#EEBA30;margin:10px 0 0;">
+            ${new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(displayPrice).replace(',00','')}
+          </p>
+        `;
+      } else if (item.stickerPrices) {
+        // Stiker: pilihan opsi dengan harga berbeda per opsi
+        container.innerHTML = `
+          <div style="margin-bottom:8px;">
+            <p style="font-size:13px;font-weight:800;color:rgba(238,186,48,.60);margin:0 0 8px;">Pilih Opsi Stiker:</p>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              ${item.sizes.map(size => `
+                <button onclick="setStickerOption('${size}')"
+                  style="padding:8px 16px;border-radius:10px;font-weight:800;font-size:13px;cursor:pointer;
+                    border:2px solid ${currentModalSize === size ? '#EEBA30' : 'rgba(174,0,1,.35)'};
+                    background:${currentModalSize === size ? '#EEBA30' : 'rgba(174,0,1,.06)'};
+                    color:${currentModalSize === size ? '#1a0900' : 'rgba(245,230,200,.85)'};
+                    transition:all .15s;white-space:nowrap;">
+                  ${size}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      } else {
+        container.innerHTML = item.sizes.map(size => `
+          <button onclick="setModalSize('${size}')"
+            style="padding:8px 18px;border-radius:10px;font-weight:800;font-size:14px;cursor:pointer;border:2px solid ${currentModalSize === size ? '#EEBA30' : 'rgba(174,0,1,.35)'};background:${currentModalSize === size ? '#EEBA30' : 'rgba(174,0,1,.06)'};color:${currentModalSize === size ? '#1a0900' : '#AE0001'};transition:all .15s;">
+            ${size}
+          </button>
+        `).join('');
+      }
+    }
+
+    function setStickerOption(size){
+      currentModalSize = size;
+      const item = getItem(currentModalId);
+      if (!item || !item.stickerPrices) return;
+      const newPrice = item.stickerPrices[size] || item.price;
+      const newOldPrice = item.stickerOldPrices ? (item.stickerOldPrices[size] || item.oldPrice) : item.oldPrice;
+      const priceEl = document.getElementById('modalPrice');
+      const oldPriceEl = document.getElementById('modalOldPrice');
+      if (priceEl) priceEl.textContent = formatIDR(newPrice);
+      if (oldPriceEl) oldPriceEl.textContent = formatIDR(newOldPrice);
+      renderModalSizes();
+    }
+
+    function setSleeveOption(opt){
+      currentSleeveOption = opt;
+      renderModalSizes();
+      // Update harga di modal price display
+      const item = getItem(currentModalId);
+      if (!item) return;
+      const finalPrice = opt === 'panjang' ? item.price + item.sleeveUpcharge : item.price;
+      const priceEl = document.getElementById('modalPrice');
+      if (priceEl) priceEl.textContent = formatIDR(finalPrice);
+    }
+
+    function setBundleOption(key, value){
+      currentBundleSelections[key] = value;
+      renderModalSizes();
+    }
+
+    function setModalSize(size){
+      currentModalSize = size;
+      renderModalSizes();
+    }
+
+    function changeModalQty(delta){
+      currentModalQty = Math.max(1, currentModalQty + delta);
+      document.getElementById('modalQty').textContent = currentModalQty;
+    }
+
+    function confirmModalAdd(){
+      const id = currentModalId;
+      const item = getItem(id);
+      if (!item) return;
+      const qty = currentModalQty;
+      let size = 'All Size';
+      let priceOverride = null;
+
+      if (item.isBundle && item.isSleeveProduct) {
+        // Ministry of Magic bundle: ukuran + lengan
+        const ukuran = currentModalSize || item.sizes[0];
+        const lengan = currentSleeveOption === 'panjang' ? 'Panjang' : 'Pendek';
+        size = ukuran + ' · Lengan ' + lengan;
+        if (currentSleeveOption === 'panjang') priceOverride = item.price + item.sleeveUpcharge;
+      } else if (item.isBundle) {
+        // Bundle tanpa opsi tambahan
+        size = 'All Size';
+      } else if (item.isSleeveProduct) {
+        // Kaos: ukuran + lengan
+        const ukuran = currentModalSize || item.sizes[0];
+        const lengan = currentSleeveOption === 'panjang' ? 'Panjang' : 'Pendek';
+        size = ukuran + ' · Lengan ' + lengan;
+        if (currentSleeveOption === 'panjang') priceOverride = item.price + item.sleeveUpcharge;
+      } else if (item.stickerPrices) {
+        // Stiker: opsi bundle
+        size = currentModalSize || item.sizes[0];
+        priceOverride = item.stickerPrices[size] || item.price;
+      } else {
+        size = currentModalSize || item.sizes[0] || 'All Size';
+      }
+
+      closeProductModal();
+      setTimeout(() => {
+        const finalPrice = priceOverride !== null ? priceOverride : item.price;
+        const existing = cart.find(i => i.id === id && i.size === size);
+        if (existing) existing.qty += qty;
+        else cart.push({ id, size, qty, price: finalPrice, name: item.name });
+        persist(); renderCart(); updateCartCount();
+        alert('Pemberitahuan\n\n' + item.name + ' telah ditambahkan ke keranjang!');
+      }, 180);
+    }
+
+    function closeProductModal(){
+      document.getElementById('productModal').classList.remove('open');
+      document.body.classList.remove('modal-open');
+    }
+
+    // ── Swipe support for modal image ──
+    (function(){
+      let startX = 0, startY = 0;
+      document.addEventListener('touchstart', e => {
+        const wrap = document.getElementById('modalImageWrap');
+        if (wrap && wrap.contains(e.target)){
+          startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
+        }
+      }, { passive:true });
+      document.addEventListener('touchend', e => {
+        const wrap = document.getElementById('modalImageWrap');
+        if (!wrap || !wrap.contains(e.target)) return;
+        const dx = e.changedTouches[0].clientX - startX;
+        const dy = e.changedTouches[0].clientY - startY;
+        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40){
+          changeModalGallery(dx < 0 ? 1 : -1);
+        }
+      }, { passive:true });
+    })();
+
+    function openBundleModal(){
+      document.getElementById('bundleModal').classList.add('open');
+      document.body.classList.add('modal-open');
+    }
+
+    function closeBundleModal(){
+      document.getElementById('bundleModal').classList.remove('open');
+      document.body.classList.remove('modal-open');
+    }
+
+    function quickAddBundle(id, size){
+      closeBundleModal();
+      setTimeout(() => {
+        addToCart(id, size, 1, { redirectToCart: false });
+      }, 180);
+    }
+
+    function openOfferPopup(){
+      const popup = document.getElementById('offerPopup');
+      popup.classList.add('open');
+      document.body.classList.add('modal-open');
+    }
+
+    function closeOfferPopup(){
+      document.getElementById('offerPopup').classList.remove('open');
+      document.body.classList.remove('modal-open');
+    }
+
+    function openShopOfferPopup(){
+      renderShopOfferStrip();
+      document.getElementById('shopOfferPopup').classList.add('open');
+      document.body.classList.add('modal-open');
+    }
+
+    function closeShopOfferPopup(){
+      document.getElementById('shopOfferPopup').classList.remove('open');
+      document.body.classList.remove('modal-open');
+    }
+
+    function renderShopOfferStrip(){
+      const strip = document.getElementById('shopOfferStrip');
+      if (!strip) return;
+      strip.innerHTML = bundles.map(item => `
+        <article class="liquid p-4" style="min-width:340px;scroll-snap-align:start;">
+          <div class="image-frame h-[220px]">
+            ${item.bestSeller ? '<span class="badge best-badge absolute top-3 left-3 z-10">Best Seller ✦</span>' : ''}
+            <img data-image-id="${item.id}" data-label="${item.name}" alt="${item.name}" class="w-full h-full object-cover" />
+          </div>
+          <div class="mt-4">
+            <p style="font-size:11px;text-transform:uppercase;letter-spacing:.24em;color:rgba(245,230,200,.45);">${item.category}</p>
+            <h4 style="font-size:1.3rem;font-weight:900;margin-top:.5rem;color:rgba(245,230,200,.96);">${item.name}</h4>
+            <p style="color:rgba(245,230,200,.58);margin-top:.5rem;font-size:.875rem;line-height:1.6;">${item.description}</p>
+          </div>
+          <div class="mt-4 flex items-center justify-between gap-3">
+            <div>
+              <p style="font-size:.875rem;text-decoration:line-through;color:rgba(245,230,200,.55);">${formatIDR(item.oldPrice)}</p>
+              <p style="font-size:1.5rem;font-weight:900;color:#EEBA30;">${formatIDR(item.price)}</p>
+            </div>
+          </div>
+          <div class="mt-3">
+            <p class="text-xs text-white/55 mb-2 font-semibold uppercase tracking-wider">Pilih ukuran & tambah ke keranjang:</p>
+            <div class="flex flex-wrap gap-2">
+              ${item.sizes.map(size => `
+                <button onclick="shopOfferAddToCart('${item.id}','${size}')" class="liquid-pill px-4 py-2 text-sm font-bold hover:opacity-90 transition-opacity">
+                  ${size}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        </article>
+      `).join('');
+      setAllImages();
+    }
+
+    function shopOfferAddToCart(id, size){
+      closeShopOfferPopup();
+      setTimeout(() => {
+        addToCart(id, size, 1, { redirectToCart: false });
+      }, 180);
+    }
+
+    function showPage(id){
+      document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      // Show inline nav only on home page
+      const inlineNav = document.getElementById('inlineNav');
+      if (inlineNav) {
+        inlineNav.style.display = (id === 'homePage') ? 'flex' : 'none';
+      }
+      document.getElementById('bundleModal').classList.remove('open');
+      document.getElementById('productModal').classList.remove('open');
+      document.getElementById('offerPopup').classList.remove('open');
+      document.getElementById('shopOfferPopup').classList.remove('open');
+      document.body.classList.remove('modal-open');
+      // Toggle search bar — only visible on homePage
+      const hideChromePages = ['cartPage', 'checkoutPage', 'paymentPage', 'catalogPage', 'detailPage'];
+      document.body.classList.toggle('no-chrome', hideChromePages.includes(id));
+      if (id === 'detailPage') updateDetail();
+      if (id === 'cartPage' || id === 'checkoutPage' || id === 'paymentPage') renderCart();
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    function goHome(){
+      showPage('homePage');
+    }
+
+    function scrollToFooterAbout(){
+      showPage('homePage');
+      setTimeout(() => {
+        document.getElementById('footerAbout').scrollIntoView({behavior:'smooth', block:'start'});
+      }, 120);
+    }
+
+    function setFilter(filter){
+      currentFilter = filter;
+      renderCatalogs();
+    }
+
+    function setSort(sort){
+      currentSort = sort;
+      renderCatalogs();
+    }
+
+    document.getElementById('globalSearch').addEventListener('input', e => {
+      searchTerm = e.target.value.trim().toLowerCase();
+      renderCatalogs();
+      if (document.getElementById('homePage').classList.contains('active') && searchTerm) {
+        showPage('catalogPage');
+      }
+    });
+
+    document.getElementById('offerPopup').addEventListener('click', e => {
+      if (e.target.id === 'offerPopup') closeOfferPopup();
+    });
+    document.getElementById('shopOfferPopup').addEventListener('click', e => {
+      if (e.target.id === 'shopOfferPopup') closeShopOfferPopup();
+    });
+    document.getElementById('bundleModal').addEventListener('click', e => {
+      if (e.target.id === 'bundleModal') closeBundleModal();
+    });
+    document.getElementById('productModal').addEventListener('click', e => {
+      if (e.target.id === 'productModal') closeProductModal();
+    });
+
+    renderCatalogs();
+    renderWishlist();
+    renderCart();
+    updateCartCount();
+    updateDetail();
+    setAllImages();
+    // Auto buka popup penawaran setelah halaman selesai render
+    setTimeout(openOfferPopup, 800);
+  </script>
+</body>
+</html>
