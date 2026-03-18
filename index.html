@@ -1239,20 +1239,20 @@
     let currentModalGalleryIndex = 0;
 
     const manualGalleryConfig = {
-      'final-suit-bundle': ['', '', '', ''],
-      'face-card-edition': ['', '', '', ''],
-      'ground-entry-bundle': ['', '', '', ''],
-      'workshirt-resonansi': ['', '', '', ''],
-      'immt-varsity': ['', '', '', ''],
-      'supporter-scarf': ['', '', '', ''],
-      'matchday-cap': ['', '', '', ''],
-      'fan-pass-card': ['', '', '', ''],
-      'hydro-tumbler': ['', '', '', ''],
-      'urban-carry-bag': ['', '', '', '']
+      'final-suit-bundle': ['image1.jpg', 'image1.jpg', 'image1.jpg', 'image1.jpg'],
+      'face-card-edition': ['image1.jpg', 'image1.jpg', 'image1.jpg', 'image1.jpg'],
+      'ground-entry-bundle': ['image1.jpg', 'image1.jpg', 'image1.jpg', 'image1.jpg'],
+      'workshirt-resonansi': ['image1.jpg', 'image1.jpg', 'image1.jpg', 'image1.jpg'],
+      'immt-varsity': ['image1.jpg', 'image1.jpg', 'image1.jpg', 'image1.jpg'],
+      'supporter-scarf': ['image1.jpg', 'image1.jpg', 'image1.jpg', 'image1.jpg'],
+      'matchday-cap': ['image1.jpg', 'image1.jpg', 'image1.jpg', 'image1.jpg'],
+      'fan-pass-card': ['image1.jpg', 'image1.jpg', 'image1.jpg', 'image1.jpg'],
+      'hydro-tumbler': ['image1.jpg', 'image1.jpg', 'image1.jpg', 'image1.jpg'],
+      'urban-carry-bag': ['image1.jpg', 'image1.jpg', 'image1.jpg', 'image1.jpg']
     };
 
     function getGalleryImages(item){
-      const configured = manualGalleryConfig[item.id] || ['', '', '', ''];
+      const configured = manualGalleryConfig[item.id] || ['image1.jpg', 'image1.jpg', 'image1.jpg', 'image1.jpg'];
       return configured.map((url, index) => {
         if (url) return url;
         return makePlaceholder(`${item.name} ${index + 1}`, '#7a2020', '#6b4b2a', '#bfa46f');
