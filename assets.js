@@ -1,82 +1,114 @@
-/**
- * ═══════════════════════════════════════════════════════════════
- *  assets.js — Konfigurasi Gambar IMMt SHOP
- *  ────────────────────────────────────────────────────────────
- *  Edit file ini untuk mengganti gambar produk, logo, hero banner,
- *  dan QRIS. Cukup ubah URL di bawah, tidak perlu menyentuh
- *  index.html sama sekali.
- *
- *  FORMAT URL yang didukung:
- *    - URL langsung  : "https://example.com/foto.jpg"
- *    - Path relatif  : "images/produk/kaos.jpg"
- *    - Base64        : "data:image/jpeg;base64,..."
- *    - Kosongkan ("") atau null → tampilkan placeholder otomatis
- * ═══════════════════════════════════════════════════════════════
- */
+// ═══════════════════════════════════════════════════════════════
+// assets.js — KONFIGURASI GAMBAR IMMt SHOP
+// ═══════════════════════════════════════════════════════════════
+//
+// Cara pakai:
+//   1. Taruh file gambar di folder  images/
+//   2. Ganti isi array di bawah sesuai nama file yang kamu upload
+//   3. Setiap produk bisa punya 1–4 gambar
+//   4. Commit & push ke GitHub — selesai!
+//
+// Format penamaan yang dianjurkan:
+//   images/imagekeychain1.jpg  (foto 1 keychain)
+//   images/imagekeychain2.jpg  (foto 2 keychain)
+//   ...dst sampai foto ke-4
+//
+// File khusus:
+//   images/logo.jpg       → logo di header
+//   images/herobanner.jpg → background hero section
+//   images/qris.jpg       → kode QRIS pembayaran
+//
+// ═══════════════════════════════════════════════════════════════
+// DAFTAR GAMBAR PER PRODUK (edit di sini)
+// ═══════════════════════════════════════════════════════════════
 
-window.__assets = {
+const ASSETS_CONFIG = {
 
-  /* ──────────────────────────────────────────────
-     SITE IDENTITY
-     ────────────────────────────────────────────── */
-  siteLogo:  "",
-  heroBanner:"",
-  qrisImage: "",
+  // ── PRODUK SATUAN ──────────────────────────────────────────
 
-  /* ──────────────────────────────────────────────
-     BUNDLES
-     ────────────────────────────────────────────── */
-  "ministry-magic-supply":  "",
-  "daily-muggle-kit":       "",
-  "wizarding-essentials-kit":"",
+  'topi-immt': [
+    'images/imagetopi1.jpg',
+    'images/imagetopi2.jpg',
+    'images/imagetopi3.jpg',
+    'images/imagetopi4.jpg',
+  ],
 
-  /* ──────────────────────────────────────────────
-     PRODUK
-     ────────────────────────────────────────────── */
-  "topi-immt":      "",
-  "kaos-immt":      "",
-  "stiker-immt":    "",   // 1 gambar untuk semua opsi stiker
-  "enamel-bidang":  "",
-  "enamel-immt":    "",
-  "korek-immt":     "",
-  "keychain-bordir":"",
+  'kaos-immt': [
+    'images/imagekaos1.jpg',
+    'images/imagekaos2.jpg',
+    'images/imagekaos3.jpg',
+    'images/imagekaos4.jpg',
+  ],
 
-  /* ──────────────────────────────────────────────
-     GALERI — array foto per produk untuk carousel
-     Kosongkan [] → hanya tampil 1 foto utama
-     ────────────────────────────────────────────── */
-  gallery: {
-    "kaos-immt":              [],  // contoh: ["foto-depan.jpg","foto-belakang.jpg"]
-    "topi-immt":              [],
-    "stiker-immt":            [],
-    "enamel-bidang":          [],
-    "enamel-immt":            [],
-    "korek-immt":             [],
-    "keychain-bordir":        [],
-    "ministry-magic-supply":  [],
-    "daily-muggle-kit":       [],
-    "wizarding-essentials-kit":[],
-  }
+  'stiker-immt': [
+    'images/imagestiker1.jpg',
+    'images/imagestiker2.jpg',
+    'images/imagestiker3.jpg',
+    'images/imagestiker4.jpg',
+  ],
+
+  'enamel-bidang': [
+    'images/imageenamelb1.jpg',
+    'images/imageenamelb2.jpg',
+    'images/imageenamelb3.jpg',
+    'images/imageenamelb4.jpg',
+  ],
+
+  'enamel-immt': [
+    'images/imageenami1.jpg',
+    'images/imageenami2.jpg',
+    'images/imageenami3.jpg',
+    'images/imageenami4.jpg',
+  ],
+
+  'korek-immt': [
+    'images/imagekorek1.jpg',
+    'images/imagekorek2.jpg',
+    'images/imagekorek3.jpg',
+    'images/imagekorek4.jpg',
+  ],
+
+  'keychain-bordir': [
+    'images/imagekeychain1.jpg',
+    'images/imagekeychain2.jpg',
+    'images/imagekeychain3.jpg',
+    'images/imagekeychain4.jpg',
+  ],
+
+  // ── BUNDLE ────────────────────────────────────────────────
+
+  'wizarding-essentials-kit': [
+    'images/imagebundle11.jpg',
+    'images/imagebundle12.jpg',
+    'images/imagebundle13.jpg',
+    'images/imagebundle14.jpg',
+  ],
+
+  'ministry-magic-supply': [
+    'images/imagebundle21.jpg',
+    'images/imagebundle22.jpg',
+    'images/imagebundle23.jpg',
+    'images/imagebundle24.jpg',
+  ],
+
+  'daily-muggle-kit': [
+    'images/imagebundle31.jpg',
+    'images/imagebundle32.jpg',
+    'images/imagebundle33.jpg',
+    'images/imagebundle34.jpg',
+  ],
+
+  // ── SPECIAL ───────────────────────────────────────────────
+
+  'siteLogo':  ['images/logo.jpg'],
+  'heroBanner':['images/herobanner.jpg'],
+  'qrisImage': ['images/qris.jpg'],
+
 };
 
-/* ═══════════════════════════════════════════════════
-   ⚠️  JANGAN EDIT DI BAWAH BARIS INI
-═══════════════════════════════════════════════════ */
-window.__imageConfigReady = function(makePlaceholder) {
-  const a = window.__assets || {};
-  const g = a.gallery || {};
-
-  window.getImageSrc = function(id, label) {
-    if (window.__uploads && window.__uploads[id]) return window.__uploads[id];
-    if (a[id]) return a[id];
-    if (id === 'siteLogo')   return makePlaceholder('IMMt',        '#AE0001','#EEBA30','#740001');
-    if (id === 'heroBanner') return makePlaceholder('Banner Hero', '#740001','#AE0001','#EEBA30');
-    return makePlaceholder(label || id);
-  };
-
-  window.getGalleryImages = function(item) {
-    const cg = g[item.id];
-    if (cg && cg.length > 0) return cg;
-    return [window.getImageSrc(item.id, item.name)];
-  };
-};
+// ═══════════════════════════════════════════════════════════════
+// Jangan edit di bawah ini kecuali kamu tahu yang kamu lakukan
+// ═══════════════════════════════════════════════════════════════
+// File ini TIDAK digunakan saat ini karena konfigurasi sudah
+// inline di index.html. Gunakan ini sebagai referensi saja,
+// atau jika kamu ingin memindahkan konfigurasi ke sini lagi.
